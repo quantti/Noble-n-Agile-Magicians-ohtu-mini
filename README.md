@@ -2,4 +2,4 @@
 Lukuvinkkikirjasto OhTun miniprojektina
 
 * [Product Backlog]()
-* [Definition of Done]()
+* [Definition of Done](dokumentaatio/definitionOfDone.md)
