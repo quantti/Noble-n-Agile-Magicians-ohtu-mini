@@ -1,9 +1,15 @@
 package noble.lukuvinkki.main;
 
+<<<<<<< HEAD
 import noble.lukuvinkki.io.KayttoliittymaIO;
 import java.util.List;
 import java.util.Scanner;
 
+=======
+import java.util.Scanner;
+
+
+>>>>>>> ed971c3651b99ae7f25999b58314c968524bb6d3
 public class App {
     public static KayttoliittymaIO kayttisIO;
 
@@ -55,10 +61,17 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
     private static void listaaKaikkiVinkit() {
         List kaikkiVinkit = kayttisIO.haeKaikkiVinkit();
         for (Object object : kaikkiVinkit) {
             System.out.println(object);
         }
     }
+=======
+public static void main(String[] args) throws Exception {
+    System.out.println("Hello");
+  }
+
+>>>>>>> ed971c3651b99ae7f25999b58314c968524bb6d3
 }
