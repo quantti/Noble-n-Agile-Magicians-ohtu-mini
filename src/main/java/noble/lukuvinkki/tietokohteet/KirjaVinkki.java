@@ -33,4 +33,12 @@ public class KirjaVinkki implements Vinkki {
     public void setKirjoittaja(String kirjoittaja) {
         this.kirjoittaja = kirjoittaja;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("KirjaVinkki{");
+        sb.append("nimi = ").append(getNimi());
+        sb.append(", kirjoittaja = ").append(getKirjoittaja());
+        return sb.append("}").toString();
+    }
 }
