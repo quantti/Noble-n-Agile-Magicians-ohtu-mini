@@ -3,21 +3,22 @@ package noble.lukuvinkki.main;
 import noble.lukuvinkki.io.KayttoliittymaIO;
 import java.util.List;
 import java.util.Scanner;
+import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class App {
 
     public static KayttoliittymaIO kayttisIO;
+    public static Scanner scanner;
 
     public static void main(String[] args) throws Exception {
         kayttisIO = new KayttoliittymaIO();
-
+        scanner = new Scanner(System.in);
         listaaValikko();
     }
 
     private static String kysy() {
-        System.out.print(">");
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Anna komento:");
         return scanner.nextLine();
     }
 
@@ -43,7 +44,7 @@ public class App {
                     listaaKaikkiVinkit();
                     break;
                 case "b":
-                    lisaaVinkki();
+                    lisaaKirjaVinkki();
                     break;
                 case "c":
                     muokkaaVinkkia();
@@ -59,21 +60,68 @@ public class App {
 
     private static void listaaKaikkiVinkit() {
         List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiVinkit();
+        if (kaikkiVinkit == null || kaikkiVinkit.isEmpty()) {
+            System.out.println("Vinkkejä ei löytynyt\n");
+            return;
+        }
         for (Vinkki vinkki : kaikkiVinkit) {
             System.out.println(vinkki);
         }
     }
 
-    private static void lisaaVinkki() {
+    private static void lisaaKirjaVinkki() {
+        System.out.println("Syötä kirjan kirjoittaja: ");
+        String kirjoittaja = scanner.nextLine();
+        System.out.println("Syötä kirjan nimi: ");
+        String nimi = scanner.nextLine();
+        KirjaVinkki kirjaVinkki = new KirjaVinkki();
+        kirjaVinkki.setKirjoittaja(kirjoittaja);
+        kirjaVinkki.setNimi(nimi);
+        kayttisIO.lisaaVinkki(kirjaVinkki);
         //TODO
     }
 
     private static void muokkaaVinkkia() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Syötä muokattavan vinkin id-numero:");
+        String id = scanner.nextLine();
+        Vinkki vinkki = kayttisIO.haeYksiVinkki(id);
+        if (vinkki == null) {
+            System.out.println("Vinkkiä ei löytynyt, tarkista id-numero");
+            return;
+        }
+        System.out.println("Vinkin kirjoittaja on " + vinkki.getKirjoittaja() + ". Syötä uusi kirjoittaja tai"
+                + " jätä tyhjäksi jos haluat säilyttää saman.");
+        String kirjoittaja = scanner.nextLine();
+        if (!kirjoittaja.isEmpty()) {
+            vinkki.setKirjoittaja(kirjoittaja);
+            System.out.println("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
+        }
+        System.out.println("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
+                + "haluat säilyttää vanhan nimen.");
+        String nimi = scanner.nextLine();
+        if (!nimi.isEmpty()) {
+            vinkki.setNimi(nimi);
+            System.out.println("Vinkin nimeksi on vaihdettu " + nimi + ".");
+        }
+        kayttisIO.muokkaa(vinkki);
     }
 
     private static void poistaVinkki() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Anna poistettavan vinkin id-numero:");
+        String id = scanner.nextLine();
+        Vinkki vinkki = kayttisIO.haeYksiVinkki(id);
+        if (vinkki == null) {
+            System.out.println("Vinkkiä ei löytynyt, tarkista id-numero");
+            return;
+        }
+        System.out.println("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
+        String vastaus = scanner.nextLine();
+        if (vastaus.contentEquals("k")) {
+            kayttisIO.poistaVinkki(id);
+            System.out.println("Vinkki poistettu");
+        } else {
+            System.out.println("Vinkkiä ei poistettu");
+        }
     }
 
 }
