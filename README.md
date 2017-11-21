@@ -4,4 +4,8 @@ Lukuvinkkikirjasto OhTun miniprojektina
 * [Product Backlog](https://docs.google.com/spreadsheets/d/1xMJqxceX8mSikkQWddTKclCz_JCxFTtkpgd2CsAhs5M/edit?usp=sharing)
 * [Definition of Done](dokumentaatio/definitionOfDone.md)
 * [Travis CI](https://travis-ci.org/quantti/Noble-n-Agile-Magicians-ohtu-mini)
+* [Lisenssi, GPL v3](GPL.md)
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 

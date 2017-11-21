@@ -6,6 +6,7 @@
 package noble.lukuvinkki.io;
 
 import java.util.List;
+import noble.lukuvinkki.tietokohteet.Vinkki;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class KayttoliittymaIO {
 
-    public List haeKaikkiVinkit() {
+    public List<Vinkki> haeKaikkiVinkit() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
