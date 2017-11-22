@@ -57,7 +57,7 @@ jacocoTestReport {
 
 check.dependsOn 'checkstyle'
 
-task checkstyle(type: Checkstyle) {
+task checkstyleMain(type: Checkstyle, overwrite: true) {
     configFile file("config/checkstyle/checkstyle.xml")
     configProperties.checkstyleSuppressionsPath = file("config//checkstyle/suppressions.xml").absolutePath
     source 'src'
