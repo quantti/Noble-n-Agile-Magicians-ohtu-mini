@@ -6,6 +6,9 @@
 package noble.lukuvinkki.io;
 
 import java.util.List;
+import noble.lukuvinkki.dao.Dao;
+import noble.lukuvinkki.dao.KirjaVinkkiDao;
+import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
@@ -22,6 +25,9 @@ public class KayttoliittymaIO implements IO {
 
     @Override
     public void lisaaVinkki(KirjaVinkki kirjaVinkki) {
+        Tietokanta kanta = new Tietokanta();
+        Dao kirjaVinkkiDao = new KirjaVinkkiDao(kanta);
+        kirjaVinkkiDao.tallenna(kirjaVinkki);
         System.out.println("Lisätty! (ei oikeasti, tässä vasta testaillaan)");
     }
 
