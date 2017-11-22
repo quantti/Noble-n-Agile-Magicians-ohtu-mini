@@ -18,18 +18,22 @@ public class KirjaVinkki implements Vinkki {
         this.id = id;
     }
 
+    @Override
     public String getNimi() {
         return nimi;
     }
 
+    @Override
     public void setNimi(String nimi) {
         this.nimi = nimi;
     }
 
+    @Override
     public String getKirjoittaja() {
         return kirjoittaja;
     }
 
+    @Override
     public void setKirjoittaja(String kirjoittaja) {
         this.kirjoittaja = kirjoittaja;
     }
