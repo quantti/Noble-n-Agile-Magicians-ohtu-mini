@@ -20,7 +20,10 @@ public class KayttoliittymaIO implements IO {
 
     @Override
     public List<Vinkki> haeKaikkiVinkit() {
-        return null;
+        Tietokanta kanta = new Tietokanta();
+        Dao kirkavinkkiDao = new KirjaVinkkiDao(kanta);
+        List<Vinkki> kirjavinkit = kirkavinkkiDao.haeKaikki();
+        return kirjavinkit;
     }
 
     @Override
@@ -33,7 +36,10 @@ public class KayttoliittymaIO implements IO {
 
     @Override
     public Vinkki haeYksiVinkki(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Tietokanta kanta = new Tietokanta();
+        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
+        Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
+        return vinkki;
     }
 
     @Override

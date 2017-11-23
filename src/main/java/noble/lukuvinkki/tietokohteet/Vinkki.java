@@ -10,4 +10,8 @@ public interface Vinkki {
     public void setKirjoittaja(String kirjoittaja);
 
     public void setNimi(String nimi);
+
+    public void setId(int aInt);
+    
+    public int getId();
 }

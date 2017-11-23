@@ -65,7 +65,7 @@ public class App {
             return;
         }
         for (Vinkki vinkki : kaikkiVinkit) {
-            System.out.println(vinkki);
+            System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getKirjoittaja() + ": " + vinkki.getNimi());
         }
     }
 

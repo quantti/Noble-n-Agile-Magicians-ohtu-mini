@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package noble.lukuvinkki.IO;
+package noble.lukuvinkki.io;
 
 import noble.lukuvinkki.io.KayttoliittymaIO;
 import org.junit.After;
