@@ -1,7 +1,7 @@
 package noble.lukuvinkki.tietokohteet;
 
-
 public class KirjaVinkki implements Vinkki {
+
     private int id;
     private String nimi;
     private String kirjoittaja;

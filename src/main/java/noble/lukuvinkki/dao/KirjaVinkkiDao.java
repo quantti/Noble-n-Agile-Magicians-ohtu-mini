@@ -27,6 +27,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             Connection yhteys = tietokanta.yhteys();
             Statement kysely = yhteys.createStatement();
             kysely.executeUpdate(sql);
+            yhteys.close();
         } catch (SQLException ex) {
             System.out.println("Kirjan tallennuksessa tapahtui virhe: " + ex.getMessage());
         }
@@ -46,6 +47,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
                 String kirjoittaja = rs.getString("kirjan_kirjoittaja");
                 vinkki.setNimi(nimi);
                 vinkki.setKirjoittaja(kirjoittaja);
+                vinkki.setId(Integer.parseInt(id));
                 return vinkki;
             }
         } catch (SQLException ex) {
@@ -76,4 +78,37 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         return null;
     }
 
+    @Override
+    public void poistaVinkki(String id) {
+        String sql = "DELETE FROM kirja_vinkki WHERE id=" + id;
+        try {
+            Connection yhteys = tietokanta.yhteys();
+            Statement kysely = yhteys.createStatement();
+            kysely.executeUpdate(sql);
+            yhteys.close();
+        } catch (SQLException ex) {
+            System.out.println("Poistaminen epännistui" + ex.getMessage());
+        }
+    }
+
+    @Override
+    public void muokkaa(Vinkki vinkki) {
+        int id = vinkki.getId();
+        String nimi = vinkki.getNimi();
+        String kirjoittaja = vinkki.getKirjoittaja();
+        String sql = "UPDATE kirja_vinkki SET kirjan_nimi = ?, kirjan_kirjoittaja = ? WHERE id = ?";
+
+        try {
+            Connection yhteys = tietokanta.yhteys();
+            PreparedStatement kysely = yhteys.prepareStatement(sql);
+            kysely.setString(1, nimi);
+            kysely.setString(2, kirjoittaja);
+            kysely.setInt(3, id);
+            kysely.executeUpdate();
+            yhteys.close();
+        } catch (SQLException ex) {
+            System.out.println("Virhe päivityksessä: " + ex.getMessage());
+        }
+
+    }
 }

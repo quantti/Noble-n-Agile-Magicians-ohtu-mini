@@ -9,7 +9,6 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author kari
@@ -40,5 +39,5 @@ public class StubIO implements IO {
     public void poistaVinkki(String id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

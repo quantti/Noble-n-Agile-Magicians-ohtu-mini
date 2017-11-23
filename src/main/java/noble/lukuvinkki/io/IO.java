@@ -24,5 +24,5 @@ public interface IO {
     void muokkaa(Vinkki vinkki);
 
     void poistaVinkki(String id);
-    
+
 }
