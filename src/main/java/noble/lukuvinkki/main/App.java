@@ -33,12 +33,12 @@ public class App {
     private void listaaValikko() {
 
         while (true) {
-            System.out.println("Tervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
-            System.out.println("a) Listaa kaikki vinkit");
-            System.out.println("b) lisää uusi kirjavinkki");
-            System.out.println("c) muokkaa vinkkiä");
-            System.out.println("d) poista vinkki");
-            System.out.println("q) lopeta ohjelma\n");
+            io.print("Tervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
+            io.print("a) Listaa kaikki vinkit");
+            io.print("b) lisää uusi kirjavinkki");
+            io.print("c) muokkaa vinkkiä");
+            io.print("d) poista vinkki");
+            io.print("q) lopeta ohjelma\n");
 
             String vastaus = io.readLine("Anna komento: ");
             if (vastaus.equalsIgnoreCase("q")) {
