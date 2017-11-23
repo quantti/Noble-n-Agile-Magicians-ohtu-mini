@@ -5,11 +5,14 @@
  */
 package noble.lukuvinkki.io;
 
-import noble.lukuvinkki.io.KayttoliittymaIO;
-import org.junit.After;
-import org.junit.AfterClass;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import noble.lukuvinkki.dao.Tietokanta;
+import noble.lukuvinkki.tietokohteet.KirjaVinkki;
+import noble.lukuvinkki.tietokohteet.Vinkki;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -31,5 +34,29 @@ public class KayttoliittymaIOTest {
     @Test
     public void testKayttisIO() {
         assertTrue(kayttisIO != null);
+    }
+    
+    @Test
+    public void testaaLisaysTietokantaan() throws SQLException {
+        String kirjoittaja = "testiKirjoittaja";
+        String nimi = "testiNimi";
+        KirjaVinkki kv = new KirjaVinkki();
+        kv.setKirjoittaja(kirjoittaja);
+        kv.setNimi(nimi);
+        kayttisIO.lisaaVinkki(kv);
+        int idInt = haeViimeisinId();
+        String id = "" + idInt;
+        assertEquals(kirjoittaja, kayttisIO.haeYksiVinkki(id));
+        assertEquals(nimi, kayttisIO.haeYksiVinkki(id));
+    }
+    
+    private int haeViimeisinId() throws SQLException {
+        Tietokanta kanta = new Tietokanta();
+        Connection yhteys = kanta.yhteys();
+        String query = "SELECT last_insert_rowid()";
+        PreparedStatement ps = yhteys.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        int id = rs.getInt("id");
+        return id;
     }
 }
