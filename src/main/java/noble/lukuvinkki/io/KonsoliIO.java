@@ -3,7 +3,7 @@ package noble.lukuvinkki.io;
 
 import java.util.Scanner;
 
-public class ConsoleIO implements IO {
+public class KonsoliIO implements IO {
     private Scanner scanner = new Scanner(System.in);
     
     public void print(String toPrint) {

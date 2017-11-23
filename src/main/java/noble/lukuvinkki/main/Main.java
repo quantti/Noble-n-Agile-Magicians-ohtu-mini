@@ -5,6 +5,9 @@
  */
 package noble.lukuvinkki.main;
 
+import noble.lukuvinkki.io.IO;
+import noble.lukuvinkki.io.KonsoliIO;
+
 /**
  *
  * @author kari
@@ -15,7 +18,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        App app = new App();
+        IO io = new KonsoliIO();
+        App app = new App(io);
         app.kaynnista();
     }
     
