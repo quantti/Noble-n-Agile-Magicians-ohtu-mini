@@ -47,7 +47,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
                 vinkki.setNimi(nimi);
                 vinkki.setKirjoittaja(kirjoittaja);
                 return vinkki;
-            } 
+            }
         } catch (SQLException ex) {
             System.out.println("Tietoa hakiessa tapahtui virhe: " + ex.getMessage());
         }
@@ -62,7 +62,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             String query = "SELECT * FROM kirja_vinkki";
             PreparedStatement preparedStatement = yhteys.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Vinkki vinkki = new KirjaVinkki();
                 vinkki.setId(rs.getInt("id"));
                 vinkki.setNimi(rs.getString("kirjan_nimi"));
@@ -76,4 +76,31 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         return null;
     }
 
+    @Override
+    public void poistaVinkki(String id) {
+        String sql = "DELETE FROM kirja_vinkki WHERE id=" + id;
+        try {
+            Connection yhteys = tietokanta.yhteys();
+            Statement kysely = yhteys.createStatement();
+            kysely.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println("Poistaminen epännistui" + ex.getMessage());
+        }
+    }
+
+    public void muokkaa(Vinkki vinkki) {
+        String id = Integer.toString(vinkki.getId());
+        String nimi = vinkki.getNimi();
+        String kirjoittaja = vinkki.getKirjoittaja();
+        String sql = "UPDATE kirja_vinkki SET kirjan_nimi = '" + nimi + "', kirjan_kirjoittaja = '" + kirjoittaja + "' WHERE id=" + id;
+
+        try {
+            Connection yhteys = tietokanta.yhteys();
+            Statement kysely = yhteys.createStatement();
+            kysely.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println("Virhe päivityksessä: " + ex.getMessage());
+        }
+
+    }
 }

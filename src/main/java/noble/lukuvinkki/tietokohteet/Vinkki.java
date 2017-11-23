@@ -12,6 +12,6 @@ public interface Vinkki {
     public void setNimi(String nimi);
 
     public void setId(int aInt);
-    
+
     public int getId();
 }

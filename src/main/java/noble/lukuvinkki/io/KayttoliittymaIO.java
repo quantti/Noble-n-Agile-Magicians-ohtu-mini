@@ -18,20 +18,23 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  */
 public class KayttoliittymaIO implements IO {
 
+    // Lisäsin Tietokanta.java:n suljeYhteys -komennon ja sen näihin metodeihin -Jaakko
     @Override
     public List<Vinkki> haeKaikkiVinkit() {
         Tietokanta kanta = new Tietokanta();
-        Dao kirkavinkkiDao = new KirjaVinkkiDao(kanta);
-        List<Vinkki> kirjavinkit = kirkavinkkiDao.haeKaikki();
+        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
+        List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
+        kanta.suljeYhteys();
         return kirjavinkit;
     }
 
     @Override
     public void lisaaVinkki(KirjaVinkki kirjaVinkki) {
         Tietokanta kanta = new Tietokanta();
-        Dao kirjaVinkkiDao = new KirjaVinkkiDao(kanta);
-        kirjaVinkkiDao.tallenna(kirjaVinkki);
-        System.out.println("Lisätty! (ei oikeasti, tässä vasta testaillaan)");
+        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
+        kirjavinkkiDao.tallenna(kirjaVinkki);
+        kanta.suljeYhteys();
+        System.out.println("Lisätty!");
     }
 
     @Override
@@ -39,17 +42,24 @@ public class KayttoliittymaIO implements IO {
         Tietokanta kanta = new Tietokanta();
         Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
+        kanta.suljeYhteys();
         return vinkki;
     }
 
     @Override
     public void poistaVinkki(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Tietokanta kanta = new Tietokanta();
+        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
+        kirjavinkkiDao.poistaVinkki(id);
+        kanta.suljeYhteys();
     }
 
     @Override
     public void muokkaa(Vinkki vinkki) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Tietokanta kanta = new Tietokanta();
+        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
+        kirjavinkkiDao.muokkaa(vinkki);
+        kanta.suljeYhteys();
     }
-    
+
 }

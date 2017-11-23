@@ -31,8 +31,7 @@ public class App {
             System.out.println("c) muokkaa vinkkiä");
             System.out.println("d) poista vinkki");
             System.out.println("q) lopeta ohjelma\n");
-            
-            
+
             String vastaus = kysy();
             System.out.println("");
             if (vastaus.equalsIgnoreCase("q")) {
