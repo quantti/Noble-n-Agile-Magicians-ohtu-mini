@@ -29,7 +29,8 @@ public class KayttoliittymaIOTest {
 
     @Before
     public void setUp() {
-        kayttisIO = new KayttoliittymaInterface();
+        Tietokanta kanta = new Tietokanta();
+        kayttisIO = new KayttoliittymaInterface(kanta);
     }
 
     @Test

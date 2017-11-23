@@ -16,50 +16,35 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  *
  * @author kari
  */
-public class KayttoliittymaInterface implements IO {
+public class KayttoliittymaInterface {
+    private Dao kirjavinkkiDao;
+    
+    public KayttoliittymaInterface(Tietokanta tietokanta) {
+        this.kirjavinkkiDao = new KirjaVinkkiDao(tietokanta);
+    }
 
     // Lisäsin Tietokanta.java:n suljeYhteys -komennon ja sen näihin metodeihin -Jaakko
-    @Override
     public List<Vinkki> haeKaikkiVinkit() {
-        Tietokanta kanta = new Tietokanta();
-        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
-        kanta.suljeYhteys();
         return kirjavinkit;
     }
 
-    @Override
     public void lisaaVinkki(KirjaVinkki kirjaVinkki) {
-        Tietokanta kanta = new Tietokanta();
-        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         kirjavinkkiDao.tallenna(kirjaVinkki);
-        kanta.suljeYhteys();
         System.out.println("Lisätty!");
     }
 
-    @Override
     public Vinkki haeYksiVinkki(String id) {
-        Tietokanta kanta = new Tietokanta();
-        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
-        kanta.suljeYhteys();
         return vinkki;
     }
 
-    @Override
     public void poistaVinkki(String id) {
-        Tietokanta kanta = new Tietokanta();
-        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         kirjavinkkiDao.poistaVinkki(id);
-        kanta.suljeYhteys();
     }
 
-    @Override
     public void muokkaa(Vinkki vinkki) {
-        Tietokanta kanta = new Tietokanta();
-        Dao kirjavinkkiDao = new KirjaVinkkiDao(kanta);
         kirjavinkkiDao.muokkaa(vinkki);
-        kanta.suljeYhteys();
     }
 
 }
