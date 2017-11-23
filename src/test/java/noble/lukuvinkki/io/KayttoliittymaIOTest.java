@@ -18,18 +18,24 @@ import static org.junit.Assert.*;
  * @author kari
  */
 public class KayttoliittymaIOTest {
+
     KayttoliittymaIO kayttisIO;
-    
+
     public KayttoliittymaIOTest() {
     }
-    
+
     @Before
     public void setUp() {
         kayttisIO = new KayttoliittymaIO();
     }
-    
+
     @Test
-    public void testKayttisIO() {
+    public void testaaKayttisIO() {
         assertTrue(kayttisIO != null);
+    }
+
+    @Test
+    public void testaaHaeKaikki() {
+        assertTrue(kayttisIO.haeKaikkiVinkit() != null);
     }
 }

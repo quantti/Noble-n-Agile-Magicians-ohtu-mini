@@ -47,7 +47,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
                 vinkki.setNimi(nimi);
                 vinkki.setKirjoittaja(kirjoittaja);
                 return vinkki;
-            } 
+            }
         } catch (SQLException ex) {
             System.out.println("Tietoa hakiessa tapahtui virhe: " + ex.getMessage());
         }
@@ -62,7 +62,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             String query = "SELECT * FROM kirja_vinkki";
             PreparedStatement preparedStatement = yhteys.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {                
+            while (rs.next()) {
                 Vinkki vinkki = new KirjaVinkki();
                 vinkki.setId(rs.getInt("id"));
                 vinkki.setNimi(rs.getString("kirjan_nimi"));
