@@ -22,14 +22,14 @@ import static org.junit.Assert.*;
  */
 public class KayttoliittymaIOTest {
 
-    KayttoliittymaIO kayttisIO;
+    KayttoliittymaInterface kayttisIO;
 
     public KayttoliittymaIOTest() {
     }
 
     @Before
     public void setUp() {
-        kayttisIO = new KayttoliittymaIO();
+        kayttisIO = new KayttoliittymaInterface();
     }
 
     @Test

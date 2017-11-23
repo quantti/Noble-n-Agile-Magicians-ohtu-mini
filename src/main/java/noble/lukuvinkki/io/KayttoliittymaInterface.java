@@ -16,7 +16,7 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  *
  * @author kari
  */
-public class KayttoliittymaIO implements IO {
+public class KayttoliittymaInterface implements IO {
 
     // Lisäsin Tietokanta.java:n suljeYhteys -komennon ja sen näihin metodeihin -Jaakko
     @Override

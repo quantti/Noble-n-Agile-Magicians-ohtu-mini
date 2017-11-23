@@ -1,6 +1,6 @@
 package noble.lukuvinkki.main;
 
-import noble.lukuvinkki.io.KayttoliittymaIO;
+import noble.lukuvinkki.io.KayttoliittymaInterface;
 import java.util.List;
 import java.util.Scanner;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
@@ -8,11 +8,11 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class App {
 
-    public static KayttoliittymaIO kayttisIO;
+    public static KayttoliittymaInterface kayttisIO;
     public static Scanner scanner;
 
     public static void main(String[] args) throws Exception {
-        kayttisIO = new KayttoliittymaIO();
+        kayttisIO = new KayttoliittymaInterface();
         scanner = new Scanner(System.in);
         listaaValikko();
     }
