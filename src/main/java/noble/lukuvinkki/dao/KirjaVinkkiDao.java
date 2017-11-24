@@ -7,36 +7,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
-
-    public Tietokanta tietokanta;
+    private Tietokanta tietokanta;
+    private Connection yhteys;
 
     public KirjaVinkkiDao(Tietokanta tietokanta) {
         this.tietokanta = tietokanta;
+        try {
+            this.yhteys = tietokanta.yhteys();
+        } catch (SQLException ex) {
+            System.out.println("Tietokanta yhteydessä havaittiin virhe: " + ex.getLocalizedMessage());
+        }
     }
 
     @Override
-    public void tallenna(KirjaVinkki vinkki) {
+    public boolean tallenna(KirjaVinkki vinkki) {
         String sql = String.format("INSERT INTO kirja_vinkki(kirjan_nimi, kirjan_kirjoittaja) VALUES ('%s', '%s')", vinkki.getNimi(), vinkki.getKirjoittaja());
         try {
-            Connection yhteys = tietokanta.yhteys();
             Statement kysely = yhteys.createStatement();
-            kysely.executeUpdate(sql);
-            yhteys.close();
+            return kysely.execute(sql);
         } catch (SQLException ex) {
             System.out.println("Kirjan tallennuksessa tapahtui virhe: " + ex.getMessage());
         }
+        return false;
     }
 
     @Override
     public Vinkki haeYksi(String id) {
         try {
-            Connection yhteys = tietokanta.yhteys();
             String query = "SELECT * FROM kirja_vinkki WHERE id = ?";
             PreparedStatement preparedStatement = yhteys.prepareStatement(query);
             preparedStatement.setString(1, id);
@@ -60,7 +61,6 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     public List<Vinkki> haeKaikki() {
         List<Vinkki> kirjavinkit = new ArrayList<>();
         try {
-            Connection yhteys = tietokanta.yhteys();
             String query = "SELECT * FROM kirja_vinkki";
             PreparedStatement preparedStatement = yhteys.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
@@ -79,36 +79,32 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     }
 
     @Override
-    public void poistaVinkki(String id) {
+    public boolean poistaVinkki(String id) {
         String sql = "DELETE FROM kirja_vinkki WHERE id=" + id;
         try {
-            Connection yhteys = tietokanta.yhteys();
             Statement kysely = yhteys.createStatement();
-            kysely.executeUpdate(sql);
-            yhteys.close();
+            return kysely.execute(sql);
         } catch (SQLException ex) {
             System.out.println("Poistaminen epännistui" + ex.getMessage());
         }
+        return false;
     }
 
     @Override
-    public void muokkaa(Vinkki vinkki) {
+    public boolean muokkaa(Vinkki vinkki) {
         int id = vinkki.getId();
         String nimi = vinkki.getNimi();
         String kirjoittaja = vinkki.getKirjoittaja();
         String sql = "UPDATE kirja_vinkki SET kirjan_nimi = ?, kirjan_kirjoittaja = ? WHERE id = ?";
-
         try {
-            Connection yhteys = tietokanta.yhteys();
             PreparedStatement kysely = yhteys.prepareStatement(sql);
             kysely.setString(1, nimi);
             kysely.setString(2, kirjoittaja);
             kysely.setInt(3, id);
-            kysely.executeUpdate();
-            yhteys.close();
+            return kysely.execute();
         } catch (SQLException ex) {
             System.out.println("Virhe päivityksessä: " + ex.getMessage());
         }
-
+        return false;
     }
 }

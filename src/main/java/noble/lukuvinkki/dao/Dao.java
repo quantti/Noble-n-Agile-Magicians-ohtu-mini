@@ -5,13 +5,13 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public interface Dao<T> {
 
-    void tallenna(T vinkki);
+    boolean tallenna(T vinkki);
 
     Vinkki haeYksi(String id);
 
     List<Vinkki> haeKaikki();
 
-    void poistaVinkki(String id);
+    boolean poistaVinkki(String id);
 
-    void muokkaa(Vinkki vinkki);
+    boolean muokkaa(Vinkki vinkki);
 }

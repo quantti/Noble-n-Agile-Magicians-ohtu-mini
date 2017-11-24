@@ -29,9 +29,8 @@ public class KayttoliittymaInterface {
         return kirjavinkit;
     }
 
-    public void lisaaVinkki(KirjaVinkki kirjaVinkki) {
-        kirjavinkkiDao.tallenna(kirjaVinkki);
-        System.out.println("Lisätty!");
+    public boolean lisaaVinkki(KirjaVinkki kirjaVinkki) {
+        return kirjavinkkiDao.tallenna(kirjaVinkki);
     }
 
     public Vinkki haeYksiVinkki(String id) {
@@ -39,12 +38,12 @@ public class KayttoliittymaInterface {
         return vinkki;
     }
 
-    public void poistaVinkki(String id) {
-        kirjavinkkiDao.poistaVinkki(id);
+    public boolean poistaVinkki(String id) {
+        return kirjavinkkiDao.poistaVinkki(id);
     }
 
-    public void muokkaa(Vinkki vinkki) {
-        kirjavinkkiDao.muokkaa(vinkki);
+    public boolean muokkaa(Vinkki vinkki) {
+        return kirjavinkkiDao.muokkaa(vinkki);
     }
 
 }

@@ -81,7 +81,11 @@ public class App {
         KirjaVinkki kirjaVinkki = new KirjaVinkki();
         kirjaVinkki.setKirjoittaja(kirjoittaja);
         kirjaVinkki.setNimi(nimi);
-        kayttisIO.lisaaVinkki(kirjaVinkki);
+        if (kayttisIO.lisaaVinkki(kirjaVinkki)) {
+            io.print("Vinkki lisätty!");
+        } else {
+            io.print("Vinkin lisääminen epäonnistui.");
+        }
         //TODO
     }
 
@@ -105,7 +109,11 @@ public class App {
             vinkki.setNimi(nimi);
             io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
         }
-        kayttisIO.muokkaa(vinkki);
+        if (kayttisIO.muokkaa(vinkki)) {
+            io.print("Vinkkiä muokattu onnistuneesti!");
+        } else {
+            io.print("Vinkin muokkaaminen epäonnistui");
+        }
     }
 
     private void poistaVinkki() {
@@ -117,8 +125,7 @@ public class App {
             return;
         }
         String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
-        if (vastaus.contentEquals("k")) {
-            kayttisIO.poistaVinkki(id);
+        if (vastaus.contentEquals("k") && kayttisIO.poistaVinkki(id)) {
             io.print("Vinkki poistettu");
         } else {
             io.print("Vinkkiä ei poistettu");
