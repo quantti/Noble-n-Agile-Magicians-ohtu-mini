@@ -6,15 +6,17 @@ import java.sql.SQLException;
 
 public class Tietokanta {
 
-    private String url;
     private Connection yhteys;
 
-    public Tietokanta() {
-        url = "jdbc:sqlite:tietokanta/vinkit.sqlite3";
+    public Tietokanta(String url) throws SQLException {
+        this.yhteys = DriverManager.getConnection(url);
     }
 
-    public Connection yhteys() throws SQLException {
-        this.yhteys = DriverManager.getConnection(url);
+    public Tietokanta() throws SQLException {
+        String url = "jdbc:sqlite:tietokanta/vinkit.sqlite3";
+    }
+
+    public Connection yhteys() {
         return yhteys;
     }
 
