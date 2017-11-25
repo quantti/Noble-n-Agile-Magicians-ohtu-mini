@@ -11,11 +11,9 @@ import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
-    private Tietokanta tietokanta;
     private Connection yhteys;
 
     public KirjaVinkkiDao(Tietokanta tietokanta) {
-        this.tietokanta = tietokanta;
         try {
             this.yhteys = tietokanta.yhteys();
         } catch (SQLException ex) {
@@ -24,15 +22,20 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     }
 
     @Override
-    public boolean tallenna(KirjaVinkki vinkki) {
+    public int tallenna(KirjaVinkki vinkki) {
+        int id = -1;
         String sql = String.format("INSERT INTO kirja_vinkki(kirjan_nimi, kirjan_kirjoittaja) VALUES ('%s', '%s')", vinkki.getNimi(), vinkki.getKirjoittaja());
         try {
             Statement kysely = yhteys.createStatement();
-            return kysely.execute(sql);
+            kysely.execute(sql);
+            ResultSet rs = kysely.executeQuery("SELECT last_insert_rowid() as id");
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
         } catch (SQLException ex) {
             System.out.println("Kirjan tallennuksessa tapahtui virhe: " + ex.getMessage());
         }
-        return false;
+        return id;
     }
 
     @Override

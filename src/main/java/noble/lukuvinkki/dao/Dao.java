@@ -5,7 +5,7 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public interface Dao<T> {
 
-    boolean tallenna(T vinkki);
+    int tallenna(T vinkki);
 
     Vinkki haeYksi(String id);
 

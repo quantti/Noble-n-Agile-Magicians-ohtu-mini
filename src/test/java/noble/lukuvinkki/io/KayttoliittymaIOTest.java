@@ -51,15 +51,4 @@ public class KayttoliittymaIOTest {
 //        assertEquals(kirjoittaja, kayttisIO.haeYksiVinkki(id));
 //        assertEquals(nimi, kayttisIO.haeYksiVinkki(id));
 //    }
-    
-//    private int haeViimeisinId() throws SQLException {
-//        Tietokanta kanta = new Tietokanta();
-//        Connection yhteys = kanta.yhteys();
-//        String query = "SELECT last_insert_rowid()";
-//        PreparedStatement ps = yhteys.prepareStatement(query);
-//        ResultSet rs = ps.executeQuery();
-//        int id = rs.getInt("id");
-//        return id;
-//    }
-
 }

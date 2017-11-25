@@ -30,7 +30,10 @@ public class KayttoliittymaInterface {
     }
 
     public boolean lisaaVinkki(KirjaVinkki kirjaVinkki) {
-        return kirjavinkkiDao.tallenna(kirjaVinkki);
+        if (kirjavinkkiDao.tallenna(kirjaVinkki) != -1) {
+            return true;
+        }
+        return false;
     }
 
     public Vinkki haeYksiVinkki(String id) {
