@@ -33,7 +33,7 @@ dependencies {
     compile 'org.xerial:sqlite-jdbc:3.21.+'
 }
 
-mainClassName = 'noble.lukuvinkki.main.App'
+mainClassName = 'noble.lukuvinkki.main.Main'
 
 run {
     standardInput = System.in
@@ -41,7 +41,7 @@ run {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'noble.lukuvinkki.main.App'
+        attributes 'Main-Class': 'noble.lukuvinkki.main.Main'
     }
 }
 
@@ -66,6 +66,7 @@ task checkstyleMain(type: Checkstyle, overwrite: true) {
     source 'src'
     include '**/*.java'
     exclude '**/App.java'
+    exclude '**/Main.java'
 
     classpath = files()
 }

@@ -14,15 +14,6 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  * @author kari
  */
 public interface IO {
-
-    List<Vinkki> haeKaikkiVinkit();
-
-    Vinkki haeYksiVinkki(String id);
-
-    void lisaaVinkki(KirjaVinkki kirjaVinkki);
-
-    void muokkaa(Vinkki vinkki);
-
-    void poistaVinkki(String id);
-
+    void print(String toPrint);
+    String readLine(String prompt);
 }

@@ -1,5 +1,6 @@
 package noble.lukuvinkki.io;
 
+import java.util.ArrayList;
 import java.util.List;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
@@ -15,29 +16,35 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  */
 public class StubIO implements IO {
 
-    @Override
-    public List<Vinkki> haeKaikkiVinkit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private List<String> lines;
+    private int i;
+    private ArrayList<String> prints;
+    
+    public StubIO() {
+        this.lines = new ArrayList<>();
+        this.prints = new ArrayList<>();
+    }
+
+    public StubIO(List<String> values) {
+        this.lines = values;
+        prints = new ArrayList<>();
     }
 
     @Override
-    public Vinkki haeYksiVinkki(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void print(String toPrint) {
+        prints.add(toPrint);
+    }
+
+    public ArrayList<String> getPrints() {
+        return prints;
     }
 
     @Override
-    public void lisaaVinkki(KirjaVinkki kirjaVinkki) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String readLine(String prompt) {
+        print(prompt);
+        if (i < lines.size()) {
+            return lines.get(i++);
+        }
+        return "";
     }
-
-    @Override
-    public void muokkaa(Vinkki vinkki) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void poistaVinkki(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

@@ -2,40 +2,47 @@ package noble.lukuvinkki.main;
 
 import noble.lukuvinkki.io.KayttoliittymaInterface;
 import java.util.List;
-import java.util.Scanner;
+import noble.lukuvinkki.dao.Tietokanta;
+import noble.lukuvinkki.io.IO;
+import noble.lukuvinkki.io.StubIO;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class App {
 
-    public static KayttoliittymaInterface kayttisIO;
-    public static Scanner scanner;
-
-    public static void main(String[] args) throws Exception {
-        kayttisIO = new KayttoliittymaInterface();
-        scanner = new Scanner(System.in);
+    private KayttoliittymaInterface kayttisIO;
+    private Tietokanta tietokanta;
+    private  IO io;
+    
+    public App(IO io) {
+        tietokanta = new Tietokanta();
+        kayttisIO = new KayttoliittymaInterface(tietokanta);
+        this.io = io;
+    }
+    
+    public App() {
+        this.io = new StubIO();
+        tietokanta = new Tietokanta();
+        kayttisIO = new KayttoliittymaInterface(tietokanta);
+    }
+    
+    public void kaynnista() {
         listaaValikko();
     }
 
-    private static String kysy() {
-        System.out.println("Anna komento:");
-        return scanner.nextLine();
-    }
-
-    private static void listaaValikko() {
+    private void listaaValikko() {
 
         while (true) {
-            System.out.println("Tervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
-            System.out.println("a) Listaa kaikki vinkit");
-            System.out.println("b) lisää uusi kirjavinkki");
-            System.out.println("c) muokkaa vinkkiä");
-            System.out.println("d) poista vinkki");
-            System.out.println("q) lopeta ohjelma\n");
+            io.print("Tervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
+            io.print("a) Listaa kaikki vinkit");
+            io.print("b) lisää uusi kirjavinkki");
+            io.print("c) muokkaa vinkkiä");
+            io.print("d) poista vinkki");
+            io.print("q) lopeta ohjelma\n");
 
-            String vastaus = kysy();
-            System.out.println("");
+            String vastaus = io.readLine("Anna komento: ");
             if (vastaus.equalsIgnoreCase("q")) {
-                System.out.println("Heippa!");
+                io.print("Heippa!");
                 break;
             }
             switch (vastaus) {
@@ -52,15 +59,15 @@ public class App {
                     poistaVinkki();
                     break;
                 default:
-                    System.out.println("Väärä komento");
+                    io.print("Väärä komento");
             }
         }
     }
 
-    private static void listaaKaikkiVinkit() {
+    private void listaaKaikkiVinkit() {
         List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiVinkit();
         if (kaikkiVinkit == null || kaikkiVinkit.isEmpty()) {
-            System.out.println("Vinkkejä ei löytynyt\n");
+            io.print("Vinkkejä ei löytynyt\n");
             return;
         }
         for (Vinkki vinkki : kaikkiVinkit) {
@@ -68,58 +75,60 @@ public class App {
         }
     }
 
-    private static void lisaaKirjaVinkki() {
-        System.out.println("Syötä kirjan kirjoittaja: ");
-        String kirjoittaja = scanner.nextLine();
-        System.out.println("Syötä kirjan nimi: ");
-        String nimi = scanner.nextLine();
+    private void lisaaKirjaVinkki() {
+        String kirjoittaja = io.readLine("Syötä kirjan kirjoittaja: ");
+        String nimi = io.readLine("Syötä kirjan nimi: ");
         KirjaVinkki kirjaVinkki = new KirjaVinkki();
         kirjaVinkki.setKirjoittaja(kirjoittaja);
         kirjaVinkki.setNimi(nimi);
-        kayttisIO.lisaaVinkki(kirjaVinkki);
+        if (kayttisIO.lisaaVinkki(kirjaVinkki)) {
+            io.print("Vinkki lisätty!");
+        } else {
+            io.print("Vinkin lisääminen epäonnistui.");
+        }
         //TODO
     }
 
-    private static void muokkaaVinkkia() {
-        System.out.println("Syötä muokattavan vinkin id-numero:");
-        String id = scanner.nextLine();
+    private void muokkaaVinkkia() {
+        String id = io.readLine("Syötä muokattavan vinkin id-numero:");
         Vinkki vinkki = kayttisIO.haeYksiVinkki(id);
         if (vinkki == null) {
-            System.out.println("Vinkkiä ei löytynyt, tarkista id-numero");
+            io.print("Vinkkiä ei löytynyt, tarkista id-numero");
             return;
         }
-        System.out.println("Vinkin kirjoittaja on " + vinkki.getKirjoittaja() + ". Syötä uusi kirjoittaja tai"
+        String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + vinkki.getKirjoittaja() + ". Syötä uusi kirjoittaja tai"
                 + " jätä tyhjäksi jos haluat säilyttää saman.");
-        String kirjoittaja = scanner.nextLine();
         if (!kirjoittaja.isEmpty()) {
             vinkki.setKirjoittaja(kirjoittaja);
-            System.out.println("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
+            io.print("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
         }
-        System.out.println("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
+        
+        String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
                 + "haluat säilyttää vanhan nimen.");
-        String nimi = scanner.nextLine();
         if (!nimi.isEmpty()) {
             vinkki.setNimi(nimi);
-            System.out.println("Vinkin nimeksi on vaihdettu " + nimi + ".");
+            io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
         }
-        kayttisIO.muokkaa(vinkki);
+        if (kayttisIO.muokkaa(vinkki)) {
+            io.print("Vinkkiä muokattu onnistuneesti!");
+        } else {
+            io.print("Vinkin muokkaaminen epäonnistui");
+        }
     }
 
-    private static void poistaVinkki() {
-        System.out.println("Anna poistettavan vinkin id-numero:");
-        String id = scanner.nextLine();
+    private void poistaVinkki() {
+        
+        String id = io.readLine("Anna poistettavan vinkin id-numero:");
         Vinkki vinkki = kayttisIO.haeYksiVinkki(id);
         if (vinkki == null) {
-            System.out.println("Vinkkiä ei löytynyt, tarkista id-numero");
+            io.print("Vinkkiä ei löytynyt, tarkista id-numero");
             return;
         }
-        System.out.println("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
-        String vastaus = scanner.nextLine();
-        if (vastaus.contentEquals("k")) {
-            kayttisIO.poistaVinkki(id);
-            System.out.println("Vinkki poistettu");
+        String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
+        if (vastaus.contentEquals("k") && kayttisIO.poistaVinkki(id)) {
+            io.print("Vinkki poistettu");
         } else {
-            System.out.println("Vinkkiä ei poistettu");
+            io.print("Vinkkiä ei poistettu");
         }
     }
 
