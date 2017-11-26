@@ -12,6 +12,7 @@ apply plugin: 'application'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use 'jcenter' for resolving your dependencies.
@@ -26,6 +27,8 @@ dependencies {
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
+    testCompile 'info.cukes:cucumber-java:1.2.5'
+    testCompile 'info.cukes:cucumber-junit:1.2.5'
     testCompile 'junit:junit:4.12'
     compile 'org.xerial:sqlite-jdbc:3.21.+'
 }
@@ -49,9 +52,9 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it,
+                fileTree(dir: it,
                     exclude: ['main/**'])
-        })
+            })
     }
 }
 
@@ -67,3 +70,7 @@ task checkstyleMain(type: Checkstyle, overwrite: true) {
     classpath = files()
 }
 
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
