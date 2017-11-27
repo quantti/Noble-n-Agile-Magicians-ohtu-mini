@@ -11,6 +11,7 @@ import noble.lukuvinkki.dao.KirjaVinkkiDao;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
+import java.sql.SQLException;
 
 /**
  *
@@ -23,26 +24,25 @@ public class KayttoliittymaInterface {
         this.kirjavinkkiDao = new KirjaVinkkiDao(tietokanta);
     }
 
-    // Lisäsin Tietokanta.java:n suljeYhteys -komennon ja sen näihin metodeihin -Jaakko
-    public List<Vinkki> haeKaikkiVinkit() {
+    public List<Vinkki> haeKaikkiVinkit() throws SQLException {
         List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
         return kirjavinkit;
     }
 
-    public boolean lisaaVinkki(KirjaVinkki kirjaVinkki) {
+    public boolean lisaaVinkki(KirjaVinkki kirjaVinkki) throws SQLException {
         return kirjavinkkiDao.tallenna(kirjaVinkki);
     }
 
-    public Vinkki haeYksiVinkki(String id) {
+    public Vinkki haeYksiVinkki(String id) throws SQLException {
         Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
         return vinkki;
     }
 
-    public boolean poistaVinkki(String id) {
+    public boolean poistaVinkki(String id) throws SQLException {
         return kirjavinkkiDao.poistaVinkki(id);
     }
 
-    public boolean muokkaa(Vinkki vinkki) {
+    public boolean muokkaa(Vinkki vinkki) throws SQLException {
         return kirjavinkkiDao.muokkaa(vinkki);
     }
 

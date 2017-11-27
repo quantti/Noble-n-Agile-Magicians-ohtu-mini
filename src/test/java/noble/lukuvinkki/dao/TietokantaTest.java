@@ -10,15 +10,19 @@ public class TietokantaTest {
 
     @Before
     public void setUp() {
-        tietokanta = new Tietokanta();
+        try {
+            tietokanta = new Tietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
+        } catch (Exception ignore) {
+        }
     }
 
     @Test
     public void tietokantaYhteydenLuominenToimii() {
         try {
             Connection yhteys = tietokanta.yhteys();
-        } catch (Exception e) {
-            fail();
+            assertNotEquals(null, yhteys);
+        } catch (SQLException e) {
+            fail(e.getMessage());
         }
     }
 }
