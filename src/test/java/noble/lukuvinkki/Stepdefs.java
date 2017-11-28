@@ -1,5 +1,6 @@
 package noble.lukuvinkki;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,10 +15,15 @@ public class Stepdefs {
 
     App app;
     StubIO io;
+    String tietokantaURL = "jdbc:sqlite:tietokanta/testaus.sqlite3";
 //    UserDao userDao = new InMemoryUserDao();
 //    AuthenticationService auth = new AuthenticationService(userDao);
     List<String> inputLines = new ArrayList<>();
-
+    @Before
+    public void alustaTestikanta() {
+        TietokantaSetup.alustaTestiTietokanta();
+    }
+    
     @Given("^Komento poista valitaan$")
     public void komento_poista_valitaan() throws Throwable {
         inputLines.add("d");
@@ -30,7 +36,7 @@ public class Stepdefs {
         inputLines.add("k");
         inputLines.add("q");
         io = new StubIO(inputLines);
-        app = new App(io);
+        app = new App(io, tietokantaURL);
         app.kaynnista();
     }
 
@@ -41,12 +47,13 @@ public class Stepdefs {
         inputLines.add(arg1);
         inputLines.add("q");
         io = new StubIO(inputLines);
-        app = new App(io);
+        app = new App(io, tietokantaURL);
         app.kaynnista();
         assertEquals("Vinkkiä ei löytynyt, tarkista id-numero", io.getPrints().get(io.getPrints().size() - 9));
     }
 
     
+
     @Given("^Komento lisää valitaan$")
     public void lisaaValittu() throws Throwable {
 
@@ -59,7 +66,7 @@ public class Stepdefs {
         inputLines.add(kirja);
         inputLines.add("q");
         io = new StubIO(inputLines);
-        app = new App(io);
+        app = new App(io, tietokantaURL);
         app.kaynnista();
 
     }

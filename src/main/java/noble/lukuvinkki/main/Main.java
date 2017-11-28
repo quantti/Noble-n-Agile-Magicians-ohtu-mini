@@ -19,7 +19,8 @@ public class Main {
      */
     public static void main(String[] args) {
         IO io = new KonsoliIO();
-        App app = new App(io);
+        String tietokantaURL = "jdbc:sqlite:tietokanta/vinkit.sqlite3";
+        App app = new App(io, tietokantaURL);
         app.kaynnista();
     }
     

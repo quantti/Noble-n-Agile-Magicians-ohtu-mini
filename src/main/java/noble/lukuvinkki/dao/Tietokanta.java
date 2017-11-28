@@ -6,24 +6,18 @@ import java.sql.SQLException;
 
 public class Tietokanta {
 
-    private String url;
     private Connection yhteys;
 
-    public Tietokanta() {
-        url = "jdbc:sqlite:tietokanta/vinkit.sqlite3";
+    public Tietokanta(String url) throws SQLException {
+        this.yhteys = DriverManager.getConnection(url);
     }
 
-    public Connection yhteys() throws SQLException {
-        this.yhteys = DriverManager.getConnection(url);
+    public Connection yhteys() {
         return yhteys;
     }
 
     // lisäsin tällaisen sulkemismetodin -Jaakko
-    public void suljeYhteys() {
-        try {
-            yhteys.close();
-        } catch (SQLException ex) {
-            System.out.println("Sulkeminen epännistui" + ex.getMessage());
-        }
+    public void suljeYhteys() throws SQLException {
+        yhteys.close();
     }
 }
