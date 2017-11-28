@@ -45,7 +45,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             String nimi = rs.getString("kirjan_nimi");
             String kirjoittaja = rs.getString("kirjan_kirjoittaja");
             vinkki.setNimi(nimi);
-            vinkki.setKirjoittaja(kirjoittaja);
+            ((KirjaVinkki) vinkki).setKirjoittaja(kirjoittaja);
             vinkki.setId(Integer.parseInt(id));
             return vinkki;
         }
@@ -62,7 +62,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             Vinkki vinkki = new KirjaVinkki();
             vinkki.setId(rs.getInt("id"));
             vinkki.setNimi(rs.getString("kirjan_nimi"));
-            vinkki.setKirjoittaja(rs.getString("kirjan_kirjoittaja"));
+            ((KirjaVinkki) vinkki).setKirjoittaja(rs.getString("kirjan_kirjoittaja"));
             kirjavinkit.add(vinkki);
         }
         return kirjavinkit;
@@ -72,14 +72,15 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     public boolean poistaVinkki(String id) throws SQLException {
         String sql = "DELETE FROM kirja_vinkki WHERE id=" + id;
         Statement kysely = yhteys.createStatement();
-        return kysely.execute(sql);
+        kysely.execute(sql);
+        return true;
     }
 
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
         int id = vinkki.getId();
         String nimi = vinkki.getNimi();
-        String kirjoittaja = vinkki.getKirjoittaja();
+        String kirjoittaja = ((KirjaVinkki) vinkki).getKirjoittaja();
         String sql = "UPDATE kirja_vinkki SET kirjan_nimi = ?, kirjan_kirjoittaja = ? WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, nimi);

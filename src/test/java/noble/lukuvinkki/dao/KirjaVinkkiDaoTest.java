@@ -29,7 +29,7 @@ public class KirjaVinkkiDaoTest {
         }
         assertNotEquals(null, vinkki);
         assertEquals("testikirja", vinkki.getNimi());
-        assertEquals("testikirjoittaja", vinkki.getKirjoittaja());
+        assertEquals("testikirjoittaja", ((KirjaVinkki) vinkki).getKirjoittaja());
     }
     
     @After

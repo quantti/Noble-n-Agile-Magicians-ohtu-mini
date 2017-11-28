@@ -1,14 +1,10 @@
 package noble.lukuvinkki.tietokohteet;
 
-public class KirjaVinkki implements Vinkki {
+public class PodcastVinkki implements Vinkki {
 
     private int id;
     private String nimi;
-    private String kirjoittaja;
-
-    public KirjaVinkki() {
-
-    }
+    private String url;
 
     public int getId() {
         return id;
@@ -29,21 +25,21 @@ public class KirjaVinkki implements Vinkki {
         this.nimi = nimi;
     }
 
-   // @Override
-    public String getKirjoittaja() {
-        return kirjoittaja;
+    //  @Override
+    public String getUrl() {
+        return url;
     }
 
-   // @Override
-    public void setKirjoittaja(String kirjoittaja) {
-        this.kirjoittaja = kirjoittaja;
+    //  @Override
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("KirjaVinkki{");
         sb.append("nimi = ").append(getNimi());
-        sb.append(", kirjoittaja = ").append(getKirjoittaja());
+        sb.append(", url = ").append(getUrl());
         return sb.append("}").toString();
     }
 }
