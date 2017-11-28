@@ -2,7 +2,8 @@ package noble.lukuvinkki.dao;
 
 import org.junit.*;
 import java.sql.Connection;
-import static org.junit.Assert.fail;
+import java.sql.SQLException;
+import static org.junit.Assert.*;
 
 public class TietokantaTest {
 
@@ -18,11 +19,7 @@ public class TietokantaTest {
 
     @Test
     public void tietokantaYhteydenLuominenToimii() {
-        try {
-            Connection yhteys = tietokanta.yhteys();
-            assertNotEquals(null, yhteys);
-        } catch (SQLException e) {
-            fail(e.getMessage());
-        }
+        Connection yhteys = tietokanta.yhteys();
+        assertNotEquals(null, yhteys);
     }
 }

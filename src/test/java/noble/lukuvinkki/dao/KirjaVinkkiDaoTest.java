@@ -1,29 +1,43 @@
 package noble.lukuvinkki.dao;
 
 import org.junit.*;
-import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static org.junit.Assert.*;
+import noble.lukuvinkki.TietokantaSetup;
+import noble.lukuvinkki.tietokohteet.*;
 
 public class KirjaVinkkiDaoTest {
 
-    KirjaVinkkiDao dao; 
+    KirjaVinkkiDao dao;
+    Tietokanta tietokanta;
 
     @Before
     public void setUp() {
-        try {
-            Tietokanta tietokanta = new Tietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
-            tietokanta.yhteys().createStatement().execute(
-                    "DROP TABLE kirja_vinkki;"
-                    ++ " CREATE TABLE kirja_vinkki(id INTEGER, kirjan_nimi TEXT, kirjan_kirjoittaja TEXT);"
-                    ++ " INSERT INTO kirja_vinkki (kirjan_nimi, kirjan_kirjoittaja)"
-                    ++ " VALUES ('testikirja', 'testikirjoittaja')");
-            dao = new KirjaVinkkiDao(tietokanta);
-        } catch (Exception ignore) {
-        }
+        tietokanta = TietokantaSetup.alustaTestiTietokanta();
+        dao = new KirjaVinkkiDao(tietokanta);
     }
 
     @Test
-    public void haeYksiPalauttaaOikeanOlion() {
-
+    public void haeYksiPalauttaaOlionJosHaetaanOikeallaId() {
+        Vinkki vinkki = null;
+        try {
+            vinkki = dao.haeYksi("1");
+        } catch (SQLException ex) {
+            fail("SQLException: " + ex.getMessage());
+        }
+        assertNotEquals(null, vinkki);
+        assertEquals("testikirja", vinkki.getNimi());
+        assertEquals("testikirjoittaja", vinkki.getKirjoittaja());
+    }
+    
+    @After
+    public void tearDown() {
+        try {
+            tietokanta.suljeYhteys();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

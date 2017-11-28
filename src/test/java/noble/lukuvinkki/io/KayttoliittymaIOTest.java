@@ -5,13 +5,10 @@
  */
 package noble.lukuvinkki.io;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import noble.lukuvinkki.TietokantaSetup;
 import noble.lukuvinkki.dao.Tietokanta;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
-import noble.lukuvinkki.tietokohteet.Vinkki;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,17 +20,15 @@ import static org.junit.Assert.*;
 public class KayttoliittymaIOTest {
 
     KayttoliittymaInterface kayttisIO;
+    Tietokanta tietokanta;
 
     public KayttoliittymaIOTest() {
     }
 
     @Before
     public void setUp() {
-        try {
-            Tietokanta kanta = new Tietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
-        } catch (Exception ignore) {
-        }
-        kayttisIO = new KayttoliittymaInterface(kanta);
+        tietokanta = TietokantaSetup.alustaTestiTietokanta();
+        kayttisIO = new KayttoliittymaInterface(tietokanta);
     }
 
     @Test
@@ -41,7 +36,6 @@ public class KayttoliittymaIOTest {
         assertTrue(kayttisIO != null);
     }
 
-    
 //    @Test
 //    public void testaaLisaysTietokantaan() throws SQLException {
 //        String kirjoittaja = "testiKirjoittaja";
@@ -54,7 +48,6 @@ public class KayttoliittymaIOTest {
 //        assertEquals(kirjoittaja, kayttisIO.haeYksiVinkki(id));
 //        assertEquals(nimi, kayttisIO.haeYksiVinkki(id));
 //    }
-    
 //    private int haeViimeisinId() throws SQLException {
 //        Tietokanta kanta = new Tietokanta();
 //        Connection yhteys = kanta.yhteys();
@@ -64,5 +57,12 @@ public class KayttoliittymaIOTest {
 //        int id = rs.getInt("id");
 //        return id;
 //    }
-
+    @After
+    public void tearDown() {
+        try {
+            tietokanta.suljeYhteys();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
