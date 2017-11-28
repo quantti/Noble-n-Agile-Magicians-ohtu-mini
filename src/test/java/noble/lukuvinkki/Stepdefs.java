@@ -13,32 +13,63 @@ import static org.junit.Assert.*;
 public class Stepdefs {
 
     App app;
-    IO io;
+    StubIO io;
 //    UserDao userDao = new InMemoryUserDao();
 //    AuthenticationService auth = new AuthenticationService(userDao);
     List<String> inputLines = new ArrayList<>();
 
+    @Given("^Komento poista valitaan$")
+    public void komento_poista_valitaan() throws Throwable {
+        inputLines.add("d");
+        
+    }
+    
+    @When("^Poistetaan vinkki id:llä \"([^\"]*)\"$")
+    public void poistetaan_vinkki_id_llä(String arg1) throws Throwable {
+        inputLines.add(arg1);
+        inputLines.add("k");
+        inputLines.add("q");
+        io = new StubIO(inputLines);
+        app = new App(io);
+        app.kaynnista();
+    }
+
+    @Then("^Vinkkiä id:llä \"([^\"]*)\" ei löydy$")
+    public void vinkkiä_id_llä_ei_löydy(String arg1) throws Throwable {
+        inputLines.clear();
+        inputLines.add("c");
+        inputLines.add(arg1);
+        inputLines.add("q");
+        io = new StubIO(inputLines);
+        app = new App(io);
+        app.kaynnista();
+        assertEquals("Vinkkiä ei löytynyt, tarkista id-numero", io.getPrints().get(io.getPrints().size() - 9));
+    }
+
+    
     @Given("^Komento lisää valitaan$")
     public void lisaaValittu() throws Throwable {
 
         inputLines.add("b");
     }
-
-    @When("^Kirjan nimi \"([^\"]*)\" ja kirjoittaja \"([^\"]*)\" annetaan$")
-    public void kirjanNimiJaKirjailijaAnnettu(String kirja, String kirjailija) throws Throwable {
-        inputLines.add(kirja);
+    
+    @When("^Kirjoittaja \"([^\"]*)\" ja kirjan nimi \"([^\"]*)\" annetaan$")
+    public void kirjoittaja_ja_kirjan_nimi_annetaan(String kirja, String kirjailija) throws Throwable {
         inputLines.add(kirjailija);
+        inputLines.add(kirja);
         inputLines.add("q");
         io = new StubIO(inputLines);
         app = new App(io);
         app.kaynnista();
 
     }
+    
+
 
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
 
-        assertEquals("Lisätty", arg1);
+        assertEquals(arg1, io.getPrints().get(io.getPrints().size() - 9));
     }
 
 }

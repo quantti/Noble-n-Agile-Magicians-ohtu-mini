@@ -24,6 +24,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     @Override
     public int tallenna(KirjaVinkki vinkki) {
         int id = -1;
+        if (vinkki.getKirjoittaja().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
         String sql = String.format("INSERT INTO kirja_vinkki(kirjan_nimi, kirjan_kirjoittaja) VALUES ('%s', '%s')", vinkki.getNimi(), vinkki.getKirjoittaja());
         try {
             Statement kysely = yhteys.createStatement();
@@ -86,7 +89,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         String sql = "DELETE FROM kirja_vinkki WHERE id=" + id;
         try {
             Statement kysely = yhteys.createStatement();
-            return kysely.execute(sql);
+            return kysely.executeUpdate(sql) == 1;
         } catch (SQLException ex) {
             System.out.println("Poistaminen epännistui" + ex.getMessage());
         }
