@@ -2,16 +2,18 @@ package noble.lukuvinkki.dao;
 
 import java.util.List;
 import noble.lukuvinkki.tietokohteet.Vinkki;
+import java.sql.SQLException;
 
 public interface Dao<T> {
 
-    int tallenna(T vinkki);
 
-    Vinkki haeYksi(String id);
+    int tallenna(T vinkki) throws SQLException;
 
-    List<Vinkki> haeKaikki();
+    Vinkki haeYksi(String id) throws SQLException;
 
-    boolean poistaVinkki(String id);
+    List<Vinkki> haeKaikki() throws SQLException;
 
-    boolean muokkaa(Vinkki vinkki);
+    boolean poistaVinkki(String id) throws SQLException;
+
+    boolean muokkaa(Vinkki vinkki) throws SQLException;
 }
