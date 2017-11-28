@@ -1,5 +1,6 @@
 package noble.lukuvinkki;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -14,10 +15,16 @@ public class Stepdefs {
 
     App app;
     IO io;
+    String tietokantaURL = "jdbc:sqlite:tietokanta/testaus.sqlite3";
 //    UserDao userDao = new InMemoryUserDao();
 //    AuthenticationService auth = new AuthenticationService(userDao);
     List<String> inputLines = new ArrayList<>();
 
+    @Before
+    public void alustaTestikanta() {
+        TietokantaSetup.alustaTestiTietokanta();
+    }
+    
     @Given("^Komento lisää valitaan$")
     public void lisaaValittu() throws Throwable {
 
@@ -30,7 +37,7 @@ public class Stepdefs {
         inputLines.add(kirjailija);
         inputLines.add("q");
         io = new StubIO(inputLines);
-        app = new App(io);
+        app = new App(io, tietokantaURL);
         app.kaynnista();
 
     }
