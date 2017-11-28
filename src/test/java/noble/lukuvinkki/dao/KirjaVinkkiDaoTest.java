@@ -15,8 +15,15 @@ public class KirjaVinkkiDaoTest {
 
     @Before
     public void setUp() {
-        tietokanta = TietokantaSetup.alustaTestiTietokanta();
-        dao = new KirjaVinkkiDao(tietokanta);
+        try {
+            tietokanta = TietokantaSetup.alustaTestiTietokanta();
+            String sql = "INSERT INTO kirja_vinkki (kirjan_nimi, kirjan_kirjoittaja) VALUES ('testikirja', 'testikirjoittaja')";
+            tietokanta.yhteys().createStatement().execute(sql);
+            dao = new KirjaVinkkiDao(tietokanta);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            fail();
+        }
     }
 
     @Test
@@ -31,7 +38,7 @@ public class KirjaVinkkiDaoTest {
         assertEquals("testikirja", vinkki.getNimi());
         assertEquals("testikirjoittaja", ((KirjaVinkki) vinkki).getKirjoittaja());
     }
-    
+
     @After
     public void tearDown() {
         try {
