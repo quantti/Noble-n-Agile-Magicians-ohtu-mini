@@ -134,12 +134,28 @@ public class KirjaVinkkiDaoTest {
     }
 
     @Test
-    public void muokkaaMuuttaaRiviaTietokannassaJosIdOikein() {
+    public void muokkaaMuuttaaYhtaRiviaTietokannassaJosIdOikein() {
         try {
+            Vinkki uusi = new KirjaVinkki(2, "uusikirja", "kirjaaja");
+            dao.tallenna((KirjaVinkki) uusi);
             Vinkki v = new KirjaVinkki(1, "do not steal", "made by me");
             dao.muokkaa(v);
             Vinkki muokattu = dao.haeYksi("1");
             assertEquals(v, muokattu);
+            Vinkki eiMuokattu = dao.haeYksi("2");
+            assertEquals(uusi, eiMuokattu);
+        } catch (Exception e) {
+            fail("Virhe: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void muokkaaEiMuutaRiviaTietokannassaJosIdVaarin1() {
+        try {
+            Vinkki v = new KirjaVinkki(2, "do not steal", "made by me");
+            dao.muokkaa(v);
+            Vinkki eiMuokattu = dao.haeYksi("1");
+            assertNotEquals(v, eiMuokattu);
         } catch (Exception e) {
             fail("Virhe: " + e.getMessage());
         }
