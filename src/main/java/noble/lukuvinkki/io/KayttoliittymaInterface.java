@@ -23,7 +23,7 @@ import noble.lukuvinkki.tietokohteet.VideoVinkki;
  */
 public class KayttoliittymaInterface {
 
-    private final Dao kirjavinkkiDao;
+    private final KirjaVinkkiDao kirjavinkkiDao;
     private final Dao podcastvinkkiDao;
     private final Dao videovinkkiDao;
 
@@ -38,8 +38,8 @@ public class KayttoliittymaInterface {
         return kirjavinkit;
     }
 
-    public boolean lisaaKirja(KirjaVinkki kirjaVinkki) throws SQLException {
-        return kirjavinkkiDao.tallenna(kirjaVinkki) != -1;
+    public int lisaaKirja(KirjaVinkki kirjaVinkki) throws SQLException {
+        return kirjavinkkiDao.tallenna(kirjaVinkki);
     }
 
     public boolean lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
@@ -51,8 +51,8 @@ public class KayttoliittymaInterface {
 
     }
 
-    public Vinkki haeYksiKirja(String id) throws SQLException {
-        Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
+    public KirjaVinkki haeYksiKirja(String id) throws SQLException {
+        KirjaVinkki vinkki = kirjavinkkiDao.haeYksi(id);
         return vinkki;
     }
 

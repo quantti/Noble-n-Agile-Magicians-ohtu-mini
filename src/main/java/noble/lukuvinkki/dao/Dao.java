@@ -9,9 +9,9 @@ public interface Dao<T> {
 
     int tallenna(T vinkki) throws SQLException;
 
-    Vinkki haeYksi(String id) throws SQLException;
-
-    List<Vinkki> haeKaikki() throws SQLException;
+//    Vinkki haeYksi(String id) throws SQLException;
+//
+//    List<Vinkki> haeKaikki() throws SQLException;
 
     boolean poistaVinkki(String id) throws SQLException;
 
