@@ -47,13 +47,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         preparedStatement.setString(1, id);
         ResultSet rs = preparedStatement.executeQuery();
-        KirjaVinkki vinkki = new KirjaVinkki();
+        
         if (rs.next()) {
-            String nimi = rs.getString("kirjan_nimi");
-            String kirjoittaja = rs.getString("kirjan_kirjoittaja");
-            vinkki.setNimi(nimi);
-            vinkki.setKirjoittaja(kirjoittaja);
-            vinkki.setId(Integer.parseInt(id));
+            KirjaVinkki vinkki = keraa(rs);
             return vinkki;
         }
         return null;

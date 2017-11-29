@@ -8,9 +8,9 @@ package noble.lukuvinkki.main;
 
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.StubIO;
-import org.junit.After;
 import org.junit.Before;
-import noble.lukuvinkki.TietokantaSetup;
+import org.junit.*;
+import static org.junit.Assert.*;
 
 
 /**
@@ -28,5 +28,8 @@ public class AppTest {
         this.app = new App(io, tietokantaURL);
     }
     
-    
+    @Test
+    public void testAppConstructor() {
+        assertTrue(this.app != null);
+    }
 }

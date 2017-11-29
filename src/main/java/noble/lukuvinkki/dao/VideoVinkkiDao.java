@@ -14,11 +14,11 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
 
     private final Connection yhteys;
     
-    public VideoVinkkiDao(Tietokanta tietokanta){
+    public VideoVinkkiDao(Tietokanta tietokanta) {
         this.yhteys = tietokanta.yhteys();
     }
     
-     @Override
+    @Override
     public int tallenna(VideoVinkki vinkki) throws SQLException {
         int id = -1;
         String sql = "INSERT INTO video_vinkki(videon_nimi, videon_url) VALUES (?, ?)";
