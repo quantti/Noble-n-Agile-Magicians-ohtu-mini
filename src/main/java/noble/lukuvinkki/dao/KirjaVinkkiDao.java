@@ -47,12 +47,12 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         preparedStatement.setString(1, id);
         ResultSet rs = preparedStatement.executeQuery();
-        Vinkki vinkki = new KirjaVinkki();
+        KirjaVinkki vinkki = new KirjaVinkki();
         if (rs.next()) {
             String nimi = rs.getString("kirjan_nimi");
             String kirjoittaja = rs.getString("kirjan_kirjoittaja");
             vinkki.setNimi(nimi);
-            ((KirjaVinkki) vinkki).setKirjoittaja(kirjoittaja);
+            vinkki.setKirjoittaja(kirjoittaja);
             vinkki.setId(Integer.parseInt(id));
             return vinkki;
         }
@@ -66,10 +66,10 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         ResultSet rs = preparedStatement.executeQuery();
         while (rs.next()) {
-            Vinkki vinkki = new KirjaVinkki();
+            KirjaVinkki vinkki = new KirjaVinkki();
             vinkki.setId(rs.getInt("id"));
             vinkki.setNimi(rs.getString("kirjan_nimi"));
-            ((KirjaVinkki) vinkki).setKirjoittaja(rs.getString("kirjan_kirjoittaja"));
+            vinkki.setKirjoittaja(rs.getString("kirjan_kirjoittaja"));
             kirjavinkit.add(vinkki);
         }
         return kirjavinkit;
