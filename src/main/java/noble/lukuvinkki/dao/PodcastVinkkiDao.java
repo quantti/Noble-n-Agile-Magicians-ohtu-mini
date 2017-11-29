@@ -2,10 +2,12 @@
 package noble.lukuvinkki.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
@@ -23,10 +25,12 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public int tallenna(PodcastVinkki vinkki) throws SQLException {
         int id = -1;
-        String sql = String.format("INSERT INTO podcast_vinkki(podcastin_nimi, podcastin_url) VALUES ('%s', '%s')", vinkki.getNimi(), vinkki.getUrl());
-        Statement kysely = yhteys.createStatement();
-        kysely.execute(sql);
-        ResultSet rs = kysely.executeQuery("SELECT last_insert_rowid() as id");
+        String sql = "INSERT INTO podcast_vinkki(podcastin_nimi, podcastin_url) VALUES (?, ?)";
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setString(1, vinkki.getNimi());
+        kysely.setString(2, vinkki.getUrl());
+        kysely.executeUpdate();
+        ResultSet rs = yhteys.createStatement().executeQuery("SELECT last_insert_rowid() as id");
         if (rs.next()) {
             id = rs.getInt("id");
         }
