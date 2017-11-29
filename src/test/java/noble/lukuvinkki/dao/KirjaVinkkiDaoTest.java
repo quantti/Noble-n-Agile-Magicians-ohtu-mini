@@ -94,7 +94,7 @@ public class KirjaVinkkiDaoTest {
     public void haeKaikkiPalauttaaTyhjanListanJosTietokannassaEiRiveja() {
         try {
             dao.poistaVinkki("1");
-            List<Vinkki> vinkit = dao.haeKaikki();
+            List<KirjaVinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertTrue(vinkit.isEmpty());
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class KirjaVinkkiDaoTest {
     @Test
     public void haeKaikkiPalauttaaListanVinkkejaJosTietokannassaRiveja1() {
         try {
-            List<Vinkki> vinkit = dao.haeKaikki();
+            List<KirjaVinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertFalse(vinkit.isEmpty());
             Vinkki v = new KirjaVinkki(1, "testikirja", "testikirjoittaja");
@@ -120,7 +120,7 @@ public class KirjaVinkkiDaoTest {
         try {
             Vinkki v = new KirjaVinkki(2, "testi2", "kirjamestari");
             dao.tallenna((KirjaVinkki) v);
-            List<Vinkki> vinkit = dao.haeKaikki();
+            List<KirjaVinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertFalse(vinkit.isEmpty());
             assertEquals(v, dao.haeKaikki().get(1));

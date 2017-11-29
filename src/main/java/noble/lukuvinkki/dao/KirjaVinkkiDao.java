@@ -40,9 +40,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         }
         return id;
     }
-
-    @Override
-    public Vinkki haeYksi(String id) throws SQLException {
+    
+    public KirjaVinkki haeYksi(String id) throws SQLException {
         String query = "SELECT * FROM kirja_vinkki WHERE id = ?";
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         preparedStatement.setString(1, id);
@@ -55,9 +54,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         return null;
     }
 
-    @Override
-    public List<Vinkki> haeKaikki() throws SQLException {
-        List<Vinkki> kirjavinkit = new ArrayList<>();
+    public List<KirjaVinkki> haeKaikki() throws SQLException {
+        List<KirjaVinkki> kirjavinkit = new ArrayList<>();
         String query = "SELECT * FROM kirja_vinkki";
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         ResultSet rs = preparedStatement.executeQuery();
@@ -76,8 +74,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         String sql = "DELETE FROM kirja_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, id);
-        kysely.executeUpdate();
-        return true;
+        int result = kysely.executeUpdate();
+        return result > 0;
     }
 
     @Override
@@ -90,6 +88,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         kysely.setString(1, nimi);
         kysely.setString(2, kirjoittaja);
         kysely.setInt(3, id);
-        return kysely.execute();
+        int result = kysely.executeUpdate();
+        return result > 0;
     }
 }

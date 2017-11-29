@@ -82,7 +82,7 @@ public class App {
             KirjaVinkki kirjaVinkki = new KirjaVinkki();
             kirjaVinkki.setKirjoittaja(kirjoittaja);
             kirjaVinkki.setNimi(nimi);
-            if (kayttisIO.lisaaKirja(kirjaVinkki)) {
+            if (kayttisIO.lisaaKirja(kirjaVinkki) != -1) {
                 io.print("Vinkki lisätty!");
             } else {
                 io.print("Vinkin lisääminen epäonnistui.");
