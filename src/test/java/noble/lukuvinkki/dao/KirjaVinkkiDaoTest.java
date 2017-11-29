@@ -14,8 +14,8 @@ import static org.junit.Assert.*;
 
 public class KirjaVinkkiDaoTest {
 
-    KirjaVinkkiDao dao;
-    Tietokanta tietokanta;
+    private KirjaVinkkiDao dao;
+    private Tietokanta tietokanta;
 
     @Before
     public void setUp() {

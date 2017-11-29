@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
@@ -14,11 +13,9 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
-    private Tietokanta tietokanta;
-    private Connection yhteys;
+    private final Connection yhteys;
     
     public PodcastVinkkiDao(Tietokanta tietokanta){
-        this.tietokanta = tietokanta;
         this.yhteys = tietokanta.yhteys();
     }
     

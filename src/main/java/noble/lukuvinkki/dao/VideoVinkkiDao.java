@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
@@ -13,11 +12,9 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class VideoVinkkiDao implements Dao<VideoVinkki> {
 
-    private Tietokanta tietokanta;
-    private Connection yhteys;
+    private final Connection yhteys;
     
     public VideoVinkkiDao(Tietokanta tietokanta){
-        this.tietokanta = tietokanta;
         this.yhteys = tietokanta.yhteys();
     }
     

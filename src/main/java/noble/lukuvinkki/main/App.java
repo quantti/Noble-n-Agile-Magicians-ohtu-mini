@@ -4,7 +4,6 @@ import noble.lukuvinkki.io.KayttoliittymaInterface;
 import java.util.List;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.io.StubIO;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
@@ -14,11 +13,11 @@ import noble.lukuvinkki.tietokohteet.VideoVinkki;
 public class App {
 
     private KayttoliittymaInterface kayttisIO;
-    private Tietokanta tietokanta;
     private IO io;
 
     public App(IO io, String tietokantaURL) {
         try {
+            Tietokanta tietokanta;
             tietokanta = new Tietokanta(tietokantaURL);
             kayttisIO = new KayttoliittymaInterface(tietokanta);
             this.io = io;
@@ -28,7 +27,7 @@ public class App {
     }
 
     public void kaynnista() {
-        listaaValikko();
+        kysy();
     }
 
     private void virhe(Exception e) {
@@ -36,44 +35,28 @@ public class App {
     }
 
     private void listaaValikko() {
+        io.print("?nTervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
+        io.print("a) Listaa kaikki vinkit");
+        io.print("b) lisää uusi kirjavinkki");
+        io.print("c) lisää uusi podcastvinkki");
+        io.print("d) lisää uusi videovinkki");
+        io.print("e) muokkaa vinkkiä");
+        io.print("f) poista vinkki");
+        io.print("q) lopeta ohjelma\n");
+    }
+
+    private void kysy() {
 
         while (true) {
-            io.print("Tervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
-            io.print("a) Listaa kaikki vinkit");
-            io.print("b) lisää uusi kirjavinkki");
-            io.print("c) lisää uusi podcastvinkki");
-            io.print("d) lisää uusi videovinkki");
-            io.print("e) muokkaa vinkkiä");
-            io.print("f) poista vinkki");
-            io.print("q) lopeta ohjelma\n");
+            listaaValikko();
 
             String vastaus = io.readLine("Anna komento: ");
             if (vastaus.equalsIgnoreCase("q")) {
                 io.print("Heippa!");
                 break;
             }
-            switch (vastaus) {
-                case "a":
-                    listaaKaikkiVinkit();
-                    break;
-                case "b":
-                    lisaaKirjaVinkki();
-                    break;
-                    case "c":
-                    lisaaPodcastVinkki();
-                    break;
-                    case "d":
-                    lisaaVideoVinkki();
-                    break;
-                case "e":
-                    muokkaaVinkkia();
-                    break;
-                case "f":
-                    poistaVinkki();
-                    break;
-                default:
-                    io.print("Väärä komento");
-            }
+
+            valikko(vastaus);
         }
     }
 
@@ -109,12 +92,12 @@ public class App {
         }
         //TODO
     }
-    
+
     private void lisaaPodcastVinkki() {
         try {
             String nimi = io.readLine("Syötä podcastin nimi: ");
             String url = io.readLine("Syötä podcastin url: ");
-            
+
             PodcastVinkki podcastVinkki = new PodcastVinkki();
             podcastVinkki.setUrl(url);
             podcastVinkki.setNimi(nimi);
@@ -127,12 +110,12 @@ public class App {
             virhe(e);
         }
     }
-    
+
     private void lisaaVideoVinkki() {
-          try {
+        try {
             String nimi = io.readLine("Syötä videon nimi: ");
             String url = io.readLine("Syötä videon url: ");
-            
+
             VideoVinkki videoVinkki = new VideoVinkki();
             videoVinkki.setUrl(url);
             videoVinkki.setNimi(nimi);
@@ -193,6 +176,31 @@ public class App {
             }
         } catch (Exception e) {
             virhe(e);
+        }
+    }
+
+    private void valikko(String vastaus) {
+        switch (vastaus) {
+            case "a":
+                listaaKaikkiVinkit();
+                break;
+            case "b":
+                lisaaKirjaVinkki();
+                break;
+            case "c":
+                lisaaPodcastVinkki();
+                break;
+            case "d":
+                lisaaVideoVinkki();
+                break;
+            case "e":
+                muokkaaVinkkia();
+                break;
+            case "f":
+                poistaVinkki();
+                break;
+            default:
+                io.print("Väärä komento");
         }
     }
 

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
@@ -12,11 +11,10 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
 
-    private Tietokanta tietokanta;
-    private Connection yhteys;
+    
+    private final Connection yhteys;
 
     public KirjaVinkkiDao(Tietokanta tietokanta) {
-        this.tietokanta = tietokanta;
         this.yhteys = tietokanta.yhteys();
 
     }

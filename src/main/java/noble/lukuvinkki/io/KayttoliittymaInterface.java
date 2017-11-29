@@ -23,9 +23,9 @@ import noble.lukuvinkki.tietokohteet.VideoVinkki;
  */
 public class KayttoliittymaInterface {
 
-    private Dao kirjavinkkiDao;
-    private Dao podcastvinkkiDao;
-    private Dao videovinkkiDao;
+    private final Dao kirjavinkkiDao;
+    private final Dao podcastvinkkiDao;
+    private final Dao videovinkkiDao;
 
     public KayttoliittymaInterface(Tietokanta tietokanta) {
         this.kirjavinkkiDao = new KirjaVinkkiDao(tietokanta);
@@ -39,24 +39,15 @@ public class KayttoliittymaInterface {
     }
 
     public boolean lisaaKirja(KirjaVinkki kirjaVinkki) throws SQLException {
-        if (kirjavinkkiDao.tallenna(kirjaVinkki) != -1) {
-            return true;
-        }
-        return false;
+        return kirjavinkkiDao.tallenna(kirjaVinkki) != -1;
     }
 
     public boolean lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
-        if (podcastvinkkiDao.tallenna(podcastVinkki) != -1) {
-            return true;
-        }
-        return false;
+        return podcastvinkkiDao.tallenna(podcastVinkki) != -1;
     }
 
     public boolean lisaaVideo(VideoVinkki videoVinkki) throws SQLException {
-        if (videovinkkiDao.tallenna(videoVinkki) != -1) {
-            return true;
-        }
-        return false;
+        return videovinkkiDao.tallenna(videoVinkki) != -1;
 
     }
 

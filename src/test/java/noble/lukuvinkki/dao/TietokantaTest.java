@@ -2,12 +2,11 @@ package noble.lukuvinkki.dao;
 
 import org.junit.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 import static org.junit.Assert.*;
 
 public class TietokantaTest {
 
-    Tietokanta tietokanta;
+    private Tietokanta tietokanta;
 
     @Before
     public void setUp() {

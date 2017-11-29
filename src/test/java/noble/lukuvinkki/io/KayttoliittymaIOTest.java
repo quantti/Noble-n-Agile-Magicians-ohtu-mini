@@ -19,11 +19,8 @@ import static org.junit.Assert.*;
  */
 public class KayttoliittymaIOTest {
 
-    KayttoliittymaInterface kayttisIO;
-    Tietokanta tietokanta;
-
-    public KayttoliittymaIOTest() {
-    }
+    private KayttoliittymaInterface kayttisIO;
+    private Tietokanta tietokanta;
 
     @Before
     public void setUp() {
@@ -36,28 +33,6 @@ public class KayttoliittymaIOTest {
         assertTrue(kayttisIO != null);
     }
 
-//    @Test
-//    public void testaaLisaysTietokantaan() throws SQLException {
-//        String kirjoittaja = "testiKirjoittaja";
-//        String nimi = "testiNimi";
-//        KirjaVinkki kv = new KirjaVinkki();
-//        kv.setKirjoittaja(kirjoittaja);
-//        kv.setNimi(nimi);
-//        kayttisIO.lisaaVinkki(kv);
-//        String id = Integer.toString(haeViimeisinId());
-//        assertEquals(kirjoittaja, kayttisIO.haeYksiVinkki(id));
-//        assertEquals(nimi, kayttisIO.haeYksiVinkki(id));
-//    }
-
-//    private int haeViimeisinId() throws SQLException {
-//        Tietokanta kanta = new Tietokanta();
-//        Connection yhteys = kanta.yhteys();
-//        String query = "SELECT last_insert_rowid()";
-//        PreparedStatement ps = yhteys.prepareStatement(query);
-//        ResultSet rs = ps.executeQuery();
-//        int id = rs.getInt("id");
-//        return id;
-//    }
     @After
     public void tearDown() {
         try {

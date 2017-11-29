@@ -6,13 +6,12 @@ package noble.lukuvinkki.main;
  * and open the template in the editor.
  */
 
-import noble.lukuvinkki.io.KayttoliittymaInterface;
+import noble.lukuvinkki.io.IO;
+import noble.lukuvinkki.io.StubIO;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import noble.lukuvinkki.TietokantaSetup;
+
 
 /**
  *
@@ -20,16 +19,14 @@ import static org.junit.Assert.*;
  */
 public class AppTest {
     
-    
-    public AppTest() {
-    }
+    private App app;
+    private final String tietokantaURL = "jdbc:sqlite:tietokanta/testaus.sqlite3";
     
     @Before
     public void setUp() {
-        
+        IO io = new StubIO();
+        this.app = new App(io, tietokantaURL);
     }
     
-    @After
-    public void tearDown() {
-    }
+    
 }
