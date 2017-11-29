@@ -5,9 +5,6 @@
  */
 package noble.lukuvinkki.io;
 
-import java.util.List;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
-import noble.lukuvinkki.tietokohteet.Vinkki;
 
 /**
  *

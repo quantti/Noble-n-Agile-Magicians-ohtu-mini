@@ -15,7 +15,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     private final Connection yhteys;
     
-    public PodcastVinkkiDao(Tietokanta tietokanta){
+    public PodcastVinkkiDao(Tietokanta tietokanta) {
         this.yhteys = tietokanta.yhteys();
     }
     
