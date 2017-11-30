@@ -16,7 +16,7 @@ public class KirjaVinkkiDaoTest {
     @Before
     public void setUp() {
         try {
-            tietokanta = TietokantaSetup.alustaTestiTietokanta();
+            tietokanta = TietokantaSetup.alustaTestiTietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
             String sql = "INSERT INTO kirja_vinkki (kirjan_nimi, kirjan_kirjoittaja) VALUES ('testikirja', 'testikirjoittaja')";
             tietokanta.yhteys().createStatement().execute(sql);
             dao = new KirjaVinkkiDao(tietokanta);

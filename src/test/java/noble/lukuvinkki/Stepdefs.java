@@ -1,5 +1,6 @@
 package noble.lukuvinkki;
 
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -21,28 +22,33 @@ public class Stepdefs {
     App app;
     StubIO io;
     Dao dao;
-    String tietokantaURL = "jdbc:sqlite:tietokanta/testaus.sqlite3";
+    String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
     List<String> inputLines = new ArrayList<>();
     
     @Before
     public void alustaTestikanta() throws SQLException {
-        TietokantaSetup.alustaTestiTietokanta();
+        TietokantaSetup.alustaTestiTietokanta(tietokantaURL);
         Tietokanta kanta = new Tietokanta(tietokantaURL);
         dao = new KirjaVinkkiDao(kanta);
         KirjaVinkki kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
+        dao.tallenna(kv);
+        
     }
     
     @Given("^Komento poista valitaan$")
     public void komento_poista_valitaan() throws Throwable {
+        inputLines.clear();
         inputLines.add("f");
         
     }
     
     @When("^Poistetaan vinkki id:llä \"([^\"]*)\"$")
     public void poistetaan_vinkki_id_llä(String arg1) throws Throwable {
-        inputLines.add(arg1);
+        
+        inputLines.add("1");
         inputLines.add("k");
         inputLines.add("q");
+        System.out.println(inputLines);
         io = new StubIO(inputLines);
         app = new App(io, tietokantaURL);
         app.kaynnista();
@@ -54,6 +60,7 @@ public class Stepdefs {
         inputLines.add("e");
         inputLines.add(arg1);
         inputLines.add("q");
+       
         io = new StubIO(inputLines);
         app = new App(io, tietokantaURL);
         app.kaynnista();
@@ -83,8 +90,9 @@ public class Stepdefs {
 
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
-        
-//        assertTrue(io.getPrints().contains(arg1));
+        List<String> rivit= io.getPrints();
+        assertEquals(rivit.get(rivit.size() - 11), arg1);
     }
+
 
 }
