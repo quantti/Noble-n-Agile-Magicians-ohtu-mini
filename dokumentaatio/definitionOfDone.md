@@ -1,6 +1,6 @@
 # Definition of Done
 
-* Testikattavuus 80 %
+* Sovellukseen lisätyillä ominaisuuksilla riittävä testikattavuus
 * Hyväksymäkriteerit Cucumber-featureina
 * Testit CI-palvelimella
 * Hyvä ohjelmointityyli
