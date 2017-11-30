@@ -35,16 +35,18 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     }
 
     
-    public PodcastVinkki haeYksi(String id) throws SQLException {
+    @Override
+    public PodcastVinkki haeYksi(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
     public List haeKaikki() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean poistaVinkki(String id) throws SQLException {
+    public boolean poistaVinkki(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

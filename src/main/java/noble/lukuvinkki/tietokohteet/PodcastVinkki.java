@@ -5,6 +5,7 @@ public class PodcastVinkki implements Vinkki {
     private int id;
     private String nimi;
     private String url;
+    private String tekija;
 
     public int getId() {
         return id;
@@ -34,6 +35,18 @@ public class PodcastVinkki implements Vinkki {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String getTekija() {
+        return this.tekija;
+    }
+
+    @Override
+    public void setTekija(String tekija) {
+        this.tekija = tekija;
+    }
+    
+    
 
     @Override
     public String toString() {

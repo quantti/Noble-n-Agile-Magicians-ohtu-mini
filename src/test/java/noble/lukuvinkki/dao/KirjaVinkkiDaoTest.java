@@ -30,24 +30,24 @@ public class KirjaVinkkiDaoTest {
     public void haeYksiPalauttaaOlionJosHaetaanOikeallaId() {
         Vinkki vinkki = null;
         try {
-            vinkki = dao.haeYksi("1");
+            vinkki = dao.haeYksi(1);
         } catch (SQLException ex) {
             fail("SQLException: " + ex.getMessage());
         }
         assertNotEquals(null, vinkki);
         assertEquals("testikirja", vinkki.getNimi());
-        assertEquals("testikirjoittaja", ((KirjaVinkki) vinkki).getKirjoittaja());
+        assertEquals("testikirjoittaja", ((KirjaVinkki) vinkki).getTekija());
     }
 
     @Test
     public void haeYksiPalauttaaNullJosHaetaanOlemattomallaId() {
         Vinkki vinkki = null;
         try {
-            vinkki = dao.haeYksi("0");
+            vinkki = dao.haeYksi(0);
             assertEquals(null, vinkki);
-            vinkki = dao.haeYksi("-1");
+            vinkki = dao.haeYksi(-1);
             assertEquals(null, vinkki);
-            vinkki = dao.haeYksi("9999");
+            vinkki = dao.haeYksi(9999);
             assertEquals(null, vinkki);
         } catch (Exception e) {
             fail("Virhe: " + e.getMessage());
@@ -57,7 +57,7 @@ public class KirjaVinkkiDaoTest {
     @Test
     public void poistaPoistaaRivinTietokannastaJosIdOikein() {
         try {
-            dao.poistaVinkki("1");
+            dao.poistaVinkki(1);
             String sql = "SELECT COUNT(*) as count FROM kirja_vinkki;";
             ResultSet rs = tietokanta.yhteys().prepareStatement(sql).executeQuery();
             assertEquals(0, rs.getInt("count"));
@@ -69,7 +69,7 @@ public class KirjaVinkkiDaoTest {
     @Test
     public void poistaEiPoistaRiviaJosIdVaarin() {
         try {
-            dao.poistaVinkki("2");
+            dao.poistaVinkki(2);
             String sql = "SELECT COUNT(*) as count FROM kirja_vinkki;";
             ResultSet rs = tietokanta.yhteys().prepareStatement(sql).executeQuery();
             assertEquals(1, rs.getInt("count"));
@@ -83,7 +83,7 @@ public class KirjaVinkkiDaoTest {
         try {
             KirjaVinkki vinkki = new KirjaVinkki(2, "testi2", "T. Testaaja");
             dao.tallenna(vinkki);
-            Vinkki v = dao.haeYksi("2");
+            Vinkki v = dao.haeYksi(2);
             assertEquals(vinkki, v);
         } catch (Exception e) {
             fail("Virhe: " + e.getMessage());
@@ -93,8 +93,8 @@ public class KirjaVinkkiDaoTest {
     @Test
     public void haeKaikkiPalauttaaTyhjanListanJosTietokannassaEiRiveja() {
         try {
-            dao.poistaVinkki("1");
-            List<KirjaVinkki> vinkit = dao.haeKaikki();
+            dao.poistaVinkki(1);
+            List<Vinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertTrue(vinkit.isEmpty());
         } catch (Exception e) {
@@ -105,7 +105,7 @@ public class KirjaVinkkiDaoTest {
     @Test
     public void haeKaikkiPalauttaaListanVinkkejaJosTietokannassaRiveja1() {
         try {
-            List<KirjaVinkki> vinkit = dao.haeKaikki();
+            List<Vinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertFalse(vinkit.isEmpty());
             Vinkki v = new KirjaVinkki(1, "testikirja", "testikirjoittaja");
@@ -120,7 +120,7 @@ public class KirjaVinkkiDaoTest {
         try {
             Vinkki v = new KirjaVinkki(2, "testi2", "kirjamestari");
             dao.tallenna((KirjaVinkki) v);
-            List<KirjaVinkki> vinkit = dao.haeKaikki();
+            List<Vinkki> vinkit = dao.haeKaikki();
             assertNotEquals(null, vinkit);
             assertFalse(vinkit.isEmpty());
             assertEquals(v, dao.haeKaikki().get(1));
@@ -136,9 +136,9 @@ public class KirjaVinkkiDaoTest {
             dao.tallenna((KirjaVinkki) uusi);
             Vinkki v = new KirjaVinkki(1, "do not steal", "made by me");
             dao.muokkaa(v);
-            Vinkki muokattu = dao.haeYksi("1");
+            Vinkki muokattu = dao.haeYksi(1);
             assertEquals(v, muokattu);
-            Vinkki eiMuokattu = dao.haeYksi("2");
+            Vinkki eiMuokattu = dao.haeYksi(2);
             assertEquals(uusi, eiMuokattu);
         } catch (Exception e) {
             fail("Virhe: " + e.getMessage());
@@ -150,7 +150,7 @@ public class KirjaVinkkiDaoTest {
         try {
             Vinkki v = new KirjaVinkki(2, "do not steal", "made by me");
             dao.muokkaa(v);
-            Vinkki eiMuokattu = dao.haeYksi("1");
+            Vinkki eiMuokattu = dao.haeYksi(1);
             assertNotEquals(v, eiMuokattu);
         } catch (Exception e) {
             fail("Virhe: " + e.getMessage());
