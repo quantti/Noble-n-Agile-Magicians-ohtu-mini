@@ -37,8 +37,24 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     
     @Override
     public PodcastVinkki haeYksi(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+             String query = "SELECT * FROM podcast_vinkki WHERE id = ?";
+        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            PodcastVinkki podcastVinkki = keraa(rs);
+            return podcastVinkki;
+        }
+        return null;
     }
+    
+    private PodcastVinkki keraa(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String nimi = rs.getString("podcastin_nimi");
+        String url = rs.getString("podcastin_url");
+        return new PodcastVinkki(id, nimi, url);
+    }
+    
 
     @Override
     public List haeKaikki() throws SQLException {
@@ -47,7 +63,11 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     @Override
     public boolean poistaVinkki(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "DELETE FROM podcast_vinkki WHERE id = ?";
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, id);
+        int result = kysely.executeUpdate();
+        return result > 0;
     }
 
     @Override

@@ -72,4 +72,13 @@ public class KayttoliittymaInterface {
     public boolean poistaVideo(int id) throws SQLException {
         return videovinkkiDao.poistaVinkki(id);
     }
+    
+    public PodcastVinkki haeYksiPodcast(int id) throws SQLException {
+        PodcastVinkki vinkki = (PodcastVinkki) podcastvinkkiDao.haeYksi(id);
+        return vinkki;
+    }
+    
+    public boolean poistaPodcast(int id) throws SQLException {
+        return podcastvinkkiDao.poistaVinkki(id);
+    }
 }

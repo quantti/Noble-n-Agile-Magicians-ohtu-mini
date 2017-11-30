@@ -6,10 +6,11 @@ public class VideoVinkki implements Vinkki {
     private String nimi;
     private String url;
     private String tekija;
-    
-    public VideoVinkki() {
+
+    public VideoVinkki(){
         
     }
+            
     
     public VideoVinkki(int id, String nimi, String url) {
         this.id = id;
@@ -36,12 +37,12 @@ public class VideoVinkki implements Vinkki {
         this.nimi = nimi;
     }
 
-  //  @Override
+    //  @Override
     public String getUrl() {
         return url;
     }
 
-  //  @Override
+    //  @Override
     public void setUrl(String url) {
         this.url = url;
     }
