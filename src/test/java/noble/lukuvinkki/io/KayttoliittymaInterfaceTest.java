@@ -11,6 +11,7 @@ import noble.lukuvinkki.TietokantaSetup;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
+import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import org.junit.After;
 import org.junit.Before;
@@ -40,12 +41,12 @@ public class KayttoliittymaInterfaceTest {
             ex.printStackTrace();
         }
     }
-    
+
     @Test
     public void testaaKayttisIO() {
         assertTrue(kayttisIO != null);
     }
-    
+
     @Test
     public void testaaKirjaVinkinLisaysHakuJaPoistoTietokannasta() throws SQLException {
         KirjaVinkki kirjaVinkki = new KirjaVinkki();
@@ -60,7 +61,7 @@ public class KayttoliittymaInterfaceTest {
         assertTrue(poisto);
         assertTrue(kayttisIO.haeYksiKirja(id) == null);
     }
-    
+
     @Test
     public void testaaHaeKaikkiKirjat() throws SQLException {
         List<Vinkki> kirjat = kayttisIO.haeKaikkiKirjat();
@@ -75,7 +76,7 @@ public class KayttoliittymaInterfaceTest {
         kirjat = kayttisIO.haeKaikkiKirjat();
         assertEquals(0, kirjat.size());
     }
-    
+
     @Test
     public void testaaMuokkaaKirjaa() throws SQLException {
         KirjaVinkki kirjaVinkki = new KirjaVinkki();
@@ -89,9 +90,9 @@ public class KayttoliittymaInterfaceTest {
         assertEquals("Seitsemän veljestä", kirjavinkki3.getNimi());
         assertEquals("Aleksis Kivi", kirjavinkki3.getTekija());
     }
-    
+
     @Test
-    public void testaaVideonLisäysJaPoisto() throws SQLException {
+    public void testaaVideonLisaysJaPoisto() throws SQLException {
         VideoVinkki videoVinkki = new VideoVinkki();
         videoVinkki.setNimi("Video");
         videoVinkki.setUrl("www.youtube.com");
@@ -104,4 +105,20 @@ public class KayttoliittymaInterfaceTest {
         assertTrue(poisto);
         assertTrue(kayttisIO.haeYksiVideo(id) == null);
     }
+
+    @Test
+    public void testaaPodcastinLisaysJaPoisto() throws SQLException {
+        PodcastVinkki podcastVinkki = new PodcastVinkki();
+        podcastVinkki.setNimi("Podcast");
+        podcastVinkki.setUrl("www.podcast.com");
+        int id = kayttisIO.lisaaPodcast(podcastVinkki);
+        assertTrue(id != -1);
+        PodcastVinkki vinkki2 = kayttisIO.haeYksiPodcast(id);
+        assertEquals(podcastVinkki.getNimi(), vinkki2.getNimi());
+        assertEquals(podcastVinkki.getUrl(), vinkki2.getUrl());
+        boolean poisto = kayttisIO.poistaPodcast(id);
+        assertTrue(poisto);
+        assertTrue(kayttisIO.haeYksiPodcast(id) == null);
+    }
+    
 }
