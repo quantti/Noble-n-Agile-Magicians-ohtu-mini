@@ -2,8 +2,6 @@ package noble.lukuvinkki.io;
 
 import java.util.ArrayList;
 import java.util.List;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
-import noble.lukuvinkki.tietokohteet.Vinkki;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,9 +14,9 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
  */
 public class StubIO implements IO {
 
-    private List<String> lines;
+    private final List<String> lines;
     private int i;
-    private ArrayList<String> prints;
+    private final ArrayList<String> prints;
     
     public StubIO() {
         this.lines = new ArrayList<>();

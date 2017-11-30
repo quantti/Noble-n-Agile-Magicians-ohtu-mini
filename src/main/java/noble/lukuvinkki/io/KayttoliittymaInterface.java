@@ -12,41 +12,55 @@ import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
+import noble.lukuvinkki.dao.PodcastVinkkiDao;
+import noble.lukuvinkki.dao.VideoVinkkiDao;
+import noble.lukuvinkki.tietokohteet.PodcastVinkki;
+import noble.lukuvinkki.tietokohteet.VideoVinkki;
 
 /**
  *
  * @author kari
  */
 public class KayttoliittymaInterface {
-    private Dao kirjavinkkiDao;
-    
+
+    private final KirjaVinkkiDao kirjavinkkiDao;
+    private final Dao podcastvinkkiDao;
+    private final Dao videovinkkiDao;
+
     public KayttoliittymaInterface(Tietokanta tietokanta) {
         this.kirjavinkkiDao = new KirjaVinkkiDao(tietokanta);
+        this.podcastvinkkiDao = new PodcastVinkkiDao(tietokanta);
+        this.videovinkkiDao = new VideoVinkkiDao(tietokanta);
     }
 
-    public List<Vinkki> haeKaikkiVinkit() throws SQLException {
-        List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
+    public List<KirjaVinkki> haeKaikkiKirjat() throws SQLException {
+        List<KirjaVinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
         return kirjavinkit;
     }
 
-    public boolean lisaaVinkki(KirjaVinkki kirjaVinkki) throws SQLException {
-        if (kirjavinkkiDao.tallenna(kirjaVinkki) != -1) {
-            return true;
-        }
-        return false;
+    public int lisaaKirja(KirjaVinkki kirjaVinkki) throws SQLException {
+        return kirjavinkkiDao.tallenna(kirjaVinkki);
+    }
+
+    public boolean lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
+        return podcastvinkkiDao.tallenna(podcastVinkki) != -1;
+    }
+
+    public boolean lisaaVideo(VideoVinkki videoVinkki) throws SQLException {
+        return videovinkkiDao.tallenna(videoVinkki) != -1;
 
     }
 
-    public Vinkki haeYksiVinkki(String id) throws SQLException {
-        Vinkki vinkki = kirjavinkkiDao.haeYksi(id);
+    public KirjaVinkki haeYksiKirja(String id) throws SQLException {
+        KirjaVinkki vinkki = kirjavinkkiDao.haeYksi(id);
         return vinkki;
     }
 
-    public boolean poistaVinkki(String id) throws SQLException {
+    public boolean poistaKirja(String id) throws SQLException {
         return kirjavinkkiDao.poistaVinkki(id);
     }
 
-    public boolean muokkaa(Vinkki vinkki) throws SQLException {
+    public boolean muokkaaKirja(KirjaVinkki vinkki) throws SQLException {
         return kirjavinkkiDao.muokkaa(vinkki);
     }
 
