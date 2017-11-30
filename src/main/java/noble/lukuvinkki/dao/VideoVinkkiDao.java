@@ -1,4 +1,3 @@
-
 package noble.lukuvinkki.dao;
 
 import java.sql.Connection;
@@ -13,11 +12,11 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 public class VideoVinkkiDao implements Dao<VideoVinkki> {
 
     private final Connection yhteys;
-    
+
     public VideoVinkkiDao(Tietokanta tietokanta) {
         this.yhteys = tietokanta.yhteys();
     }
-    
+
     @Override
     public int tallenna(VideoVinkki vinkki) throws SQLException {
         int id = -1;
@@ -33,17 +32,38 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         return id;
     }
 
-    public Vinkki haeYksi(String id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public VideoVinkki haeYksi(int id) throws SQLException {
+        String query = "SELECT * FROM video_vinkki WHERE id = ?";
+        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            VideoVinkki videoVinkki = keraa(rs);
+            return videoVinkki;
+        }
+        return null;
     }
 
+    private VideoVinkki keraa(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String nimi = rs.getString("videon_nimi");
+        String url = rs.getString("videon_url");
+        return new VideoVinkki(id, nimi, url);
+    }
+
+    @Override
     public List<Vinkki> haeKaikki() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean poistaVinkki(String id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean poistaVinkki(int id) throws SQLException {
+        String sql = "DELETE FROM video_vinkki WHERE id = ?";
+        PreparedStatement kysely = yhteys.prepareStatement(sql);
+        kysely.setInt(1, id);
+        int result = kysely.executeUpdate();
+        return result > 0;
     }
 
     @Override
@@ -51,5 +71,4 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
 }

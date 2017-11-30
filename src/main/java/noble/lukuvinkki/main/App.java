@@ -62,13 +62,13 @@ public class App {
 
     private void listaaKaikkiVinkit() {
         try {
-            List<KirjaVinkki> kaikkiVinkit = kayttisIO.haeKaikkiKirjat();
+            List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiKirjat();
             if (kaikkiVinkit == null || kaikkiVinkit.isEmpty()) {
                 io.print("Vinkkejä ei löytynyt\n");
                 return;
             }
-            for (KirjaVinkki vinkki : kaikkiVinkit) {
-                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getKirjoittaja() + ": " + vinkki.getNimi());
+            for (Vinkki vinkki : kaikkiVinkit) {
+                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getTekija()+ ": " + vinkki.getNimi());
             }
         } catch (SQLException e) {
             virhe(e);
@@ -80,7 +80,7 @@ public class App {
             String kirjoittaja = io.readLine("Syötä kirjan kirjoittaja: ");
             String nimi = io.readLine("Syötä kirjan nimi: ");
             KirjaVinkki kirjaVinkki = new KirjaVinkki();
-            kirjaVinkki.setKirjoittaja(kirjoittaja);
+            kirjaVinkki.setTekija(kirjoittaja);
             kirjaVinkki.setNimi(nimi);
             if (kayttisIO.lisaaKirja(kirjaVinkki) != -1) {
                 io.print("Vinkki lisätty!");
@@ -101,7 +101,7 @@ public class App {
             PodcastVinkki podcastVinkki = new PodcastVinkki();
             podcastVinkki.setUrl(url);
             podcastVinkki.setNimi(nimi);
-            if (kayttisIO.lisaaPodcast(podcastVinkki)) {
+            if (kayttisIO.lisaaPodcast(podcastVinkki) != -1) {
                 io.print("Vinkki lisätty!");
             } else {
                 io.print("Vinkin lisääminen epäonnistui.");
@@ -119,7 +119,7 @@ public class App {
             VideoVinkki videoVinkki = new VideoVinkki();
             videoVinkki.setUrl(url);
             videoVinkki.setNimi(nimi);
-            if (kayttisIO.lisaaVideo(videoVinkki)) {
+            if (kayttisIO.lisaaVideo(videoVinkki) != -1) {
                 io.print("Vinkki lisätty!");
             } else {
                 io.print("Vinkin lisääminen epäonnistui.");
@@ -131,16 +131,16 @@ public class App {
 
     private void muokkaaVinkkia() {
         try {
-            String id = io.readLine("Syötä muokattavan vinkin id-numero:");
+            int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
             KirjaVinkki vinkki = (KirjaVinkki) kayttisIO.haeYksiKirja(id);
             if (vinkki == null) {
                 io.print("Vinkkiä ei löytynyt, tarkista id-numero");
                 return;
             }
-            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + ((KirjaVinkki) vinkki).getKirjoittaja() + ". Syötä uusi kirjoittaja tai"
+            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + ((KirjaVinkki) vinkki).getTekija()+ ". Syötä uusi kirjoittaja tai"
                     + " jätä tyhjäksi jos haluat säilyttää saman.");
             if (!kirjoittaja.isEmpty()) {
-                ((KirjaVinkki) vinkki).setKirjoittaja(kirjoittaja);
+                ((KirjaVinkki) vinkki).setTekija(kirjoittaja);
                 io.print("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
             }
 
@@ -162,7 +162,7 @@ public class App {
 
     private void poistaVinkki() {
         try {
-            String id = io.readLine("Anna poistettavan vinkin id-numero:");
+            int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
             Vinkki vinkki = kayttisIO.haeYksiKirja(id);
             if (vinkki == null) {
                 io.print("Vinkkiä ei löytynyt, tarkista id-numero");

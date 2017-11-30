@@ -5,6 +5,17 @@ public class VideoVinkki implements Vinkki {
     private int id;
     private String nimi;
     private String url;
+    private String tekija;
+    
+    public VideoVinkki() {
+        
+    }
+    
+    public VideoVinkki(int id, String nimi, String url) {
+        this.id = id;
+        this.nimi = nimi;
+        this.url = url;
+    }
 
     public int getId() {
         return id;
@@ -41,5 +52,15 @@ public class VideoVinkki implements Vinkki {
         sb.append("nimi = ").append(getNimi());
         sb.append(", url = ").append(getUrl());
         return sb.append("}").toString();
+    }
+
+    @Override
+    public void setTekija(String tekija) {
+        this.tekija = tekija;
+    }
+
+    @Override
+    public String getTekija() {
+        return this.tekija;
     }
 }

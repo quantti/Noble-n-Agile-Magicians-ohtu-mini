@@ -10,4 +10,8 @@ public interface Vinkki {
     public void setId(int aInt);
 
     public int getId();
+    
+    public void setTekija(String tekija);
+    
+    public String getTekija();
 }
