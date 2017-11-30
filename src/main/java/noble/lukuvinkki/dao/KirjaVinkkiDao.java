@@ -29,12 +29,19 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     @Override
     public int tallenna(KirjaVinkki vinkki) throws SQLException {
         int id = -1;
+
+        if (vinkki.getTekija().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
+
+
         String sql = "INSERT INTO kirja_vinkki(kirjan_nimi, kirjan_kirjoittaja) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
         kysely.setString(2, vinkki.getTekija());
         kysely.executeUpdate();
         ResultSet rs = yhteys.createStatement().executeQuery("SELECT last_insert_rowid() as id");
+
         if (rs.next()) {
             id = rs.getInt("id");
         }
@@ -78,6 +85,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         kysely.setInt(1, id);
         int result = kysely.executeUpdate();
         return result > 0;
+
     }
 
     @Override

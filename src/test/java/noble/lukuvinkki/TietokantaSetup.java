@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public class TietokantaSetup {
 
-    public static Tietokanta alustaTestiTietokanta() {
+    public static Tietokanta alustaTestiTietokanta(String osoite) {
         try {
-            Tietokanta tietokanta = new Tietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
+            Tietokanta tietokanta = new Tietokanta(osoite);
             String sql1 = "DROP TABLE IF EXISTS kirja_vinkki;";
             String sql2 = "DROP TABLE IF EXISTS video_vinkki";
             String sql3 = "DROP TABLE IF EXISTS podcast_vinkki";

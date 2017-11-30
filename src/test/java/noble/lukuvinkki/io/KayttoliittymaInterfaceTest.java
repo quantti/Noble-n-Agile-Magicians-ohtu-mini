@@ -29,7 +29,7 @@ public class KayttoliittymaInterfaceTest {
 
     @Before
     public void setUp() {
-        tietokanta = TietokantaSetup.alustaTestiTietokanta();
+        tietokanta = TietokantaSetup.alustaTestiTietokanta("jdbc:sqlite:tietokanta/testaus.sqlite3");
         kayttisIO = new KayttoliittymaInterface(tietokanta);
     }
 
