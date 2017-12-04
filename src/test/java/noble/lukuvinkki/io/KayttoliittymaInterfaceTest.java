@@ -76,6 +76,61 @@ public class KayttoliittymaInterfaceTest {
         kirjat = kayttisIO.haeKaikkiKirjat();
         assertEquals(0, kirjat.size());
     }
+    
+    @Test
+    public void testaaHaeKaikkiVideot() throws SQLException {
+        List<Vinkki> videot = kayttisIO.haeKaikkiVideot();
+        assertEquals(0, videot.size());
+        VideoVinkki videoVinkki = new VideoVinkki();
+        videoVinkki.setNimi("Video");
+        videoVinkki.setUrl("www.google.com");
+        int id = kayttisIO.lisaaVideo(videoVinkki);
+        videot = kayttisIO.haeKaikkiVideot();
+        assertEquals(1, videot.size());
+        assertEquals("Video", videot.get(0).getNimi());
+        kayttisIO.poistaVideo(id);
+        videot = kayttisIO.haeKaikkiVideot();
+        assertEquals(0, videot.size());
+    }
+    
+    @Test
+    public void testaaHaeKaikki() throws SQLException {
+        List<Vinkki> kaikki = kayttisIO.haeKaikkiVinkit();
+        assertEquals(0, kaikki.size());
+        KirjaVinkki kirjaVinkki = new KirjaVinkki();
+        kirjaVinkki.setTekija("Arto Paasilinna");
+        kirjaVinkki.setNimi("Jäniksen vuosi");
+        int kirjaId = kayttisIO.lisaaKirja(kirjaVinkki);
+        VideoVinkki videoVinkki = new VideoVinkki();
+        videoVinkki.setNimi("Video");
+        videoVinkki.setUrl("www.google.com");
+        int videoId = kayttisIO.lisaaVideo(videoVinkki);
+        PodcastVinkki podcastVinkki = new PodcastVinkki();
+        podcastVinkki.setNimi("podcast");
+        podcastVinkki.setUrl("www.podcast.com");
+        int podcastId = kayttisIO.lisaaPodcast(podcastVinkki);
+        kaikki = kayttisIO.haeKaikkiVinkit();
+        assertEquals(3, kaikki.size());
+        assertEquals("Jäniksen vuosi", kaikki.get(0).getNimi());
+        assertEquals("podcast", kaikki.get(1).getNimi());
+        assertEquals("Video", kaikki.get(2).getNimi());
+    }
+    
+    @Test
+    public void testaaHaeKaikkiPodcastit() throws SQLException {
+        List<Vinkki> podcastit = kayttisIO.haeKaikkiPodcastit();
+        assertEquals(0, podcastit.size());
+        PodcastVinkki podcastVinkki = new PodcastVinkki();
+        podcastVinkki.setNimi("podcast");
+        podcastVinkki.setUrl("www.podcast.com");
+        int id = kayttisIO.lisaaPodcast(podcastVinkki);
+        podcastit = kayttisIO.haeKaikkiPodcastit();
+        assertEquals(1, podcastit.size());
+        assertEquals("podcast", podcastit.get(0).getNimi());
+        kayttisIO.poistaPodcast(id);
+        podcastit = kayttisIO.haeKaikkiPodcastit();
+        assertEquals(0, podcastit.size());
+    }
 
     @Test
     public void testaaMuokkaaKirjaa() throws SQLException {
