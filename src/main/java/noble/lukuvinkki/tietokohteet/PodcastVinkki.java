@@ -62,9 +62,6 @@ public class PodcastVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("KirjaVinkki{");
-        sb.append("nimi = ").append(getNimi());
-        sb.append(", url = ").append(getUrl());
-        return sb.append("}").toString();
+        return "Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl();
     }
 }

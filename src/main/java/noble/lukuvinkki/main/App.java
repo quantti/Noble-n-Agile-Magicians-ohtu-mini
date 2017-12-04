@@ -29,6 +29,7 @@ public class App {
     }
 
     public void kaynnista() {
+        io.print("\nTervetuloa käyttämään Lukuvinkkiä!\n");
         kysy();
     }
 
@@ -37,7 +38,7 @@ public class App {
     }
 
     private void listaaValikko() {
-        io.print("?nTervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
+        io.print("\nValitse alta haluamasi toiminto:\n");
         io.print("a) Listaa vinkkejä");
         io.print("b) lisää uusi kirjavinkki");
         io.print("c) lisää uusi podcastvinkki");
@@ -61,7 +62,7 @@ public class App {
             paaValikonValinnat(vastaus);
         }
     }
-    
+
     private void listaaVinkkejäValikko() {
         io.print("1) Listaa kaikki vinkit");
         io.print("2) Listaa kaikki kirjat");
@@ -69,7 +70,7 @@ public class App {
         io.print("4) Listaa kaikki podcastit");
 //        io.print("5) Listaa kaikki blogit");
     }
-    
+
     private void valitseListattavatVinkit() {
         listaaVinkkejäValikko();
         String valinta = io.readLine("Anna valintasi: ");
@@ -82,14 +83,14 @@ public class App {
             if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVinkit)) {
                 return;
             }
-            kaikkiVinkit.stream().forEach((vinkki) -> {
+            for (Vinkki vinkki : kaikkiVinkit) {
                 System.out.println(vinkki);
-            });
+            }
         } catch (SQLException ex) {
             virhe(ex);
         }
     }
-    
+
     private void listaaKaikkiKirjat() {
         try {
             List<Vinkki> kaikkiKirjat = kayttisIO.haeKaikkiKirjat();
@@ -97,7 +98,7 @@ public class App {
                 return;
             }
             for (Vinkki vinkki : kaikkiKirjat) {
-                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getTekija()+ ": " + vinkki.getNimi());
+                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getTekija() + ": " + vinkki.getNimi());
             }
         } catch (SQLException e) {
             virhe(e);
@@ -105,19 +106,39 @@ public class App {
     }
 
     private void listaaKaikkiVideot() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            List<Vinkki> kaikkiVideot = kayttisIO.haeKaikkiVideot();
+            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVideot)) {
+                return;
+            }
+            for (Vinkki vinkki : kaikkiVideot) {
+                System.out.println(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void listaaKaikkiPodcastit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            List<Vinkki> kaikkiPodcastit = kayttisIO.haeKaikkiPodcastit();
+            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiPodcastit)) {
+                return;
+            }
+            for (Vinkki vinkki : kaikkiPodcastit) {
+                System.out.println(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+
     private boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
-                io.print("Vinkkejä ei löytynyt\n");
-                return false;
-            }
-        return true;
+            io.print("Vinkkejä ei löytynyt\n");
+            return true;
+        }
+        return false;
     }
 
     private void lisaaKirjaVinkki() {
@@ -182,7 +203,7 @@ public class App {
                 io.print("Vinkkiä ei löytynyt, tarkista id-numero");
                 return;
             }
-            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + ((KirjaVinkki) vinkki).getTekija()+ ". Syötä uusi kirjoittaja tai"
+            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + ((KirjaVinkki) vinkki).getTekija() + ". Syötä uusi kirjoittaja tai"
                     + " jätä tyhjäksi jos haluat säilyttää saman.");
             if (!kirjoittaja.isEmpty()) {
                 ((KirjaVinkki) vinkki).setTekija(kirjoittaja);
@@ -250,7 +271,7 @@ public class App {
     }
 
     private void vinkkiValikonValinnat(String valinta) {
-        switch(valinta) {
+        switch (valinta) {
             case "1":
                 listaaKaikkiVinkit();
                 break;

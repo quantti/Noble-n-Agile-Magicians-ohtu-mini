@@ -34,27 +34,18 @@ public class KayttoliittymaInterface {
         this.videovinkkiDao = new VideoVinkkiDao(tietokanta);
     }
 
-    public List<Vinkki> haeKaikkiKirjat() throws SQLException {
-        List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
-        return kirjavinkit;
-    }
-
     public int lisaaKirja(KirjaVinkki kirjaVinkki) throws SQLException {
         return kirjavinkkiDao.tallenna(kirjaVinkki);
-    }
-
-    public int lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
-        return podcastvinkkiDao.tallenna(podcastVinkki);
-    }
-
-    public int lisaaVideo(VideoVinkki videoVinkki) throws SQLException {
-        return videovinkkiDao.tallenna(videoVinkki);
-
     }
 
     public KirjaVinkki haeYksiKirja(int id) throws SQLException {
         KirjaVinkki vinkki = kirjavinkkiDao.haeYksi(id);
         return vinkki;
+    }
+    
+    public List<Vinkki> haeKaikkiKirjat() throws SQLException {
+        List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
+        return kirjavinkit;
     }
 
     public boolean poistaKirja(int id) throws SQLException {
@@ -65,18 +56,37 @@ public class KayttoliittymaInterface {
         return kirjavinkkiDao.muokkaa(vinkki);
     }
     
+    public int lisaaVideo(VideoVinkki videoVinkki) throws SQLException {
+        return videovinkkiDao.tallenna(videoVinkki);
+
+    }
+    
     public VideoVinkki haeYksiVideo(int id) throws SQLException {
         VideoVinkki vinkki = (VideoVinkki) videovinkkiDao.haeYksi(id);
         return vinkki;
+    }
+    
+    public List<Vinkki> haeKaikkiVideot() throws SQLException {
+        List<Vinkki> videoVinkit = videovinkkiDao.haeKaikki();
+        return videoVinkit;
     }
     
     public boolean poistaVideo(int id) throws SQLException {
         return videovinkkiDao.poistaVinkki(id);
     }
     
+    public int lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
+        return podcastvinkkiDao.tallenna(podcastVinkki);
+    }
+    
     public PodcastVinkki haeYksiPodcast(int id) throws SQLException {
         PodcastVinkki vinkki = (PodcastVinkki) podcastvinkkiDao.haeYksi(id);
         return vinkki;
+    }
+    
+    public List<Vinkki> haeKaikkiPodcastit() throws SQLException {
+        List<Vinkki> podcastVinkit = podcastvinkkiDao.haeKaikki();
+        return podcastVinkit;
     }
     
     public boolean poistaPodcast(int id) throws SQLException {
@@ -86,6 +96,8 @@ public class KayttoliittymaInterface {
     public List<Vinkki> haeKaikkiVinkit() throws SQLException {
         List<Vinkki> kaikkiVinkit = new ArrayList<>();
         kaikkiVinkit.addAll(this.haeKaikkiKirjat());
+        kaikkiVinkit.addAll(this.haeKaikkiPodcastit());
+        kaikkiVinkit.addAll(this.haeKaikkiVideot());
         return kaikkiVinkit;
     }
 }

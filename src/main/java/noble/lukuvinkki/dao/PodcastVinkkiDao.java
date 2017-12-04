@@ -5,9 +5,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
+import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 
@@ -58,7 +60,18 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     @Override
     public List haeKaikki() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> podcastVinkit = new ArrayList<>();
+        String query = "SELECT * FROM podcast_vinkki";
+        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            PodcastVinkki vinkki = new PodcastVinkki();
+            vinkki.setId(rs.getInt("id"));
+            vinkki.setNimi(rs.getString("podcastin_nimi"));
+            vinkki.setUrl(rs.getString("podcastin_url"));
+            podcastVinkit.add(vinkki);
+        }
+        return podcastVinkit;
     }
 
     @Override
