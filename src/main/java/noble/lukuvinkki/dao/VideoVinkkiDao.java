@@ -36,9 +36,9 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     @Override
     public VideoVinkki haeYksi(int id) throws SQLException {
         String query = "SELECT * FROM video_vinkki WHERE id = ?";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setInt(1, id);
+        ResultSet rs = kysely.executeQuery();
         if (rs.next()) {
             VideoVinkki videoVinkki = keraa(rs);
             return videoVinkki;
@@ -57,13 +57,10 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     public List<Vinkki> haeKaikki() throws SQLException {
         List<Vinkki> videoVinkit = new ArrayList<>();
         String query = "SELECT * FROM video_vinkki";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            VideoVinkki vinkki = new VideoVinkki();
-            vinkki.setId(rs.getInt("id"));
-            vinkki.setNimi(rs.getString("videon_nimi"));
-            vinkki.setUrl(rs.getString("videon_url"));
+            VideoVinkki vinkki = keraa(rs);
             videoVinkit.add(vinkki);
         }
         return videoVinkit;
@@ -81,6 +78,20 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> haeOtsikolla(String hakutermi) throws SQLException {
+        List<Vinkki> vinkit = new ArrayList<>();
+        String query = "SELECT * FROM video_vinkki WHERE videon_nimi LIKE ?";
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setString(1, "%" + hakutermi + "%");
+        ResultSet rs = kysely.executeQuery();
+        while (rs.next()) {            
+            VideoVinkki vinkki = keraa(rs);
+            vinkit.add(vinkki);
+        }
+        return vinkit;
     }
 
 }
