@@ -7,6 +7,8 @@ import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 
@@ -36,7 +38,7 @@ public class App {
 
     private void listaaValikko() {
         io.print("?nTervetuloa käyttämään Lukuvinkkiä!\n\nValitse alta haluamasi toiminto:\n");
-        io.print("a) Listaa kaikki vinkit");
+        io.print("a) Listaa vinkkejä");
         io.print("b) lisää uusi kirjavinkki");
         io.print("c) lisää uusi podcastvinkki");
         io.print("d) lisää uusi videovinkki");
@@ -56,23 +58,66 @@ public class App {
                 break;
             }
 
-            valikko(vastaus);
+            paaValikonValinnat(vastaus);
         }
+    }
+    
+    private void listaaVinkkejäValikko() {
+        io.print("1) Listaa kaikki vinkit");
+        io.print("2) Listaa kaikki kirjat");
+        io.print("3) Listaa kaikki videot");
+        io.print("4) Listaa kaikki podcastit");
+//        io.print("5) Listaa kaikki blogit");
+    }
+    
+    private void valitseListattavatVinkit() {
+        listaaVinkkejäValikko();
+        String valinta = io.readLine("Anna valintasi: ");
+        vinkkiValikonValinnat(valinta);
     }
 
     private void listaaKaikkiVinkit() {
         try {
-            List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiKirjat();
-            if (kaikkiVinkit == null || kaikkiVinkit.isEmpty()) {
-                io.print("Vinkkejä ei löytynyt\n");
+            List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiVinkit();
+            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVinkit)) {
                 return;
             }
-            for (Vinkki vinkki : kaikkiVinkit) {
+            kaikkiVinkit.stream().forEach((vinkki) -> {
+                System.out.println(vinkki);
+            });
+        } catch (SQLException ex) {
+            virhe(ex);
+        }
+    }
+    
+    private void listaaKaikkiKirjat() {
+        try {
+            List<Vinkki> kaikkiKirjat = kayttisIO.haeKaikkiKirjat();
+            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiKirjat)) {
+                return;
+            }
+            for (Vinkki vinkki : kaikkiKirjat) {
                 System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getTekija()+ ": " + vinkki.getNimi());
             }
         } catch (SQLException e) {
             virhe(e);
         }
+    }
+
+    private void listaaKaikkiVideot() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void listaaKaikkiPodcastit() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    private boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
+        if (lista == null || lista.isEmpty()) {
+                io.print("Vinkkejä ei löytynyt\n");
+                return false;
+            }
+        return true;
     }
 
     private void lisaaKirjaVinkki() {
@@ -179,10 +224,10 @@ public class App {
         }
     }
 
-    private void valikko(String vastaus) {
-        switch (vastaus) {
+    private void paaValikonValinnat(String valinta) {
+        switch (valinta) {
             case "a":
-                listaaKaikkiVinkit();
+                valitseListattavatVinkit();
                 break;
             case "b":
                 lisaaKirjaVinkki();
@@ -200,8 +245,29 @@ public class App {
                 poistaVinkki();
                 break;
             default:
-                io.print("Väärä komento");
+                io.print("Väärä valinta");
         }
     }
 
+    private void vinkkiValikonValinnat(String valinta) {
+        switch(valinta) {
+            case "1":
+                listaaKaikkiVinkit();
+                break;
+            case "2":
+                listaaKaikkiKirjat();
+                break;
+            case "3":
+                listaaKaikkiVideot();
+                break;
+            case "4":
+                listaaKaikkiPodcastit();
+                break;
+//            case "5":
+//                listaaKaikkiBlogit();
+//                break;
+            default:
+                io.print("Väärä valinta");
+        }
+    }
 }

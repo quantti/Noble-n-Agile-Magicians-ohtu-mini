@@ -12,6 +12,7 @@ import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import noble.lukuvinkki.dao.PodcastVinkkiDao;
 import noble.lukuvinkki.dao.VideoVinkkiDao;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
@@ -80,5 +81,11 @@ public class KayttoliittymaInterface {
     
     public boolean poistaPodcast(int id) throws SQLException {
         return podcastvinkkiDao.poistaVinkki(id);
+    }
+
+    public List<Vinkki> haeKaikkiVinkit() throws SQLException {
+        List<Vinkki> kaikkiVinkit = new ArrayList<>();
+        kaikkiVinkit.addAll(this.haeKaikkiKirjat());
+        return kaikkiVinkit;
     }
 }
