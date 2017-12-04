@@ -61,10 +61,6 @@ public class KirjaVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("KirjaVinkki{");
-        sb.append("id = ").append(getId());
-        sb.append(", nimi = ").append(getNimi());
-        sb.append(", kirjoittaja = ").append(getTekija());
-        return sb.append("}").toString();
+        return "Id: " + this.getId() + "\n" + this.getTekija() + ": " + this.getNimi() + "";
     }
 }

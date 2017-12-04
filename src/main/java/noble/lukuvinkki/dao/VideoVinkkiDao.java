@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
@@ -54,7 +55,18 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
 
     @Override
     public List<Vinkki> haeKaikki() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Vinkki> videoVinkit = new ArrayList<>();
+        String query = "SELECT * FROM video_vinkki";
+        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            VideoVinkki vinkki = new VideoVinkki();
+            vinkki.setId(rs.getInt("id"));
+            vinkki.setNimi(rs.getString("videon_nimi"));
+            vinkki.setUrl(rs.getString("videon_url"));
+            videoVinkit.add(vinkki);
+        }
+        return videoVinkit;
     }
 
     @Override

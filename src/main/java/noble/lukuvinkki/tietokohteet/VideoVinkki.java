@@ -7,11 +7,10 @@ public class VideoVinkki implements Vinkki {
     private String url;
     private String tekija;
 
-    public VideoVinkki(){
-        
+    public VideoVinkki() {
+
     }
-            
-    
+
     public VideoVinkki(int id, String nimi, String url) {
         this.id = id;
         this.nimi = nimi;
@@ -49,10 +48,7 @@ public class VideoVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("KirjaVinkki{");
-        sb.append("nimi = ").append(getNimi());
-        sb.append(", url = ").append(getUrl());
-        return sb.append("}").toString();
+        return "Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl();
     }
 
     @Override
