@@ -76,7 +76,7 @@ public class KayttoliittymaInterfaceTest {
         kirjat = kayttisIO.haeKaikkiKirjat();
         assertEquals(0, kirjat.size());
     }
-    
+
     @Test
     public void testaaHaeKaikkiVideot() throws SQLException {
         List<Vinkki> videot = kayttisIO.haeKaikkiVideot();
@@ -92,7 +92,7 @@ public class KayttoliittymaInterfaceTest {
         videot = kayttisIO.haeKaikkiVideot();
         assertEquals(0, videot.size());
     }
-    
+
     @Test
     public void testaaHaeKaikki() throws SQLException {
         List<Vinkki> kaikki = kayttisIO.haeKaikkiVinkit();
@@ -100,22 +100,22 @@ public class KayttoliittymaInterfaceTest {
         KirjaVinkki kirjaVinkki = new KirjaVinkki();
         kirjaVinkki.setTekija("Arto Paasilinna");
         kirjaVinkki.setNimi("Jäniksen vuosi");
-        int kirjaId = kayttisIO.lisaaKirja(kirjaVinkki);
+        kayttisIO.lisaaKirja(kirjaVinkki);
         VideoVinkki videoVinkki = new VideoVinkki();
         videoVinkki.setNimi("Video");
         videoVinkki.setUrl("www.google.com");
-        int videoId = kayttisIO.lisaaVideo(videoVinkki);
+        kayttisIO.lisaaVideo(videoVinkki);
         PodcastVinkki podcastVinkki = new PodcastVinkki();
         podcastVinkki.setNimi("podcast");
         podcastVinkki.setUrl("www.podcast.com");
-        int podcastId = kayttisIO.lisaaPodcast(podcastVinkki);
+        kayttisIO.lisaaPodcast(podcastVinkki);
         kaikki = kayttisIO.haeKaikkiVinkit();
         assertEquals(3, kaikki.size());
         assertEquals("Jäniksen vuosi", kaikki.get(0).getNimi());
         assertEquals("podcast", kaikki.get(1).getNimi());
         assertEquals("Video", kaikki.get(2).getNimi());
     }
-    
+
     @Test
     public void testaaHaeKaikkiPodcastit() throws SQLException {
         List<Vinkki> podcastit = kayttisIO.haeKaikkiPodcastit();
@@ -175,5 +175,5 @@ public class KayttoliittymaInterfaceTest {
         assertTrue(poisto);
         assertTrue(kayttisIO.haeYksiPodcast(id) == null);
     }
-    
+
 }

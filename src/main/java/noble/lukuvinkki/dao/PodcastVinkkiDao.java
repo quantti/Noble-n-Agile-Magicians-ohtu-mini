@@ -1,4 +1,3 @@
-
 package noble.lukuvinkki.dao;
 
 import java.sql.Connection;
@@ -7,20 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
-import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
-
 
 public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     private final Connection yhteys;
-    
+
     public PodcastVinkkiDao(Tietokanta tietokanta) {
         this.yhteys = tietokanta.yhteys();
     }
-    
+
     @Override
     public int tallenna(PodcastVinkki vinkki) throws SQLException {
         int id = -1;
@@ -36,10 +32,9 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         return id;
     }
 
-    
     @Override
     public PodcastVinkki haeYksi(int id) throws SQLException {
-             String query = "SELECT * FROM podcast_vinkki WHERE id = ?";
+        String query = "SELECT * FROM podcast_vinkki WHERE id = ?";
         PreparedStatement preparedStatement = yhteys.prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet rs = preparedStatement.executeQuery();
@@ -49,14 +44,13 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         }
         return null;
     }
-    
+
     private PodcastVinkki keraa(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String nimi = rs.getString("podcastin_nimi");
         String url = rs.getString("podcastin_url");
         return new PodcastVinkki(id, nimi, url);
     }
-    
 
     @Override
     public List haeKaikki() throws SQLException {

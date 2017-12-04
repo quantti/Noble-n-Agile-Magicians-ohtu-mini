@@ -7,18 +7,16 @@ public class PodcastVinkki implements Vinkki {
     private String url;
     private String tekija;
 
-    public PodcastVinkki(){
-        
+    public PodcastVinkki() {
+
     }
-    
-    
+
     public PodcastVinkki(int id, String nimi, String url) {
         this.id = id;
         this.nimi = nimi;
         this.url = url;
     }
-    
-    
+
     public int getId() {
         return id;
     }
@@ -57,8 +55,6 @@ public class PodcastVinkki implements Vinkki {
     public void setTekija(String tekija) {
         this.tekija = tekija;
     }
-    
-    
 
     @Override
     public String toString() {

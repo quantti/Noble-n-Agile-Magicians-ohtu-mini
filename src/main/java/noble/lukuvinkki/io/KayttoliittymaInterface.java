@@ -42,7 +42,7 @@ public class KayttoliittymaInterface {
         KirjaVinkki vinkki = kirjavinkkiDao.haeYksi(id);
         return vinkki;
     }
-    
+
     public List<Vinkki> haeKaikkiKirjat() throws SQLException {
         List<Vinkki> kirjavinkit = kirjavinkkiDao.haeKaikki();
         return kirjavinkit;
@@ -55,40 +55,40 @@ public class KayttoliittymaInterface {
     public boolean muokkaaKirja(KirjaVinkki vinkki) throws SQLException {
         return kirjavinkkiDao.muokkaa(vinkki);
     }
-    
+
     public int lisaaVideo(VideoVinkki videoVinkki) throws SQLException {
         return videovinkkiDao.tallenna(videoVinkki);
 
     }
-    
+
     public VideoVinkki haeYksiVideo(int id) throws SQLException {
         VideoVinkki vinkki = (VideoVinkki) videovinkkiDao.haeYksi(id);
         return vinkki;
     }
-    
+
     public List<Vinkki> haeKaikkiVideot() throws SQLException {
         List<Vinkki> videoVinkit = videovinkkiDao.haeKaikki();
         return videoVinkit;
     }
-    
+
     public boolean poistaVideo(int id) throws SQLException {
         return videovinkkiDao.poistaVinkki(id);
     }
-    
+
     public int lisaaPodcast(PodcastVinkki podcastVinkki) throws SQLException {
         return podcastvinkkiDao.tallenna(podcastVinkki);
     }
-    
+
     public PodcastVinkki haeYksiPodcast(int id) throws SQLException {
         PodcastVinkki vinkki = (PodcastVinkki) podcastvinkkiDao.haeYksi(id);
         return vinkki;
     }
-    
+
     public List<Vinkki> haeKaikkiPodcastit() throws SQLException {
         List<Vinkki> podcastVinkit = podcastvinkkiDao.haeKaikki();
         return podcastVinkit;
     }
-    
+
     public boolean poistaPodcast(int id) throws SQLException {
         return podcastvinkkiDao.poistaVinkki(id);
     }

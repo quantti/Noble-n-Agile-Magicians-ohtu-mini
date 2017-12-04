@@ -7,11 +7,10 @@ public class VideoVinkki implements Vinkki {
     private String url;
     private String tekija;
 
-    public VideoVinkki(){
-        
+    public VideoVinkki() {
+
     }
-            
-    
+
     public VideoVinkki(int id, String nimi, String url) {
         this.id = id;
         this.nimi = nimi;
