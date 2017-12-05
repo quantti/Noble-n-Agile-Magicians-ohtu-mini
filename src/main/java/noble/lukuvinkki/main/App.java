@@ -25,6 +25,14 @@ public class App {
             e.printStackTrace();
         }
     }
+    public App(IO io, Tietokanta tietokanta) {
+        try {
+            kayttisIO = new KayttoliittymaInterface(tietokanta);
+            this.io = io;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void kaynnista() {
         kysy();
