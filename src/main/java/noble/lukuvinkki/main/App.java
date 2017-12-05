@@ -69,6 +69,8 @@ public class App {
         io.print("3) Listaa kaikki videot");
         io.print("4) Listaa kaikki podcastit");
 //        io.print("5) Listaa kaikki blogit");
+        io.print("6) Hae Vinkkiä otsikolla");
+        io.print("7) Palaa päävalikkoon");
     }
 
     private void valitseListattavatVinkit() {
@@ -126,6 +128,21 @@ public class App {
                 return;
             }
             for (Vinkki vinkki : kaikkiPodcastit) {
+                System.out.println(vinkki);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void haeOtsikolla() {
+        try {
+            String hakutermi = io.readLine("Anna hakutermi");
+            List<Vinkki> vinkit = kayttisIO.haeKaikkiaOtsikolla(hakutermi);
+            if (tarkistaOnkoListaTyhjaTaiNull(vinkit)) {
+                return;
+            }
+            for (Vinkki vinkki : vinkit) {
                 System.out.println(vinkki);
             }
         } catch (SQLException ex) {
@@ -287,8 +304,16 @@ public class App {
 //            case "5":
 //                listaaKaikkiBlogit();
 //                break;
+            case "6":
+                haeOtsikolla();
+                break;
+            case "7":
+                return;
             default:
                 io.print("Väärä valinta");
+                break;
         }
     }
+
+    
 }

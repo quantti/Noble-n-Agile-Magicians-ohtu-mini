@@ -51,9 +51,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     @Override
     public KirjaVinkki haeYksi(int id) throws SQLException {
         String query = "SELECT * FROM kirja_vinkki WHERE id = ?";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setInt(1, id);
+        ResultSet rs = kysely.executeQuery();
         
         if (rs.next()) {
             KirjaVinkki vinkki = keraa(rs);
@@ -66,8 +66,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     public List<Vinkki> haeKaikki() throws SQLException {
         List<Vinkki> kirjavinkit = new ArrayList<>();
         String query = "SELECT * FROM kirja_vinkki";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
             KirjaVinkki vinkki = new KirjaVinkki();
             vinkki.setId(rs.getInt("id"));
@@ -100,5 +100,19 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         kysely.setInt(3, id);
         int result = kysely.executeUpdate();
         return result > 0;
+    }
+
+    @Override
+    public List<Vinkki> haeOtsikolla(String hakutermi) throws SQLException {
+        List<Vinkki> vinkit = new ArrayList<>();
+        String query = "SELECT * FROM kirja_vinkki WHERE kirjan_nimi LIKE ?";
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setString(1, "%" + hakutermi + "%");
+        ResultSet rs = kysely.executeQuery();
+        while (rs.next()) {            
+            KirjaVinkki vinkki = keraa(rs);
+            vinkit.add(vinkki);
+        }
+        return vinkit;
     }
 }

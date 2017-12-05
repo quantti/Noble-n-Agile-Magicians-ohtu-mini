@@ -176,4 +176,16 @@ public class KayttoliittymaInterfaceTest {
         assertTrue(kayttisIO.haeYksiPodcast(id) == null);
     }
 
+    @Test
+    public void testaaHaeKaikkiaOtsikolla() throws SQLException {
+        List<Vinkki> kaikki = kayttisIO.haeKaikkiVinkit();
+        assertEquals(0, kaikki.size());
+        kayttisIO.lisaaKirja(new KirjaVinkki(1, "Tuntematon sotilas", "Väinö Linna"));
+        kayttisIO.lisaaPodcast(new PodcastVinkki(1, "Koodisotilas", "www.google.fi"));
+        kayttisIO.lisaaVideo(new VideoVinkki(1, "Tuntematon uhka", "www.youtube.com"));
+        List<Vinkki> vinkit = kayttisIO.haeKaikkiaOtsikolla("Tuntematon");
+        assertEquals(2, vinkit.size());
+        vinkit = kayttisIO.haeKaikkiaOtsikolla("sotilas");
+        assertEquals(2, vinkit.size());
+    }
 }

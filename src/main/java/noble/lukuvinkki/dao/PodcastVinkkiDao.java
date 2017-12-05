@@ -35,9 +35,9 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public PodcastVinkki haeYksi(int id) throws SQLException {
         String query = "SELECT * FROM podcast_vinkki WHERE id = ?";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        preparedStatement.setInt(1, id);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setInt(1, id);
+        ResultSet rs = kysely.executeQuery();
         if (rs.next()) {
             PodcastVinkki podcastVinkki = keraa(rs);
             return podcastVinkki;
@@ -56,8 +56,8 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     public List haeKaikki() throws SQLException {
         List<Vinkki> podcastVinkit = new ArrayList<>();
         String query = "SELECT * FROM podcast_vinkki";
-        PreparedStatement preparedStatement = yhteys.prepareStatement(query);
-        ResultSet rs = preparedStatement.executeQuery();
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
             PodcastVinkki vinkki = new PodcastVinkki();
             vinkki.setId(rs.getInt("id"));
@@ -80,6 +80,20 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Vinkki> haeOtsikolla(String hakutermi) throws SQLException {
+        List<Vinkki> vinkit = new ArrayList<>();
+        String query = "SELECT * FROM podcast_vinkki WHERE podcastin_nimi LIKE ?";
+        PreparedStatement kysely = yhteys.prepareStatement(query);
+        kysely.setString(1, "%" + hakutermi + "%");
+        ResultSet rs = kysely.executeQuery();
+        while (rs.next()) {            
+            PodcastVinkki podcastVinkki = keraa(rs);
+            vinkit.add(podcastVinkki);
+        }
+        return vinkit;
     }
 
 }
