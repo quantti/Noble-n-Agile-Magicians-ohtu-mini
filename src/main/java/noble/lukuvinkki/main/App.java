@@ -76,7 +76,7 @@ public class App {
                 return;
             }
             for (KirjaVinkki vinkki : kaikkiVinkit) {
-                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getKirjoittaja() + ": " + vinkki.getNimi());
+                io.print("Id: " + vinkki.getId() + "\n" + vinkki.getKirjoittaja() + ": " + vinkki.getNimi());
             }
         } catch (SQLException e) {
             virhe(e);
