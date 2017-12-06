@@ -71,13 +71,23 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         String sql = "DELETE FROM video_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, id);
-        int result = kysely.executeUpdate();
-        return result > 0;
+        int tulos = kysely.executeUpdate();
+        return tulos > 0;
     }
 
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        VideoVinkki videoVinkki = (VideoVinkki) vinkki;
+        int id = videoVinkki.getId();
+        String nimi = videoVinkki.getNimi();
+        String url = videoVinkki.getUrl();
+        String sql = "UPDATE video_vinkki SET videon_nimi = ?, videon_url = ? WHERE id = ?";
+        PreparedStatement paivitys = yhteys.prepareStatement(sql);
+        paivitys.setString(1, nimi);
+        paivitys.setString(2, url);
+        paivitys.setInt(3, id);
+        int tulos = paivitys.executeUpdate();
+        return tulos > 0;
     }
 
     @Override

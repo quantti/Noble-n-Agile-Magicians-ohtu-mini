@@ -139,11 +139,35 @@ public class KayttoliittymaInterfaceTest {
         kirjaVinkki.setNimi("Jäniksen vuosi");
         int id = kayttisIO.lisaaKirja(kirjaVinkki);
         KirjaVinkki kirjaVinkki2 = new KirjaVinkki(id, "Seitsemän veljestä", "Aleksis Kivi");
-        boolean muokkaus = kayttisIO.muokkaaKirja(kirjaVinkki2);
+        boolean muokkaus = kayttisIO.muokkaaKirjaa(kirjaVinkki2);
         assertTrue(muokkaus);
         KirjaVinkki kirjavinkki3 = kayttisIO.haeYksiKirja(id);
         assertEquals("Seitsemän veljestä", kirjavinkki3.getNimi());
         assertEquals("Aleksis Kivi", kirjavinkki3.getTekija());
+    }
+    
+    @Test
+    public void testaaMuokkaaVideota() throws SQLException {
+        VideoVinkki vinkki = new VideoVinkki(0, "joku", "amazon.fi");
+        int id = kayttisIO.lisaaVideo(vinkki);
+        VideoVinkki vinkki2 = new VideoVinkki(id, "jotain", "www.yahoo.com");
+        boolean muokkaus = kayttisIO.muokkaaVideota(vinkki2);
+        assertTrue(muokkaus);
+        VideoVinkki vinkki3 = kayttisIO.haeYksiVideo(id);
+        assertEquals("jotain", vinkki3.getNimi());
+        assertEquals("www.yahoo.com", vinkki3.getUrl());
+    }
+    
+    @Test
+    public void testaaMuokkaaPodcastia() throws SQLException {
+        PodcastVinkki vinkki = new PodcastVinkki(0, "podi", "www.podi.fi");
+        int id = kayttisIO.lisaaPodcast(vinkki);
+        PodcastVinkki vinkki2 = new PodcastVinkki(id, "uusiPodi", "www.podi2.fi");
+        boolean muokkaus = kayttisIO.muokkaaPodcastia(vinkki2);
+        assertTrue(muokkaus);
+        PodcastVinkki vinkki3 = kayttisIO.haeYksiPodcast(id);
+        assertEquals("www.podi2.fi", vinkki3.getUrl());
+        assertEquals("uusiPodi", vinkki3.getNimi());
     }
 
     @Test
