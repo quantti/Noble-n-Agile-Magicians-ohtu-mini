@@ -110,16 +110,31 @@ public class Stepdefs {
         kaynnista();
     }
 
+    @Given("^Komento listaa vinkit valitaan$")
+    public void komento_listaa_vinkit_valitaan() throws Throwable {
+        inputLines.add("a");
+        inputLines.add("q");
+        kaynnista();
+    }
+    
+    @Then("^Ohjelma listaa kaikki vinkit$")
+    public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
+        assertEquals(20, io.getPrints().size());
+    }
+
+
     public void kaynnista() {
         io = new StubIO(inputLines);
         app = new App(io, kanta);
         app.kaynnista();
     }
 
+
     @After
     public void suljeKantaYhteys() throws SQLException {
         kanta.suljeYhteys();
 
     }
+
 
 }
