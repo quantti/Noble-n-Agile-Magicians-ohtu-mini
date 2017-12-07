@@ -22,20 +22,21 @@ public class App {
     public App(IO io, String tietokantaURL) {
         try {
             Tietokanta tietokanta = new Tietokanta(tietokantaURL);
-            KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
-            listausKomennot = komentoFactory.getListauskomennot();
             kayttisIO = new KayttoliittymaInterface(tietokanta);
             this.io = io;
+            KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
+            listausKomennot = komentoFactory.getListauskomennot();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public App(IO io, Tietokanta tietokanta) {
         try {
-            KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
-            listausKomennot = komentoFactory.getListauskomennot();
             kayttisIO = new KayttoliittymaInterface(tietokanta);
             this.io = io;
+            KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
+            listausKomennot = komentoFactory.getListauskomennot();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,12 +78,9 @@ public class App {
     }
 
     private void listaaVinkkejäValikko() {
-        io.print("1) Listaa kaikki vinkit");
-        io.print("2) Listaa kaikki kirjat");
-        io.print("3) Listaa kaikki videot");
-        io.print("4) Listaa kaikki podcastit");
-//        io.print("5) Listaa kaikki blogit");
-        io.print("6) Hae Vinkkiä otsikolla");
+        for (Komento komento : listausKomennot.values()) {
+            io.print(komento.toString());
+        }
         io.print("7) Palaa päävalikkoon");
     }
 
@@ -91,15 +89,6 @@ public class App {
         String valinta = io.readLine("Anna valintasi: ");
         vinkkiValikonValinnat(valinta);
     }
-
-
-
-
-    
-
-    
-    
-    
 
     private boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
@@ -171,7 +160,7 @@ public class App {
                 io.print("Vinkkiä ei löytynyt, tarkista id-numero");
                 return;
             }
-            String kirjoittaja = io.readLine("Vinkin kirjvalintaoittaja on " + ((KirjaVinkki) vinkki).getTekija() + ". Syötä uusi kirjoittaja tai"
+            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + ((KirjaVinkki) vinkki).getTekija() + ". Syötä uusi kirjoittaja tai"
                     + " jätä tyhjäksi jos haluat säilyttää saman.");
             if (!kirjoittaja.isEmpty()) {
                 ((KirjaVinkki) vinkki).setTekija(kirjoittaja);
@@ -245,8 +234,7 @@ public class App {
             return;
         }
         komento.komento();
-        
+
     }
 
-    
 }

@@ -15,6 +15,7 @@ public class KomentoFactory {
         this.io = io;
         this.kayttisIO = kayttisIO;
         listauskomennot = new HashMap();
+        alustaListausKomennot();
         
     }
     
@@ -23,7 +24,7 @@ public class KomentoFactory {
         listauskomennot.put("2", new ListaaKirjatKomento("listaaKirjat", "2", "Listaa kaikki kirjat", io, kayttisIO));
         listauskomennot.put("3", new ListaaVideotKomento("listaaVideot", "3", "Listaa kaikki videot", io, kayttisIO));
         listauskomennot.put("4", new ListaaPodcastitKomento("listaaPodcastit", "4", "Listaa kaikki podcastit", io, kayttisIO));
-        listauskomennot.put("7", new HaeOtsikollaKomento("haeOtsikolla", "7", "Hae otsikolla", io, kayttisIO));
+        listauskomennot.put("6", new HaeOtsikollaKomento("haeOtsikolla", "6", "Hae otsikolla", io, kayttisIO));
     }
 
     public HashMap<String, Komento> getListauskomennot() {
