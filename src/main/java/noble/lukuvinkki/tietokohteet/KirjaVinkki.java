@@ -11,7 +11,7 @@ public class KirjaVinkki implements Vinkki {
     private List<String> tagit;
 
     public KirjaVinkki() {
-
+        this.tagit = new ArrayList<>();
     }
 
     public KirjaVinkki(int id, String nimi, String tekija) {

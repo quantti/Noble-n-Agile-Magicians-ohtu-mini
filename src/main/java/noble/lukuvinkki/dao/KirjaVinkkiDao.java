@@ -41,7 +41,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         kysely.setString(2, vinkki.getTekija());
         kysely.executeUpdate();
         ResultSet rs = yhteys.createStatement().executeQuery("SELECT last_insert_rowid() as id");
-        
+
         if (rs.next()) {
             id = rs.getInt("id");
         }
@@ -120,18 +120,32 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         String sql = "SELECT tagi.*"
                 + " FROM kirja_vinkki, kirja_tagit, tagi"
                 + " WHERE kirja_vinkki.id = ?"
-                + " AND tagi.id = ?";
+                + " AND kirja_tagit.kirja_id = kirja_vinkki.id"
+                + " AND kirja_tagit.tagi_id = tagi.id";
         PreparedStatement st = yhteys.prepareStatement(sql);
         st.setInt(1, vinkki.getId());
-        st.setInt(2, vinkki.getId());
         ResultSet rs = st.executeQuery();
         while (rs.next()) {
             tagit.add(rs.getString("tagin_nimi"));
         }
         return tagit;
     }
-    
-    private boolean tallennaTagit(KirjaVinkki vinkki) {
-        return false;
+
+    private void tallennaTagit(KirjaVinkki vinkki) throws SQLException {
+        for (String s : vinkki.getTagit()) {
+            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            try {
+                PreparedStatement st = yhteys.prepareStatement(sql);
+                st.setString(1, s);
+            } catch (SQLException e) {
+            }
+        }
+        for (String s : vinkki.getTagit()) {
+            String sql = "INSERT INTO kirja_tagit(kirja_id, tagi_id)"
+                    + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setInt(1, vinkki.getId());
+            st.setString(2, s);
+        }
     }
 }
