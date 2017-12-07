@@ -120,7 +120,7 @@ public class Stepdefs {
     
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(27, io.getPrints().size());
+        assertEquals(28, io.getPrints().size());
     }
 
 
