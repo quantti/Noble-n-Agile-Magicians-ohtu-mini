@@ -113,13 +113,14 @@ public class Stepdefs {
     @Given("^Komento listaa vinkit valitaan$")
     public void komento_listaa_vinkit_valitaan() throws Throwable {
         inputLines.add("a");
+        inputLines.add("1");
         inputLines.add("q");
         kaynnista();
     }
     
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(20, io.getPrints().size());
+        assertEquals(27, io.getPrints().size());
     }
 
 
