@@ -1,11 +1,15 @@
 package noble.lukuvinkki.tietokohteet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VideoVinkki implements Vinkki {
 
     private int id;
     private String nimi;
     private String url;
     private String tekija;
+    private List<String> tagit;
 
     public VideoVinkki() {
 
@@ -15,6 +19,7 @@ public class VideoVinkki implements Vinkki {
         this.id = id;
         this.nimi = nimi;
         this.url = url;
+        this.tagit = new ArrayList<>();
     }
 
     public int getId() {
@@ -59,5 +64,19 @@ public class VideoVinkki implements Vinkki {
     @Override
     public String getTekija() {
         return this.tekija;
+    }
+
+    /**
+     * @return the tagit
+     */
+    public List<String> getTagit() {
+        return tagit;
+    }
+
+    /**
+     * @param tagit the tagit to set
+     */
+    public void setTagit(List<String> tagit) {
+        this.tagit = tagit;
     }
 }
