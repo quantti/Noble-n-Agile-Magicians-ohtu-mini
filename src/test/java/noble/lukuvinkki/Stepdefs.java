@@ -73,12 +73,15 @@ public class Stepdefs {
     public void lisaaValittu() throws Throwable {
 
         inputLines.add("b");
+        
     }
 
     @When("^Kirjoittaja \"([^\"]*)\" ja kirjan nimi \"([^\"]*)\" annetaan$")
     public void kirjoittaja_ja_kirjan_nimi_annetaan(String kirja, String kirjailija) throws Throwable {
         inputLines.add(kirjailija);
         inputLines.add(kirja);
+        inputLines.add("");
+        
         inputLines.add("q");
         kaynnista();
 
@@ -93,6 +96,8 @@ public class Stepdefs {
     @Given("^Komenta muokkaa valitaan$")
     public void komenta_muokkaa_valitaan() throws Throwable {
         inputLines.add("e");
+        inputLines.add("1");
+        
     }
 
     @When("^Muokataan vinkkiä id:llä \"([^\"]*)\"$")
@@ -131,7 +136,6 @@ public class Stepdefs {
     
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        System.out.println(io.getPrints());
         assertTrue(io.getPrints().contains("Id: 1\nKirjailija: Kirja"));
     }
 
@@ -149,6 +153,7 @@ public class Stepdefs {
     public void nimi_ja_url_annetaan(String nimi, String url) throws Throwable {
         inputLines.add(nimi);
         inputLines.add(url);
+        inputLines.add("");
         inputLines.add("q");
         kaynnista();
     }
