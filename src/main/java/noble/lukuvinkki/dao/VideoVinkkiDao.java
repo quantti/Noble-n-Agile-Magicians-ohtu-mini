@@ -103,5 +103,21 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         }
         return vinkit;
     }
+    
+        private List<String> haeTagit(VideoVinkki vinkki) throws SQLException {
+        List<String> tagit = new ArrayList<>();
+        String sql = "SELECT tagi.*"
+                + " FROM video_vinkki, kirja_tagit, tagi"
+                + " WHERE video_vinkki.id = ?"
+                + " AND tagi.id = ?";
+        PreparedStatement st = yhteys.prepareStatement(sql);
+        st.setInt(0, vinkki.getId());
+        st.setInt(1, vinkki.getId());
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            tagit.add(rs.getString("tagin_nimi"));
+        }
+        return tagit;
+    }
 
 }

@@ -11,7 +11,6 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
 
-    
     private final Connection yhteys;
 
     public KirjaVinkkiDao(Tietokanta tietokanta) {
@@ -23,7 +22,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         int id = rs.getInt("id");
         String nimi = rs.getString("kirjan_nimi");
         String kirjoittaja = rs.getString("kirjan_kirjoittaja");
-        return new KirjaVinkki(id, nimi, kirjoittaja);
+        KirjaVinkki vinkki = new KirjaVinkki(id, nimi, kirjoittaja);
+        vinkki.setTagit(haeTagit(vinkki));
+        return vinkki;
     }
 
     @Override
@@ -34,27 +35,28 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             return -1;
         }
 
-
         String sql = "INSERT INTO kirja_vinkki(kirjan_nimi, kirjan_kirjoittaja) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
         kysely.setString(2, vinkki.getTekija());
         kysely.executeUpdate();
         ResultSet rs = yhteys.createStatement().executeQuery("SELECT last_insert_rowid() as id");
-
+        
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        vinkki.setId(id);
+        tallennaTagit(vinkki);
         return id;
     }
-    
+
     @Override
     public KirjaVinkki haeYksi(int id) throws SQLException {
         String query = "SELECT * FROM kirja_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setInt(1, id);
         ResultSet rs = kysely.executeQuery();
-        
+
         if (rs.next()) {
             KirjaVinkki vinkki = keraa(rs);
             return vinkki;
@@ -69,10 +71,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            KirjaVinkki vinkki = new KirjaVinkki();
-            vinkki.setId(rs.getInt("id"));
-            vinkki.setNimi(rs.getString("kirjan_nimi"));
-            vinkki.setTekija(rs.getString("kirjan_kirjoittaja"));
+            KirjaVinkki vinkki = keraa(rs);
             kirjavinkit.add(vinkki);
         }
         return kirjavinkit;
@@ -109,10 +108,30 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setString(1, "%" + hakutermi + "%");
         ResultSet rs = kysely.executeQuery();
-        while (rs.next()) {            
+        while (rs.next()) {
             KirjaVinkki vinkki = keraa(rs);
             vinkit.add(vinkki);
         }
         return vinkit;
+    }
+
+    private List<String> haeTagit(KirjaVinkki vinkki) throws SQLException {
+        List<String> tagit = new ArrayList<>();
+        String sql = "SELECT tagi.*"
+                + " FROM kirja_vinkki, kirja_tagit, tagi"
+                + " WHERE kirja_vinkki.id = ?"
+                + " AND tagi.id = ?";
+        PreparedStatement st = yhteys.prepareStatement(sql);
+        st.setInt(1, vinkki.getId());
+        st.setInt(2, vinkki.getId());
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            tagit.add(rs.getString("tagin_nimi"));
+        }
+        return tagit;
+    }
+    
+    private boolean tallennaTagit(KirjaVinkki vinkki) {
+        return false;
     }
 }
