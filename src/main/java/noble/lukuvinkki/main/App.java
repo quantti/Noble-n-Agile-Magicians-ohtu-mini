@@ -27,6 +27,14 @@ public class App {
             e.printStackTrace();
         }
     }
+    public App(IO io, Tietokanta tietokanta) {
+        try {
+            kayttisIO = new KayttoliittymaInterface(tietokanta);
+            this.io = io;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void kaynnista() {
         io.print("\nTervetuloa käyttämään Lukuvinkkiä!\n");
@@ -99,8 +107,10 @@ public class App {
             if (tarkistaOnkoListaTyhjaTaiNull(kaikkiKirjat)) {
                 return;
             }
+
             for (Vinkki vinkki : kaikkiKirjat) {
-                System.out.println("Id: " + vinkki.getId() + "\n" + vinkki.getTekija() + ": " + vinkki.getNimi());
+                io.print("Id: " + vinkki.getId() + "\n" + vinkki.getTekija()+ ": " + vinkki.getNimi());
+
             }
         } catch (SQLException e) {
             virhe(e);
