@@ -106,4 +106,37 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         return vinkit;
     }
 
+    private List<String> haeTagit(PodcastVinkki vinkki) throws SQLException {
+        List<String> tagit = new ArrayList<>();
+        String sql = "SELECT tagi.*"
+                + " FROM podcast_vinkki, podcast_tagit, tagi"
+                + " WHERE podcast_vinkki.id = ?"
+                + " AND podcast_tagit.podcast_id = podcast_vinkki.id"
+                + " AND podcast_tagit.tagi_id = tagi.id";
+        PreparedStatement st = yhteys.prepareStatement(sql);
+        st.setInt(1, vinkki.getId());
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            tagit.add(rs.getString("tagin_nimi"));
+        }
+        return tagit;
+    }
+
+    private void tallennaTagit(PodcastVinkki vinkki) throws SQLException {
+        for (String tagi : vinkki.getTagit()) {
+            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            try {
+                PreparedStatement st = yhteys.prepareStatement(sql);
+                st.setString(1, tagi);
+            } catch (SQLException e) {
+            }
+        }
+        for (String tagi : vinkki.getTagit()) {
+            String sql = "INSERT INTO podcast_tagit(podcast_id, tagi_id)"
+                    + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setInt(1, vinkki.getId());
+            st.setString(2, tagi);
+        }
+    }
 }

@@ -97,11 +97,44 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setString(1, "%" + hakutermi + "%");
         ResultSet rs = kysely.executeQuery();
-        while (rs.next()) {            
+        while (rs.next()) {
             VideoVinkki vinkki = keraa(rs);
             vinkit.add(vinkki);
         }
         return vinkit;
     }
 
+    private List<String> haeTagit(VideoVinkki vinkki) throws SQLException {
+        List<String> tagit = new ArrayList<>();
+        String sql = "SELECT tagi.*"
+                + " FROM video_vinkki, video_tagit, tagi"
+                + " WHERE video_vinkki.id = ?"
+                + " AND video_tagit.video_id = video_vinkki.id"
+                + " AND video_tagit.tagi_id = tagi.id";
+        PreparedStatement st = yhteys.prepareStatement(sql);
+        st.setInt(1, vinkki.getId());
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            tagit.add(rs.getString("tagin_nimi"));
+        }
+        return tagit;
+    }
+
+    private void tallennaTagit(VideoVinkki vinkki) throws SQLException {
+        for (String s : vinkki.getTagit()) {
+            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            try {
+                PreparedStatement st = yhteys.prepareStatement(sql);
+                st.setString(1, s);
+            } catch (SQLException e) {
+            }
+        }
+        for (String s : vinkki.getTagit()) {
+            String sql = "INSERT INTO video_tagit(video_id, tagi_id)"
+                    + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setInt(1, vinkki.getId());
+            st.setString(2, s);
+        }
+    }
 }
