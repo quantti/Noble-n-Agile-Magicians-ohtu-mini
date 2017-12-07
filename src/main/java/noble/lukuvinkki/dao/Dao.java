@@ -9,11 +9,13 @@ public interface Dao<T> {
 
     int tallenna(T vinkki) throws SQLException;
 
-//    Vinkki haeYksi(String id) throws SQLException;
-//
-//    List<Vinkki> haeKaikki() throws SQLException;
+    Vinkki haeYksi(int id) throws SQLException;
 
-    boolean poistaVinkki(String id) throws SQLException;
+    List<Vinkki> haeKaikki() throws SQLException;
+
+    boolean poistaVinkki(int id) throws SQLException;
 
     boolean muokkaa(Vinkki vinkki) throws SQLException;
+    
+    List<Vinkki> haeOtsikolla(String hakutermi) throws SQLException;
 }
