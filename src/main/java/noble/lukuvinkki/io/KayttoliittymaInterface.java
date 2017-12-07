@@ -52,7 +52,7 @@ public class KayttoliittymaInterface {
         return kirjavinkkiDao.poistaVinkki(id);
     }
 
-    public boolean muokkaaKirja(KirjaVinkki vinkki) throws SQLException {
+    public boolean muokkaaKirjaa(KirjaVinkki vinkki) throws SQLException {
         return kirjavinkkiDao.muokkaa(vinkki);
     }
     
@@ -79,6 +79,10 @@ public class KayttoliittymaInterface {
         return videovinkkiDao.poistaVinkki(id);
     }
     
+    public boolean muokkaaVideota(VideoVinkki vinkki) throws SQLException {
+        return videovinkkiDao.muokkaa(vinkki);
+    }
+     
     public List<Vinkki> haeVideotaOtsikolla(String hakutermi) throws SQLException {
         return videovinkkiDao.haeOtsikolla(hakutermi);
     }
@@ -99,6 +103,10 @@ public class KayttoliittymaInterface {
 
     public boolean poistaPodcast(int id) throws SQLException {
         return podcastvinkkiDao.poistaVinkki(id);
+    }
+    
+    public boolean muokkaaPodcastia(PodcastVinkki vinkki) throws SQLException {
+        return podcastvinkkiDao.muokkaa(vinkki);
     }
     
     public List<Vinkki> haePodcastiaOtsikolla(String hakutermi) throws SQLException {

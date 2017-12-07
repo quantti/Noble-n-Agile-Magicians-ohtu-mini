@@ -73,13 +73,23 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         String sql = "DELETE FROM podcast_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, id);
-        int result = kysely.executeUpdate();
-        return result > 0;
+        int tulos = kysely.executeUpdate();
+        return tulos > 0;
     }
 
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PodcastVinkki podcastVinkki = (PodcastVinkki) vinkki;
+        int id = podcastVinkki.getId();
+        String nimi = podcastVinkki.getNimi();
+        String url = podcastVinkki.getUrl();
+        String sql = "UPDATE podcast_vinkki SET podcastin_nimi = ?, podcastin_url = ? WHERE id = ?";
+        PreparedStatement paivitys = yhteys.prepareStatement(sql);
+        paivitys.setString(1, nimi);
+        paivitys.setString(2, url);
+        paivitys.setInt(3, id);
+        int tulos = paivitys.executeUpdate();
+        return tulos > 0;
     }
 
     @Override
