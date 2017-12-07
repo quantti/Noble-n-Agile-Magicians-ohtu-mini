@@ -63,7 +63,7 @@ public class Stepdefs {
         assertTrue(io.getPrints().contains("Vinkkiä ei löytynyt, tarkista id-numero"));
     }
 
-    @Given("^Komento lisää valitaan$")
+    @Given("^Komento lisää kirja valitaan$")
     public void lisaaValittu() throws Throwable {
 
         inputLines.add("b");
@@ -102,6 +102,7 @@ public class Stepdefs {
         kaynnista();
 
     }
+
     @When("^Annetaan uudeksi nimeksi \"([^\"]*)\" ja kirjoittajaksi \"([^\"]*)\"$")
     public void annetaan_uudeksi_nimeksi_ja_kirjoittajaksi(String kirja, String kirjoittaja) throws Throwable {
         inputLines.add(kirjoittaja);
@@ -116,12 +117,24 @@ public class Stepdefs {
         inputLines.add("q");
         kaynnista();
     }
-    
+
+    @When("^Nimi \"([^\"]*)\" ja url \"([^\"]*)\" annetaan$")
+    public void nimi_ja_url_annetaan(String nimi, String url) throws Throwable {
+        inputLines.add(nimi);
+        inputLines.add(url);
+        inputLines.add("q");
+        kaynnista();
+    }
+
+    @Given("^Komento lisää podcast valitaan$")
+    public void komento_lisää_podcast_valitaan() throws Throwable {
+        inputLines.add("c");
+    }
+
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
         assertEquals(20, io.getPrints().size());
     }
-
 
     public void kaynnista() {
         io = new StubIO(inputLines);
@@ -129,12 +142,10 @@ public class Stepdefs {
         app.kaynnista();
     }
 
-
     @After
     public void suljeKantaYhteys() throws SQLException {
         kanta.suljeYhteys();
 
     }
-
 
 }
