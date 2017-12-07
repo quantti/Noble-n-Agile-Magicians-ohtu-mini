@@ -1,5 +1,7 @@
 package noble.lukuvinkki.tietokohteet;
 
+import java.util.List;
+
 public interface Vinkki {
 
     public String getNimi();
@@ -14,4 +16,8 @@ public interface Vinkki {
     public void setTekija(String tekija);
     
     public String getTekija();
+    
+    public List<String> getTagit();
+    
+    public void setTagit(List<String> tagit);
 }
