@@ -83,8 +83,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         String sql = "DELETE FROM kirja_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, id);
-        int result = kysely.executeUpdate();
-        return result > 0;
+        int tulos = kysely.executeUpdate();
+        return tulos > 0;
 
     }
 
@@ -98,8 +98,8 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         kysely.setString(1, nimi);
         kysely.setString(2, kirjoittaja);
         kysely.setInt(3, id);
-        int result = kysely.executeUpdate();
-        return result > 0;
+        int tulos = kysely.executeUpdate();
+        return tulos > 0;
     }
 
     @Override

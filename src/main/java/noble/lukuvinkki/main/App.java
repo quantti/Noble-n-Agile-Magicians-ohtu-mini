@@ -243,7 +243,7 @@ public class App {
                 vinkki.setNimi(nimi);
                 io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
             }
-            if (kayttisIO.muokkaaKirja(vinkki)) {
+            if (kayttisIO.muokkaaKirjaa(vinkki)) {
                 io.print("Vinkkiä muokattu onnistuneesti!");
             } else {
                 io.print("Vinkin muokkaaminen epäonnistui");
