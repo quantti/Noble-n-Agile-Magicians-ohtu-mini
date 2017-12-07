@@ -23,7 +23,7 @@ public class ListaaPodcastitKomento extends Komento {
                 return;
             }
             for (Vinkki vinkki : kaikkiPodcastit) {
-                System.out.println(vinkki);
+                io.print(vinkki.toString());
             }
         } catch (SQLException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
