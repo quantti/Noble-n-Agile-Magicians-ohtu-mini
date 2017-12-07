@@ -20,6 +20,10 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public int tallenna(PodcastVinkki vinkki) throws SQLException {
         int id = -1;
+        
+        if (vinkki.getUrl().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
         String sql = "INSERT INTO podcast_vinkki(podcastin_nimi, podcastin_url) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());

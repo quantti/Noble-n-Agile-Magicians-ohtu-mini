@@ -10,18 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 import noble.lukuvinkki.dao.Dao;
 import noble.lukuvinkki.dao.KirjaVinkkiDao;
+import noble.lukuvinkki.dao.PodcastVinkkiDao;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.StubIO;
 import noble.lukuvinkki.main.App;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
+import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import static org.junit.Assert.*;
 
 public class Stepdefs {
 
     App app;
     StubIO io;
-    Dao dao;
+    Dao kvDao;
+    Dao pcvDao;
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
     List<String> inputLines;
     Tietokanta kanta;
@@ -31,9 +34,12 @@ public class Stepdefs {
         inputLines = new ArrayList<>();
         TietokantaSetup.alustaTestiTietokanta(tietokantaURL);
         this.kanta = new Tietokanta(tietokantaURL);
-        dao = new KirjaVinkkiDao(kanta);
+        kvDao = new KirjaVinkkiDao(kanta);
+        pcvDao = new PodcastVinkkiDao(kanta);
         KirjaVinkki kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
-        dao.tallenna(kv);
+        PodcastVinkki pcv = new PodcastVinkki(1, "Podcast", "Url");
+        kvDao.tallenna(kv);
+        pcvDao.tallenna(pcv);
 
     }
 
@@ -63,7 +69,7 @@ public class Stepdefs {
         assertTrue(io.getPrints().contains("Vinkkiä ei löytynyt, tarkista id-numero"));
     }
 
-    @Given("^Komento lisää valitaan$")
+    @Given("^Komento lisää kirja valitaan$")
     public void lisaaValittu() throws Throwable {
 
         inputLines.add("b");
@@ -102,6 +108,7 @@ public class Stepdefs {
         kaynnista();
 
     }
+
     @When("^Annetaan uudeksi nimeksi \"([^\"]*)\" ja kirjoittajaksi \"([^\"]*)\"$")
     public void annetaan_uudeksi_nimeksi_ja_kirjoittajaksi(String kirja, String kirjoittaja) throws Throwable {
         inputLines.add(kirjoittaja);
@@ -110,6 +117,26 @@ public class Stepdefs {
         kaynnista();
     }
 
+    @Given("^Komento listaa valitaan$")
+    public void komento_listaa_valitaan() throws Throwable {
+        inputLines.add("a");
+    }
+    
+    @When("^Valitaan listattavaksi kirjat$")
+    public void valitaan_listattavaksi_kirjat() throws Throwable {
+        inputLines.add("2");
+        inputLines.add("q");
+        kaynnista();
+    }
+    
+    @Then("^Vain kirjat näytetään$")
+    public void vain_kirjat_näytetään() throws Throwable {
+        System.out.println(io.getPrints());
+        assertTrue(io.getPrints().contains("Id: 1\nKirjailija: Kirja"));
+    }
+
+
+    
     @Given("^Komento listaa vinkit valitaan$")
     public void komento_listaa_vinkit_valitaan() throws Throwable {
         inputLines.add("a");
@@ -117,25 +144,55 @@ public class Stepdefs {
         inputLines.add("q");
         kaynnista();
     }
-    
-    @Then("^Ohjelma listaa kaikki vinkit$")
-    public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(28, io.getPrints().size());
+
+    @When("^Nimi \"([^\"]*)\" ja url \"([^\"]*)\" annetaan$")
+    public void nimi_ja_url_annetaan(String nimi, String url) throws Throwable {
+        inputLines.add(nimi);
+        inputLines.add(url);
+        inputLines.add("q");
+        kaynnista();
     }
 
+    @Given("^Komento lisää podcast valitaan$")
+    public void komento_lisää_podcast_valitaan() throws Throwable {
+        inputLines.add("c");
+    }
+    
+    @Given("^Komento lisää video valitaan$")
+    public void komento_lisää_video_valitaan() throws Throwable {
+        inputLines.add("d");
+    }
 
+    @Then("^Ohjelma listaa kaikki vinkit$")
+    public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
+        assertEquals(29, io.getPrints().size());
+    }
+
+    
+    @When("^Valitaan listattavaksi podcastit$")
+    public void valitaan_listattavaksi_podcastit() throws Throwable {
+        inputLines.add("4");
+        inputLines.add("q");
+        kaynnista();
+    }
+    
+    @Then("^Vain podcastit näytetään$")
+    public void vain_podcastit_näytetään() throws Throwable {
+        System.out.println(io.getPrints());
+        assertEquals(io.getPrints().get(17),"Id: 1\nPodcast: Url");
+    }
+
+    
     public void kaynnista() {
         io = new StubIO(inputLines);
         app = new App(io, kanta);
         app.kaynnista();
     }
 
-
     @After
     public void suljeKantaYhteys() throws SQLException {
         kanta.suljeYhteys();
 
     }
-
 
 }

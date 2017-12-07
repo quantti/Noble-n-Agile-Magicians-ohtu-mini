@@ -14,6 +14,7 @@ public class TietokantaSetup {
             for (String s : sqlLauseet()) {
                 tietokanta.yhteys().createStatement().execute(s);
             }
+
             return tietokanta;
         } catch (SQLException e) {
             e.printStackTrace();

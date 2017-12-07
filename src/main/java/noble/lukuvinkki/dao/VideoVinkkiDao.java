@@ -21,6 +21,11 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     @Override
     public int tallenna(VideoVinkki vinkki) throws SQLException {
         int id = -1;
+        
+        if (vinkki.getUrl().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
+        
         String sql = "INSERT INTO video_vinkki(videon_nimi, videon_url) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
