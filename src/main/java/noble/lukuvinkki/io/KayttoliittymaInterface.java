@@ -128,4 +128,14 @@ public class KayttoliittymaInterface {
         kaikkiVinkit.addAll(haeVideotaOtsikolla(hakutermi));
         return kaikkiVinkit;
     }
+    
+    public void avaaPodcast(PodcastVinkki vinkki) throws Exception {
+        UrlinAvaaja avaaja = new UrlinAvaaja(vinkki.getUrl());
+        avaaja.avaa();
+    }
+    
+    public void avaaVideo(VideoVinkki vinkki) throws Exception {
+        UrlinAvaaja avaaja = new UrlinAvaaja(vinkki.getUrl());
+        avaaja.avaa();
+    }
 }
