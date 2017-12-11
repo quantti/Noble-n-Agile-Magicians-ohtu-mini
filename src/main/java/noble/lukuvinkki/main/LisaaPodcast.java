@@ -17,8 +17,7 @@ public class LisaaPodcast extends Komento {
     }
 
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
             String nimi = io.readLine("Syötä podcastin nimi: ");
             String url = io.readLine("Syötä podcastin url: ");
             List<String> tagit = lisaaTagit();
@@ -31,9 +30,6 @@ public class LisaaPodcast extends Komento {
             } else {
                 io.print("Vinkin lisääminen epäonnistui.");
             }
-        } catch (SQLException e) {
-            virhe(e);
-        }
     }
 
 }

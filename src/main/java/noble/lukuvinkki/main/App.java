@@ -91,56 +91,6 @@ public class App {
         }
     }
 
-    private void alaValikko(HashMap<String, Komento> komennot) {
-        for (Komento komento : komennot.values()) {
-            io.print(komento.toString());
-        }
-        int viimInd = komennot.size();
-        io.print(viimInd + ") Palaa päävalikkoon");
-    }
-
-    private void valitseListattavatVinkit() {
-        alaValikko(listausKomennot);
-        String valinta = io.readLine("Anna valintasi: ");
-        alaValikonValinnat(listausKomennot, valinta);
-    }
-
-    private void valitseMuokkattavatVinkit() {
-        alaValikko(muokkausKomennot);
-        String valinta = io.readLine("Anna valintasi: ");
-        alaValikonValinnat(muokkausKomennot, valinta);
-    }
-
-    private void poistaVinkki() {
-        alaValikko(poistoKomennot);
-        String valinta = io.readLine("Anna valintasi: ");
-        alaValikonValinnat(poistoKomennot, valinta);
-    }
-
-    private void paaValikonValinnat(String valinta) {
-        switch (valinta) {
-            case "a":
-                new Valikko("listaaVinkit", "a", "Listaa vinkit", io, kayttisIO, listausKomennot).komento();
-                break;
-            case "b":
-                new LisaaKirja("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
-                break;
-            case "c":
-                new LisaaPodcast("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
-                break;
-            case "d":
-                new LisaaVideo("lisaaVideo", "b", "jotaan", io, kayttisIO).komento();
-                break;
-            case "e":
-                new Valikko("muokkaaVinkit", "e", "Muokkaa vinkkejä", io, kayttisIO, muokkausKomennot).komento();
-                break;
-            case "f":
-                new Valikko("poistaVinkit", "f", "Poista vinkkejä", io, kayttisIO, poistoKomennot).komento();
-                break;
-            default:
-                io.print("Väärä valinta");
-        }
-    }
 
     private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
         Komento komento = komennot.get(valinta);

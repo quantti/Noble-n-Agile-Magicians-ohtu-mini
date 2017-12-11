@@ -16,8 +16,8 @@ public class MuokkaaKirjaa extends Komento{
     }
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
+        
             int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
             KirjaVinkki vinkki = kayttisIO.haeYksiKirja(id);
             if (vinkki == null) {
@@ -42,9 +42,6 @@ public class MuokkaaKirjaa extends Komento{
             } else {
                 io.print("Vinkin muokkaaminen epäonnistui");
             }
-        } catch (SQLException e) {
-            virhe(e);
-        }
     }
     
 }

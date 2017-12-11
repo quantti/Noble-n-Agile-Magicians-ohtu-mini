@@ -16,8 +16,8 @@ public class PoistaPodcast extends Komento{
     }
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
+        
             int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
             Vinkki vinkki = kayttisIO.haeYksiPodcast(id);
             if (vinkki == null) {
@@ -30,9 +30,7 @@ public class PoistaPodcast extends Komento{
             } else {
                 io.print("Vinkkiä ei poistettu");
             }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
+
         
     }
     

@@ -18,8 +18,8 @@ public class ListaaKirjatKomento extends Komento {
     
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
+        
             List<Vinkki> kaikkiKirjat = kayttisIO.haeKaikkiKirjat();
             if (tarkistaOnkoListaTyhjaTaiNull(kaikkiKirjat)) {
                 return;
@@ -29,8 +29,5 @@ public class ListaaKirjatKomento extends Komento {
                 io.print(vinkki.toString());
 
             }
-        } catch (SQLException e) {
-            virhe(e);
-        }
     }
 }

@@ -17,8 +17,8 @@ public class LisaaKirja extends Komento{
     }
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
+        
             String kirjoittaja = io.readLine("Syötä kirjan kirjoittaja: ");
             String nimi = io.readLine("Syötä kirjan nimi: ");
             List<String> tagit = lisaaTagit();
@@ -31,9 +31,7 @@ public class LisaaKirja extends Komento{
             } else {
                 io.print("Vinkin lisääminen epäonnistui.");
             }
-        } catch (SQLException e) {
-            virhe(e);
-        }
+
     }
     
 }

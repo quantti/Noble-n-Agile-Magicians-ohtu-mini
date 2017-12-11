@@ -19,8 +19,7 @@ public class ListaaKaikkiKomento extends Komento {
 
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
             List<Vinkki> kaikkiVinkit = kayttisIO.haeKaikkiVinkit();
             if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVinkit)) {
                 return;
@@ -28,8 +27,6 @@ public class ListaaKaikkiKomento extends Komento {
             for (Vinkki vinkki : kaikkiVinkit) {
                 io.print(vinkki.toString());
             }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
+
     }
 }

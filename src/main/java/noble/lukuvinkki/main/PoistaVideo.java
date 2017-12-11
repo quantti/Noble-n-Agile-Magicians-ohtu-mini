@@ -16,8 +16,7 @@ public class PoistaVideo extends Komento{
     }
     
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
             int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
             Vinkki vinkki = kayttisIO.haeYksiVideo(id);
             if (vinkki == null) {
@@ -30,9 +29,7 @@ public class PoistaVideo extends Komento{
             } else {
                 io.print("Vinkkiä ei poistettu");
             }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
+
     }
     
 }
