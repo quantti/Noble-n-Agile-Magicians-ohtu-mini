@@ -27,9 +27,9 @@ public class LisaaPodcast extends Komento {
             podcastVinkki.setNimi(nimi);
             podcastVinkki.setTagit(tagit);
             if (kayttisIO.lisaaPodcast(podcastVinkki) != -1) {
-                io.lueRivi("Vinkki lisätty!");
+                io.tulosta("Vinkki lisätty!");
             } else {
-                io.lueRivi("Vinkin lisääminen epäonnistui.");
+                io.tulosta("Vinkin lisääminen epäonnistui.");
             }
         } catch (SQLException e) {
             virhe(e);

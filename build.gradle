@@ -70,6 +70,7 @@ task checkstyleMain(type: Checkstyle, overwrite: true) {
     include '**/*.java'
     exclude '**/App.java'
     exclude '**/Main.java'
+    exclude '**/main/**'
 
     classpath = files()
 }
