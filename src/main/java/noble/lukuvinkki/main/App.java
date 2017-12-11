@@ -7,6 +7,7 @@ import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
+import noble.lukuvinkki.io.UrlinAvaaja;
 import java.util.ArrayList;
 import java.util.HashMap;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
