@@ -134,11 +134,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     private void tallennaTagit(KirjaVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
-            try {
                 PreparedStatement st = yhteys.prepareStatement(sql);
                 st.setString(1, s);
-            } catch (SQLException e) {
-            }
+                st.executeUpdate();
         }
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO kirja_tagit(kirja_id, tagi_id)"
@@ -146,6 +144,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());
             st.setString(2, s);
+            st.executeUpdate();
         }
     }
 }
