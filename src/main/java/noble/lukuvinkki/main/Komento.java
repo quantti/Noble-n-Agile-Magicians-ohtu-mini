@@ -1,6 +1,7 @@
 package noble.lukuvinkki.main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
@@ -42,7 +43,7 @@ public class Komento {
         List<String> tagit = new ArrayList<>();
         String tag = "";
         while (true) {
-            tag = io.readLine("Syötä tagi, tyhjä lopettaa.");
+            tag = io.lueRivi("Syötä tagi, tyhjä lopettaa.");
             if (tag.equalsIgnoreCase("")) {
                 break;
             }
@@ -51,6 +52,24 @@ public class Komento {
         return tagit;
     }
 
+    protected void alaValikko(HashMap<String, Komento> komennot) {
+        for (Komento komento : komennot.values()) {
+            io.tulosta(komento.toString());
+        }
+        int viimInd = komennot.size();
+        io.tulosta(viimInd + ") Palaa päävalikkoon");
+    }
+    
+    protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+        Komento komento = komennot.get(valinta);
+        if (komento == null) {
+            io.tulosta("Väärä valinta");
+            return;
+        }
+        komento.komento();
+        
+    }
+    
     @Override
     public String toString() {
         return komento + ") " + teksti;
