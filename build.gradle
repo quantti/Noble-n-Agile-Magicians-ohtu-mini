@@ -32,6 +32,7 @@ dependencies {
     testCompile 'info.cukes:cucumber-java:1.2.5'
     testCompile 'info.cukes:cucumber-junit:1.2.5'
     testCompile 'junit:junit:4.12'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
     compile 'org.xerial:sqlite-jdbc:3.21.+'
 }
 
