@@ -26,7 +26,7 @@ public class ListaaKirjatKomento extends Komento {
             }
 
             for (Vinkki vinkki : kaikkiKirjat) {
-                io.print("Id: " + vinkki.getId() + "\n" + vinkki.getTekija()+ ": " + vinkki.getNimi());
+                io.print(vinkki.toString());
 
             }
         } catch (SQLException e) {

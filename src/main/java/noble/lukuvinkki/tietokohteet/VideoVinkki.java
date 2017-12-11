@@ -2,6 +2,7 @@ package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class VideoVinkki implements Vinkki {
 
@@ -53,7 +54,11 @@ public class VideoVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        return "Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl();
+        String tagit = "";
+        if (getTagit() != null) {
+            tagit = StringUtils.join(getTagit(), ",");
+        }
+        return "\nId: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagit;
     }
 
     @Override
