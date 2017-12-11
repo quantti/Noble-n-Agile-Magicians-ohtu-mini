@@ -34,6 +34,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        tallennaTagit(vinkki);
         return id;
     }
 
@@ -112,18 +113,17 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        String sql = "SELECT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
+        StringBuilder build = new StringBuilder("SELECT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
                 + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
                 + " AND tagi.id = podcast_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (";
-        StringBuilder build = new StringBuilder(sql);
+                + " AND tagi.tagin_nimi IN (");
         for (int i = 0; i < tagit.size(); i++) {
             build.append("?, ");
         }
-        build.replace(build.length() - 1, build.length(), ")");
-        PreparedStatement st = yhteys.prepareStatement(sql);
+        build.replace(build.length() - 2, build.length(), ")");
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
-            st.setString(i, tagit.get(i-1));
+            st.setString(i, tagit.get(i - 1));
         }
         ResultSet rs = st.executeQuery();
         List<Vinkki> vinkit = new ArrayList<>();
@@ -152,7 +152,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     private void tallennaTagit(PodcastVinkki vinkki) throws SQLException {
         for (String tagi : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, tagi);
             st.executeUpdate();

@@ -37,6 +37,7 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        tallennaTagit(vinkki);
         return id;
     }
 
@@ -112,16 +113,15 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        String sql = "SELECT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
+        StringBuilder build = new StringBuilder("SELECT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
                 + " WHERE video_vinkki.id = video_tagit.video_id"
                 + " AND tagi.id = video_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (";
-        StringBuilder build = new StringBuilder(sql);
+                + " AND tagi.tagin_nimi IN (");
         for (int i = 0; i < tagit.size(); i++) {
             build.append("?, ");
         }
-        build.replace(build.length() - 1, build.length(), ")");
-        PreparedStatement st = yhteys.prepareStatement(sql);
+        build.replace(build.length() - 2, build.length(), ")");
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
             st.setString(i, tagit.get(i - 1));
         }
@@ -158,7 +158,7 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
             st.executeUpdate();
         }
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT INTO video_tagit(video_id, tagi_id)"
+            String sql = "INSERT OR IGNORE INTO video_tagit(video_id, tagi_id)"
                     + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());

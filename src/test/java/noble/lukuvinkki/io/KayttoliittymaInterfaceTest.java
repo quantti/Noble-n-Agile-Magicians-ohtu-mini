@@ -6,6 +6,7 @@
 package noble.lukuvinkki.io;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import noble.lukuvinkki.TietokantaSetup;
 import noble.lukuvinkki.dao.Tietokanta;
@@ -211,5 +212,26 @@ public class KayttoliittymaInterfaceTest {
         assertEquals(2, vinkit.size());
         vinkit = kayttisIO.haeKaikkiaOtsikolla("sotilas");
         assertEquals(2, vinkit.size());
+    }
+    
+    @Test
+    public void tageillaHakeminenKaikistaPalauttaaTagatutVinkit() throws SQLException {
+        List<String> tagit = Arrays.asList("tagi", "igat");
+        KirjaVinkki kirja = new KirjaVinkki(1, "Sananmuunnossanakirja", "Kunnanhallitus");
+        kirja.setTagit(tagit);
+        kayttisIO.lisaaKirja(kirja);
+        
+        VideoVinkki video = new VideoVinkki(1, "trip.swf", "http://lmgtfy.com/?q=trip.swf");
+        video.setTagit(tagit);
+        kayttisIO.lisaaVideo(video);
+        
+        PodcastVinkki podcast = new PodcastVinkki(1, "domain squatting", "www.thug.life");
+        podcast.setTagit(tagit);
+        kayttisIO.lisaaPodcast(podcast);
+        
+        List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
+        assertTrue(hakutulokset.contains(kirja));
+        assertTrue(hakutulokset.contains(video));
+        assertTrue(hakutulokset.contains(podcast));
     }
 }

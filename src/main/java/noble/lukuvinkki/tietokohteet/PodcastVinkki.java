@@ -13,7 +13,7 @@ public class PodcastVinkki implements Vinkki {
     private List<String> tagit;
 
     public PodcastVinkki() {
-
+        this.tagit = new ArrayList<>();
     }
 
     public PodcastVinkki(int id, String nimi, String url) {

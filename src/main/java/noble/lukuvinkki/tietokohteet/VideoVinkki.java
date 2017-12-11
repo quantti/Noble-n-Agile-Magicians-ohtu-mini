@@ -13,7 +13,7 @@ public class VideoVinkki implements Vinkki {
     private List<String> tagit;
 
     public VideoVinkki() {
-
+        this.tagit = new ArrayList<>();
     }
 
     public VideoVinkki(int id, String nimi, String url) {

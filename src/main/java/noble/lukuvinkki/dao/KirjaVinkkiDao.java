@@ -118,16 +118,15 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        String sql = "SELECT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
+        StringBuilder build = new StringBuilder("SELECT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
                 + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
                 + " AND tagi.id = kirja_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (";
-        StringBuilder build = new StringBuilder(sql);
+                + " AND tagi.tagin_nimi IN (");
         for (int i = 0; i < tagit.size(); i++) {
             build.append("?, ");
         }
-        build.replace(build.length() - 1, build.length(), ")");
-        PreparedStatement st = yhteys.prepareStatement(sql);
+        build.replace(build.length() - 2, build.length(), ")");
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
             st.setString(i, tagit.get(i - 1));
         }
@@ -158,7 +157,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
 
     private void tallennaTagit(KirjaVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, s);
             st.executeUpdate();
