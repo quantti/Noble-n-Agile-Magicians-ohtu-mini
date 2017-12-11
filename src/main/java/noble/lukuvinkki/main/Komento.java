@@ -27,12 +27,12 @@ public class Komento {
     }
 
     protected void virhe(Exception e) {
-        io.print("Virhe: " + e.getMessage());
+        io.tulosta("Virhe: " + e.getMessage());
     }
     
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
-            io.print("Vinkkejä ei löytynyt\n");
+            io.tulosta("Vinkkejä ei löytynyt\n");
             return true;
         }
         return false;

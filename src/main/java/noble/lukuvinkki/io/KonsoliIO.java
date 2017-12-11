@@ -4,15 +4,15 @@ package noble.lukuvinkki.io;
 import java.util.Scanner;
 
 public class KonsoliIO implements IO {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner skanneri = new Scanner(System.in);
     
-    public void print(String toPrint) {
-        System.out.println(toPrint);
+    public void tulosta(String tulostettava) {
+        System.out.println(tulostettava);
     }
 
-    public String readLine(String prompt) {
-        System.out.println(prompt);
-        return scanner.nextLine();
+    public String lueRivi(String kehote) {
+        System.out.println(kehote);
+        return skanneri.nextLine();
     }
     
 }

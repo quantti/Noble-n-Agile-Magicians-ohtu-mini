@@ -12,8 +12,7 @@ import noble.lukuvinkki.dao.Dao;
 import noble.lukuvinkki.dao.KirjaVinkkiDao;
 import noble.lukuvinkki.dao.PodcastVinkkiDao;
 import noble.lukuvinkki.dao.Tietokanta;
-import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.io.StubIO;
+import noble.lukuvinkki.io.TynkaIO;
 import noble.lukuvinkki.main.App;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
@@ -22,7 +21,7 @@ import static org.junit.Assert.*;
 public class Stepdefs {
 
     App app;
-    StubIO io;
+    TynkaIO io;
     Dao kvDao;
     Dao pcvDao;
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
@@ -66,7 +65,7 @@ public class Stepdefs {
         inputLines.add("q");
 
         kaynnista();
-        assertTrue(io.getPrints().contains("Vinkkiä ei löytynyt, tarkista id-numero"));
+        assertTrue(io.getTulosteet().contains("Vinkkiä ei löytynyt, tarkista id-numero"));
     }
 
     @Given("^Komento lisää kirja valitaan$")
@@ -89,7 +88,7 @@ public class Stepdefs {
 
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
-        List<String> rivit = io.getPrints();
+        List<String> rivit = io.getTulosteet();
         assertEquals(rivit.get(rivit.size() - 11), arg1);
     }
 
@@ -136,7 +135,7 @@ public class Stepdefs {
     
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getPrints().contains("Id: 1\nKirjailija: Kirja"));
+        assertTrue(io.getTulosteet().contains("Id: 1\nKirjailija: Kirja"));
     }
 
 
@@ -170,7 +169,7 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(29, io.getPrints().size());
+        assertEquals(29, io.getTulosteet().size());
     }
 
     
@@ -183,13 +182,13 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        System.out.println(io.getPrints());
-        assertEquals(io.getPrints().get(17),"Id: 1\nPodcast: Url");
+        System.out.println(io.getTulosteet());
+        assertEquals(io.getTulosteet().get(17),"Id: 1\nPodcast: Url");
     }
 
     
     public void kaynnista() {
-        io = new StubIO(inputLines);
+        io = new TynkaIO(inputLines);
         app = new App(io, kanta);
         app.kaynnista();
     }

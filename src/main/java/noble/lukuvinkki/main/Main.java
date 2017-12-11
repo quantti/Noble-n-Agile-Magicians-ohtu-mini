@@ -5,6 +5,9 @@
  */
 package noble.lukuvinkki.main;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KonsoliIO;
 
@@ -17,12 +20,15 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         IO io = new KonsoliIO();
-//        String tietokantaURL = "jdbc:sqlite:tietokanta/vinkit.sqlite3";
-        String tietokantaURL = "jdbc:sqlite::resource:vinkit.sqlite3";
-        App app = new App(io, tietokantaURL);
-        app.kaynnista();
+        try {
+            String tietokantaURL = "jdbc:sqlite::resource:vinkit.sqlite3";
+            App app = new App(io, tietokantaURL);
+            app.kaynnista();
+        } catch (SQLException ex) {
+            io.tulosta("Tapahtui virhe: " + ex);
+        }
     }
-    
+
 }

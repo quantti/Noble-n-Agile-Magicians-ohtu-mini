@@ -11,6 +11,6 @@ package noble.lukuvinkki.io;
  * @author kari
  */
 public interface IO {
-    void print(String toPrint);
-    String readLine(String prompt);
+    void tulosta(String toPrint);
+    String lueRivi(String prompt);
 }
