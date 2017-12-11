@@ -51,7 +51,8 @@ public class Stepdefs {
 
     @When("^Poistetaan vinkki id:llä \"([^\"]*)\"$")
     public void poistetaan_vinkki_id_llä(String arg1) throws Throwable {
-
+        
+        inputLines.add("1");
         inputLines.add("1");
         inputLines.add("k");
         inputLines.add("q");
@@ -136,7 +137,7 @@ public class Stepdefs {
     
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getPrints().contains("Id: 1\nKirjailija: Kirja"));
+        assertTrue(io.getPrints().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
     }
 
 
@@ -183,8 +184,7 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        System.out.println(io.getPrints());
-        assertEquals(io.getPrints().get(17),"Id: 1\nPodcast: Url");
+        assertEquals(io.getPrints().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
     }
 
     

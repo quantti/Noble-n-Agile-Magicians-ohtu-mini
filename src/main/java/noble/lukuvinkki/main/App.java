@@ -110,74 +110,19 @@ public class App {
         String valinta = io.readLine("Anna valintasi");
         switch(valinta) {
             case "1":
-                poistaKirjaVinkki();
+                new PoistaKirja("poistaKirja", "1", "Poista kirjavinkki", io, kayttisIO).komento();
                 break;
             case "2":
-                poistaPodcastVinkki();
+                new PoistaPodcast("poistaKirja", "1", "Poista podcastvinkki", io, kayttisIO).komento();
                 break;
             case "3":
-                poistaVideoVinkki();
+                new PoistaVideo("poistaVideo", "3", "Poista videovinkki", io, kayttisIO).komento();
                 break;
         }
     }
 
-    private void poistaKirjaVinkki() {
-        try {
-            int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
-            Vinkki vinkki = kayttisIO.haeYksiKirja(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
-            if (vastaus.contentEquals("k") && kayttisIO.poistaKirja(id)) {
-                io.print("Vinkki poistettu");
-            } else {
-                io.print("Vinkkiä ei poistettu");
-            }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
-    }
     
-    private void poistaVideoVinkki() {
-        try {
-            int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
-            Vinkki vinkki = kayttisIO.haeYksiVideo(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
-            if (vastaus.contentEquals("k") && kayttisIO.poistaVideo(id)) {
-                io.print("Vinkki poistettu");
-            } else {
-                io.print("Vinkkiä ei poistettu");
-            }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
-    }
-    
-    private void poistaPodcastVinkki() {
-        try {
-            int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
-            Vinkki vinkki = kayttisIO.haeYksiPodcast(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
-            if (vastaus.contentEquals("k") && kayttisIO.poistaPodcast(id)) {
-                io.print("Vinkki poistettu");
-            } else {
-                io.print("Vinkkiä ei poistettu");
-            }
-        } catch (SQLException ex) {
-            virhe(ex);
-        }
-        
-    }
+  
 
     private void paaValikonValinnat(String valinta) {
         switch (valinta) {
