@@ -110,16 +110,21 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         }
         return vinkit;
     }
-    
+
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
         String sql = "SELECT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
                 + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
                 + " AND tagi.id = podcast_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN ?";
-     
+                + " AND tagi.tagin_nimi IN (";
+        StringBuilder build = new StringBuilder(sql);
+        for (int i = 0; i < tagit.size(); i++) {
+            build.append("?, ");
+        }
+        build.replace(build.length() - 1, build.length(), ")");
         PreparedStatement st = yhteys.prepareStatement(sql);
-        Array tagiArray = yhteys.createArrayOf("TEXT", tagit.toArray());
-        st.setArray(1, tagiArray);
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i-1));
+        }
         ResultSet rs = st.executeQuery();
         List<Vinkki> vinkit = new ArrayList<>();
         while (rs.next()) {

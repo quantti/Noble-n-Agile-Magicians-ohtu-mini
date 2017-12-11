@@ -1,17 +1,12 @@
 package noble.lukuvinkki.main;
 
 import noble.lukuvinkki.io.KayttoliittymaInterface;
-import java.util.List;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
-import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
-import noble.lukuvinkki.io.UrlinAvaaja;
-import java.util.ArrayList;
 import java.util.HashMap;
-import noble.lukuvinkki.tietokohteet.PodcastVinkki;
-import noble.lukuvinkki.tietokohteet.VideoVinkki;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class App {
     
@@ -160,7 +155,11 @@ public class App {
             io.print("Väärä valinta");
             return;
         }
-        komento.komento();
+        try {
+            komento.komento();
+        } catch (SQLException e) {
+            virhe(e);
+        }
         
     }
 }

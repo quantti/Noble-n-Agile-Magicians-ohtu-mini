@@ -116,16 +116,21 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         }
         return vinkit;
     }
-    
-     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
         String sql = "SELECT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
                 + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
                 + " AND tagi.id = kirja_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN ?";
-     
+                + " AND tagi.tagin_nimi IN (";
+        StringBuilder build = new StringBuilder(sql);
+        for (int i = 0; i < tagit.size(); i++) {
+            build.append("?, ");
+        }
+        build.replace(build.length() - 1, build.length(), ")");
         PreparedStatement st = yhteys.prepareStatement(sql);
-        Array tagiArray = yhteys.createArrayOf("TEXT", tagit.toArray());
-        st.setArray(1, tagiArray);
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i - 1));
+        }
         ResultSet rs = st.executeQuery();
         List<Vinkki> vinkit = new ArrayList<>();
         while (rs.next()) {
