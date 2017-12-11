@@ -17,6 +17,7 @@ public class App {
     private KayttoliittymaInterface kayttisIO;
     private IO io;
     private HashMap<String, Komento> listausKomennot;
+    private HashMap<String, Komento> muokkausKomennot;
 
     public App(IO io, String tietokantaURL) {
         try {
@@ -25,6 +26,7 @@ public class App {
             this.io = io;
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
             listausKomennot = komentoFactory.getListauskomennot();
+            muokkausKomennot = komentoFactory.getMuokkauskomennot();
         } catch (Exception e) {
             virhe(e);
         }
@@ -36,6 +38,7 @@ public class App {
             this.io = io;
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
             listausKomennot = komentoFactory.getListauskomennot();
+            muokkausKomennot = komentoFactory.getMuokkauskomennot();
         } catch (Exception e) {
             virhe(e);
         }
@@ -76,212 +79,29 @@ public class App {
         }
     }
 
-    private void listaaVinkkejäValikko() {
-        for (Komento komento : listausKomennot.values()) {
+    private void alaValikko(HashMap<String, Komento> komennot) {
+        for (Komento komento : komennot.values()) {
             io.print(komento.toString());
         }
-        io.print("7) Palaa päävalikkoon");
+        int viimInd = komennot.size();
+        io.print(viimInd + ") Palaa päävalikkoon");
     }
+    
 
     private void valitseListattavatVinkit() {
-        listaaVinkkejäValikko();
+        alaValikko(listausKomennot);
         String valinta = io.readLine("Anna valintasi: ");
-        vinkkiValikonValinnat(valinta);
-    }
-
-    private boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
-        if (lista == null || lista.isEmpty()) {
-            io.print("Vinkkejä ei löytynyt\n");
-            return true;
-        }
-        return false;
-    }
-
-    private void lisaaKirjaVinkki() {
-        try {
-            String kirjoittaja = io.readLine("Syötä kirjan kirjoittaja: ");
-            String nimi = io.readLine("Syötä kirjan nimi: ");
-            List<String> tagit = lisaaTagit();
-            KirjaVinkki kirjaVinkki = new KirjaVinkki();
-            kirjaVinkki.setTekija(kirjoittaja);
-            kirjaVinkki.setNimi(nimi);
-            //TODO: lisää tagit vinkkiin
-            if (kayttisIO.lisaaKirja(kirjaVinkki) != -1) {
-                io.print("Vinkki lisätty!");
-            } else {
-                io.print("Vinkin lisääminen epäonnistui.");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
-    }
-
-    private void lisaaPodcastVinkki() {
-        try {
-            String nimi = io.readLine("Syötä podcastin nimi: ");
-            String url = io.readLine("Syötä podcastin url: ");
-            List<String> tagit = lisaaTagit();
-            PodcastVinkki podcastVinkki = new PodcastVinkki();
-            podcastVinkki.setUrl(url);
-            podcastVinkki.setNimi(nimi);
-            //TODO: lisää tagit vinkkiin
-            if (kayttisIO.lisaaPodcast(podcastVinkki) != -1) {
-                io.print("Vinkki lisätty!");
-            } else {
-                io.print("Vinkin lisääminen epäonnistui.");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
-    }
-
-    private void lisaaVideoVinkki() {
-        try {
-            String nimi = io.readLine("Syötä videon nimi: ");
-            String url = io.readLine("Syötä videon url: ");
-            List<String> tagit = lisaaTagit();
-            VideoVinkki videoVinkki = new VideoVinkki();
-            videoVinkki.setUrl(url);
-            videoVinkki.setNimi(nimi);
-            //TODO: lisää tagit vinkkiin
-            if (kayttisIO.lisaaVideo(videoVinkki) != -1) {
-                io.print("Vinkki lisätty!");
-            } else {
-                io.print("Vinkin lisääminen epäonnistui.");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
-    }
-
-    private List<String> lisaaTagit() {
-        List<String> tagit = new ArrayList<>();
-        String tag = "";
-        while (true) {
-            tag = io.readLine("Syötä tagi, tyhjä lopettaa.");
-            if (tag.equalsIgnoreCase("")) {
-                break;
-            }
-            tagit.add(tag);
-        }
-        return tagit;
-    }
-
-    private void muokkaaVinkkia() {
-        io.print("1) Muokkaa kirjavinkkiä");
-        io.print("2) Muokkaa videovinkkiä");
-        io.print("3) Muokkaa podcastvinkkiä");
-        io.print("4) Muokkaa blogivinkkiä");
-        io.print("5) Palaa päävalikkoon");
-        String valinta = io.readLine("Syötä valintasi");
-        switch(valinta) {
-            case "1":
-                muokkaaKirjaVinkkia();
-                break;
-            case "2":
-                muokkaaVideoVinkkia();
-                break;
-            case "3":
-                muokkaaPodcastVinkkia();
-                break;
-            case "4":
-                break;
-            case "5":
-                break;
-        }
+        alaValikonValinnat(listausKomennot, valinta);
     }
     
-    private void muokkaaKirjaVinkkia() {
-        try {
-            int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
-            KirjaVinkki vinkki = kayttisIO.haeYksiKirja(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + vinkki.getTekija() + ". Syötä uusi kirjoittaja tai"
-                    + " jätä tyhjäksi jos haluat säilyttää saman.");
-            if (!kirjoittaja.isEmpty()) {
-                vinkki.setTekija(kirjoittaja);
-                io.print("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
-            }
-
-            String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
-                    + "haluat säilyttää vanhan nimen.");
-            if (!nimi.isEmpty()) {
-                vinkki.setNimi(nimi);
-                io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
-            }
-            if (kayttisIO.muokkaaKirjaa(vinkki)) {
-                io.print("Vinkkiä muokattu onnistuneesti!");
-            } else {
-                io.print("Vinkin muokkaaminen epäonnistui");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
+    private void valitseMuokkattavatVinkit() {
+        alaValikko(muokkausKomennot);
+        String valinta = io.readLine("Anna valintasi: ");
+        alaValikonValinnat(muokkausKomennot, valinta);
     }
+            
     
-    private void muokkaaVideoVinkkia() {
-        try {
-            int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
-            VideoVinkki vinkki = kayttisIO.haeYksiVideo(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
-                    + "haluat säilyttää vanhan nimen.");
-            if (!nimi.isEmpty()) {
-                vinkki.setNimi(nimi);
-                io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
-            }
-            String url = io.readLine("Vinkin url on " + vinkki.getUrl() + ". Syötä uusi url tai jätä tyhjäksi jos "
-                    + "haluat säilyttää vanhan");
-            if (!url.isEmpty()) {
-                vinkki.setUrl(url);
-                io.print("Vinkin urliksi on vaihdettu " + url + ".");
-            }
-            if (kayttisIO.muokkaaVideota(vinkki)) {
-                io.print("Vinkkiä muokattu onnistuneesti!");
-            } else {
-                io.print("Vinkin muokkaaminen epäonnistui");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
-    }
     
-    private void muokkaaPodcastVinkkia() {
-        try {
-            int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
-            PodcastVinkki vinkki = kayttisIO.haeYksiPodcast(id);
-            if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
-                return;
-            }
-            String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
-                    + "haluat säilyttää vanhan nimen.");
-            if (!nimi.isEmpty()) {
-                vinkki.setNimi(nimi);
-                io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
-            }
-            String url = io.readLine("Vinkin url on " + vinkki.getUrl() + ". Syötä uusi url tai jätä tyhjäksi jos "
-                    + "haluat säilyttää vanhan");
-            if (!url.isEmpty()) {
-                vinkki.setUrl(url);
-                io.print("Vinkin urliksi on vaihdettu " + url + ".");
-            }
-            if (kayttisIO.muokkaaPodcastia(vinkki)) {
-                io.print("Vinkkiä muokattu onnistuneesti!");
-            } else {
-                io.print("Vinkin muokkaaminen epäonnistui");
-            }
-        } catch (SQLException e) {
-            virhe(e);
-        }
-    }
-
     private void poistaVinkki() {
         try {
             int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
@@ -346,16 +166,16 @@ public class App {
                 valitseListattavatVinkit();
                 break;
             case "b":
-                lisaaKirjaVinkki();
+                new LisaaKirja("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "c":
-                lisaaPodcastVinkki();
+                new LisaaPodcast("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "d":
-                lisaaVideoVinkki();
+                new LisaaVideo("lisaaVideo", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "e":
-                muokkaaVinkkia();
+                valitseMuokkattavatVinkit();
                 break;
             case "f":
                 poistaVinkki();
@@ -365,8 +185,8 @@ public class App {
         }
     }
 
-    private void vinkkiValikonValinnat(String valinta) {
-        Komento komento = listausKomennot.get(valinta);
+    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+        Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.print("Väärä valinta");
             return;
@@ -374,5 +194,6 @@ public class App {
         komento.komento();
 
     }
+
 
 }

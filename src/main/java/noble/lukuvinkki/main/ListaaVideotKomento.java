@@ -16,11 +16,6 @@ public class ListaaVideotKomento extends Komento {
         super(nimi, komento, teksti, io, kayttisIO);
     }
 
-
-
-
-    
-    
     @Override
     public void komento() {
         try {
@@ -29,7 +24,7 @@ public class ListaaVideotKomento extends Komento {
                 return;
             }
             for (Vinkki vinkki : kaikkiVideot) {
-                System.out.println(vinkki);
+                io.print(vinkki.toString());
             }
         } catch (SQLException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
