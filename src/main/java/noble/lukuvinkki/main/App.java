@@ -17,7 +17,6 @@ public class App {
 
     private KayttoliittymaInterface kayttisIO;
     private IO io;
-    private UrlinAvaaja urli;
 
     public App(IO io, String tietokantaURL) {
         try {
@@ -31,7 +30,6 @@ public class App {
     }
 
     public void kaynnista() {
-        urli = new UrlinAvaaja("https://yle.fi/uutiset");
         io.print("\nTervetuloa käyttämään Lukuvinkkiä!\n");
         kysy();
     }
