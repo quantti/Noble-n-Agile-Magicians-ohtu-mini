@@ -59,19 +59,6 @@ public class Stepdefs {
 
     }
 
-<<<<<<< HEAD
-    @Then("^Vinkkiä id:llä \"([^\"]*)\" ei löydy$")
-    public void vinkkiä_id_llä_ei_löydy(String arg1) throws Throwable {
-        inputLines.add("e");
-        inputLines.add(arg1);
-        inputLines.add("q");
-
-        kaynnista();
-        assertTrue(io.getTulosteet().contains("Vinkkiä ei löytynyt, tarkista id-numero"));
-    }
-=======
->>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
-
     @Given("^Komento lisää kirja valitaan$")
     public void lisaaValittu() throws Throwable {
 
@@ -139,11 +126,7 @@ public class Stepdefs {
     
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-<<<<<<< HEAD
-        assertTrue(io.getTulosteet().contains("Id: 1\nKirjailija: Kirja"));
-=======
-        assertTrue(io.getPrints().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
->>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
+        assertTrue(io.getTulosteet().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
     }
 
 
@@ -190,12 +173,7 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-<<<<<<< HEAD
-        System.out.println(io.getTulosteet());
-        assertEquals(io.getTulosteet().get(17),"Id: 1\nPodcast: Url");
-=======
-        assertEquals(io.getPrints().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
->>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
+        assertEquals(io.getTulosteet().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
     }
 
     
