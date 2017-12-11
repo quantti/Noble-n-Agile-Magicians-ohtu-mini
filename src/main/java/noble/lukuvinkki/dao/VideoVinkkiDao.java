@@ -21,6 +21,11 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     @Override
     public int tallenna(VideoVinkki vinkki) throws SQLException {
         int id = -1;
+
+        if (vinkki.getUrl().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
+
         String sql = "INSERT INTO video_vinkki(videon_nimi, videon_url) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
@@ -123,11 +128,9 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     private void tallennaTagit(VideoVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
-            try {
-                PreparedStatement st = yhteys.prepareStatement(sql);
-                st.setString(1, s);
-            } catch (SQLException e) {
-            }
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setString(1, s);
+            st.executeUpdate();
         }
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO video_tagit(video_id, tagi_id)"
@@ -135,6 +138,7 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());
             st.setString(2, s);
+            st.executeUpdate();
         }
     }
 }
