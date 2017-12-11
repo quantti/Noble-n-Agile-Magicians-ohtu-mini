@@ -64,16 +64,17 @@ public class PodcastVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        String tagit = "";
+        String tagitS = "";
         if (getTagit() != null) {
-            tagit = StringUtils.join(getTagit(), ",");
+            tagitS = StringUtils.join(getTagit(), ",");
         }
-        return "\nId: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagit;
+        return "\nId: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
     }
 
     /**
      * @return the tagit
      */
+    @Override
     public List<String> getTagit() {
         return tagit;
     }
@@ -81,6 +82,7 @@ public class PodcastVinkki implements Vinkki {
     /**
      * @param tagit the tagit to set
      */
+    @Override
     public void setTagit(List<String> tagit) {
         this.tagit = tagit;
     }

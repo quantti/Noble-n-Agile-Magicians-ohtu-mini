@@ -67,17 +67,19 @@ public class KirjaVinkki implements Vinkki {
 
     @Override
     public String toString() {
-        String tagit = "";
+        String tagitS = "";
         if (getTagit() != null) {
-            tagit = StringUtils.join(getTagit(), ",");
+            tagitS = StringUtils.join(getTagit(), ",");
         }
-        return "\nId: " + this.getId() + "\n" + this.getTekija() + ": " + this.getNimi() + "\nTagit: " + tagit;
+        return "\nId: " + this.getId() + "\n" + this.getTekija() + ": " + this.getNimi() + "\nTagit: " + tagitS;
     }
 
+    @Override
     public List<String> getTagit() {
         return tagit;
     }
 
+    @Override
     public void setTagit(List<String> tagit) {
         this.tagit = tagit;
     }
