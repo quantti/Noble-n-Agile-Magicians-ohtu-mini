@@ -14,13 +14,14 @@ import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 
 public class App {
-    
+
     private KayttoliittymaInterface kayttisIO;
     private IO io;
     private HashMap<String, Komento> listausKomennot;
     private Tietokanta tietokanta;
     private HashMap<String, Komento> muokkausKomennot;
-
+    private HashMap<String, Komento> poistoKomennot;
+    private HashMap<String, Komento> komennot;
 
     public App(IO io, String tietokantaURL) {
         try {
@@ -30,11 +31,13 @@ public class App {
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
             listausKomennot = komentoFactory.getListauskomennot();
             muokkausKomennot = komentoFactory.getMuokkauskomennot();
+            poistoKomennot = komentoFactory.getPoistokomennot();
+            komennot = komentoFactory.getPaavalikonkomennot();
         } catch (Exception e) {
             virhe(e);
         }
     }
-    
+
     public App(IO io, Tietokanta tietokanta) {
         try {
             this.tietokanta = tietokanta;
@@ -43,36 +46,36 @@ public class App {
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
             listausKomennot = komentoFactory.getListauskomennot();
             muokkausKomennot = komentoFactory.getMuokkauskomennot();
+            poistoKomennot = komentoFactory.getPoistokomennot();
+            komennot = komentoFactory.getPaavalikonkomennot();
+
         } catch (Exception e) {
             virhe(e);
         }
     }
-    
+
     public void kaynnista() {
         io.print("\nTervetuloa käyttämään Lukuvinkkiä!\n");
         kysy();
     }
-    
+
     private void virhe(Exception e) {
         io.print("Virhe: " + e.getMessage());
     }
-    
-    private void listaaValikko() {
+
+    private void listaaValikko(HashMap<String, Komento> komennot) {
         io.print("\nValitse alta haluamasi toiminto:\n");
-        io.print("a) Listaa vinkkejä");
-        io.print("b) lisää uusi kirjavinkki");
-        io.print("c) lisää uusi podcastvinkki");
-        io.print("d) lisää uusi videovinkki");
-        io.print("e) muokkaa vinkkiä");
-        io.print("f) poista vinkki");
+        for (Komento komento : komennot.values()) {
+            io.print(komento.toString());
+        }
         io.print("q) lopeta ohjelma\n");
     }
-    
+
     private void kysy() {
-        
+
         while (true) {
-            listaaValikko();
-            
+            listaaValikko(komennot);
+
             String vastaus = io.readLine("Anna komento: ");
             if (vastaus.equalsIgnoreCase("q")) {
                 try {
@@ -83,8 +86,8 @@ public class App {
                     virhe(ex);
                 }
             }
-            
-            paaValikonValinnat(vastaus);
+
+            alaValikonValinnat(komennot, vastaus);
         }
     }
 
@@ -95,44 +98,29 @@ public class App {
         int viimInd = komennot.size();
         io.print(viimInd + ") Palaa päävalikkoon");
     }
-    
+
     private void valitseListattavatVinkit() {
         alaValikko(listausKomennot);
         String valinta = io.readLine("Anna valintasi: ");
         alaValikonValinnat(listausKomennot, valinta);
     }
-    
+
     private void valitseMuokkattavatVinkit() {
         alaValikko(muokkausKomennot);
         String valinta = io.readLine("Anna valintasi: ");
         alaValikonValinnat(muokkausKomennot, valinta);
     }
-            
-    
-    
 
     private void poistaVinkki() {
-        io.print("\n1) Poista kirjavinkki");
-        io.print("2) Poista podcastvinkki");
-        io.print("3) Poista videovinkki");
-        String valinta = io.readLine("Anna valintasi");
-        switch (valinta) {
-            case "1":
-                new PoistaKirja("poistaKirja", "1", "Poista kirjavinkki", io, kayttisIO).komento();
-                break;
-            case "2":
-                new PoistaPodcast("poistaKirja", "1", "Poista podcastvinkki", io, kayttisIO).komento();
-                break;
-            case "3":
-                new PoistaVideo("poistaVideo", "3", "Poista videovinkki", io, kayttisIO).komento();
-                break;
-        }
+        alaValikko(poistoKomennot);
+        String valinta = io.readLine("Anna valintasi: ");
+        alaValikonValinnat(poistoKomennot, valinta);
     }
 
     private void paaValikonValinnat(String valinta) {
         switch (valinta) {
             case "a":
-                valitseListattavatVinkit();
+                new Valikko("listaaVinkit", "a", "Listaa vinkit", io, kayttisIO, listausKomennot).komento();
                 break;
             case "b":
                 new LisaaKirja("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
@@ -144,10 +132,10 @@ public class App {
                 new LisaaVideo("lisaaVideo", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "e":
-                valitseMuokkattavatVinkit();
+                new Valikko("muokkaaVinkit", "e", "Muokkaa vinkkejä", io, kayttisIO, muokkausKomennot).komento();
                 break;
             case "f":
-                poistaVinkki();
+                new Valikko("poistaVinkit", "f", "Poista vinkkejä", io, kayttisIO, poistoKomennot).komento();
                 break;
             default:
                 io.print("Väärä valinta");
@@ -161,6 +149,6 @@ public class App {
             return;
         }
         komento.komento();
-        
+
     }
 }
