@@ -148,7 +148,11 @@ public class App {
             io.print("Väärä valinta");
             return;
         }
-        komento.komento();
+        try {
+            komento.komento();
+        } catch (Exception e) {
+            virhe(e);
+        }
 
     }
 }

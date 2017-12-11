@@ -1,5 +1,6 @@
 package noble.lukuvinkki.main;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,7 @@ import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
-public class Komento {
+public abstract class Komento {
 
     protected String nimi;
     protected String komento;
@@ -23,9 +24,7 @@ public class Komento {
         this.kayttisIO = kayttisIO;
     }
 
-    public void komento() {
-
-    }
+    public abstract void komento() throws SQLException;
 
     protected void virhe(Exception e) {
         io.print("Virhe: " + e.getMessage());
@@ -60,7 +59,7 @@ public class Komento {
         io.print(viimInd + ") Palaa päävalikkoon");
     }
     
-    protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+    protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.print("Väärä valinta");
