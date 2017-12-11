@@ -20,6 +20,10 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public int tallenna(PodcastVinkki vinkki) throws SQLException {
         int id = -1;
+
+        if (vinkki.getUrl().isEmpty() || vinkki.getNimi().isEmpty()) {
+            return -1;
+        }
         String sql = "INSERT INTO podcast_vinkki(podcastin_nimi, podcastin_url) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
@@ -99,7 +103,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setString(1, "%" + hakutermi + "%");
         ResultSet rs = kysely.executeQuery();
-        while (rs.next()) {            
+        while (rs.next()) {
             PodcastVinkki podcastVinkki = keraa(rs);
             vinkit.add(podcastVinkki);
         }
@@ -125,11 +129,9 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     private void tallennaTagit(PodcastVinkki vinkki) throws SQLException {
         for (String tagi : vinkki.getTagit()) {
             String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
-            try {
-                PreparedStatement st = yhteys.prepareStatement(sql);
-                st.setString(1, tagi);
-            } catch (SQLException e) {
-            }
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setString(1, tagi);
+            st.executeUpdate();
         }
         for (String tagi : vinkki.getTagit()) {
             String sql = "INSERT INTO podcast_tagit(podcast_id, tagi_id)"
@@ -137,6 +139,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());
             st.setString(2, tagi);
+            st.executeUpdate();
         }
     }
 }
