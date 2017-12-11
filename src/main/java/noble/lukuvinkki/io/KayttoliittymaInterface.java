@@ -6,7 +6,6 @@
 package noble.lukuvinkki.io;
 
 import java.util.List;
-import noble.lukuvinkki.dao.Dao;
 import noble.lukuvinkki.dao.KirjaVinkkiDao;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
@@ -25,8 +24,8 @@ import noble.lukuvinkki.tietokohteet.VideoVinkki;
 public class KayttoliittymaInterface {
 
     private final KirjaVinkkiDao kirjavinkkiDao;
-    private final Dao podcastvinkkiDao;
-    private final Dao videovinkkiDao;
+    private final PodcastVinkkiDao podcastvinkkiDao;
+    private final VideoVinkkiDao videovinkkiDao;
 
     public KayttoliittymaInterface(Tietokanta tietokanta) {
         this.kirjavinkkiDao = new KirjaVinkkiDao(tietokanta);
@@ -66,7 +65,7 @@ public class KayttoliittymaInterface {
     }
 
     public VideoVinkki haeYksiVideo(int id) throws SQLException {
-        VideoVinkki vinkki = (VideoVinkki) videovinkkiDao.haeYksi(id);
+        VideoVinkki vinkki = videovinkkiDao.haeYksi(id);
         return vinkki;
     }
 
@@ -92,7 +91,7 @@ public class KayttoliittymaInterface {
     }
 
     public PodcastVinkki haeYksiPodcast(int id) throws SQLException {
-        PodcastVinkki vinkki = (PodcastVinkki) podcastvinkkiDao.haeYksi(id);
+        PodcastVinkki vinkki = podcastvinkkiDao.haeYksi(id);
         return vinkki;
     }
 

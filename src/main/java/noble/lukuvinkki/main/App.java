@@ -102,7 +102,26 @@ public class App {
             
     
     
+
     private void poistaVinkki() {
+        io.print("\n1) Poista kirjavinkki");
+        io.print("2) Poista podcastvinkki");
+        io.print("3) Poista videovinkki");
+        String valinta = io.readLine("Anna valintasi");
+        switch(valinta) {
+            case "1":
+                poistaKirjaVinkki();
+                break;
+            case "2":
+                poistaPodcastVinkki();
+                break;
+            case "3":
+                poistaVideoVinkki();
+                break;
+        }
+    }
+
+    private void poistaKirjaVinkki() {
         try {
             int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
             Vinkki vinkki = kayttisIO.haeYksiKirja(id);
