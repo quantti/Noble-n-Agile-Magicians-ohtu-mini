@@ -1,11 +1,13 @@
 package noble.lukuvinkki.dao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
@@ -109,6 +111,24 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         return vinkit;
     }
 
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+        String sql = "SELECT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
+                + " WHERE video_vinkki.id = video_tagit.video_id"
+                + " AND tagi.id = video_tagit.tagi_id"
+                + " AND tagi.tagin_nimi IN ?";
+
+        PreparedStatement st = yhteys.prepareStatement(sql);
+        Array tagiArray = yhteys.createArrayOf("TEXT", tagit.toArray());
+        st.setArray(1, tagiArray);
+        ResultSet rs = st.executeQuery();
+        List<Vinkki> vinkit = new ArrayList<>();
+        while (rs.next()) {
+            VideoVinkki v = keraa(rs);
+            vinkit.add(v);
+        }
+        return vinkit;
+    }
+
     private List<String> haeTagit(VideoVinkki vinkki) throws SQLException {
         List<String> tagit = new ArrayList<>();
         String sql = "SELECT tagi.*"
@@ -140,5 +160,13 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
             st.setString(2, s);
             st.executeUpdate();
         }
+    }
+
+    private void poistaOrvotTagit() throws SQLException {
+        String sql = "DELETE FROM tagi WHERE tagi.id NOT IN"
+                + " (SELECT kirja_tagit.tagi_id FROM kirja_tagit"
+                + " UNION SELECT podcast_tagit.tagi_id FROM podcast_tagit"
+                + " UNION SELECT video_tagit.tagi_id FROM video_tagit)";
+        yhteys.createStatement().execute(sql);
     }
 }
