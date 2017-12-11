@@ -9,6 +9,7 @@ import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import noble.lukuvinkki.io.UrlinAvaaja;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 
@@ -16,6 +17,7 @@ public class App {
 
     private KayttoliittymaInterface kayttisIO;
     private IO io;
+    private UrlinAvaaja urli;
 
     public App(IO io, String tietokantaURL) {
         try {
@@ -29,6 +31,7 @@ public class App {
     }
 
     public void kaynnista() {
+        urli = new UrlinAvaaja("https://yle.fi/uutiset");
         io.print("\nTervetuloa käyttämään Lukuvinkkiä!\n");
         kysy();
     }
