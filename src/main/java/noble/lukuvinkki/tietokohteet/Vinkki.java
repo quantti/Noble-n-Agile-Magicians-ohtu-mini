@@ -5,7 +5,6 @@ import java.util.List;
 public interface Vinkki {
 
     public String getNimi();
-    //todo
 
     public void setNimi(String nimi);
 

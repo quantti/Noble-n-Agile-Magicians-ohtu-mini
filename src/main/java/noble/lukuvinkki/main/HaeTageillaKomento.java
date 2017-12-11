@@ -29,7 +29,7 @@ public class HaeTageillaKomento extends Komento {
             return;
         }
         for (Vinkki vinkki : vinkit) {
-            io.print(vinkki.toString());
+            io.tulosta(vinkki.toString());
         }
     }
 

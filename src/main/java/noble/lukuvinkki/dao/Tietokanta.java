@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Tietokanta {
 
-    private Connection yhteys;
+    private final Connection yhteys;
 
     public Tietokanta(String url) throws SQLException {
         this.yhteys = DriverManager.getConnection(url);

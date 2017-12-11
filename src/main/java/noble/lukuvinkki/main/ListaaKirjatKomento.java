@@ -26,7 +26,7 @@ public class ListaaKirjatKomento extends Komento {
             }
 
             for (Vinkki vinkki : kaikkiKirjat) {
-                io.print(vinkki.toString());
+                io.tulosta(vinkki.toString());
 
             }
         } catch (SQLException e) {

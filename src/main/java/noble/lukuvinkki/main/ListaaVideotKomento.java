@@ -24,7 +24,7 @@ public class ListaaVideotKomento extends Komento {
                 return;
             }
             for (Vinkki vinkki : kaikkiVideot) {
-                io.print(vinkki.toString());
+                io.tulosta(vinkki.toString());
             }
         } catch (SQLException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);

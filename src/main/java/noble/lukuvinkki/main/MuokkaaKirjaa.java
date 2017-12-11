@@ -18,29 +18,29 @@ public class MuokkaaKirjaa extends Komento{
     @Override
     public void komento() {
         try {
-            int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
+            int id = Integer.parseInt(io.lueRivi("Syötä muokattavan vinkin id-numero:"));
             KirjaVinkki vinkki = kayttisIO.haeYksiKirja(id);
             if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
+                io.tulosta("Vinkkiä ei löytynyt, tarkista id-numero");
                 return;
             }
-            String kirjoittaja = io.readLine("Vinkin kirjoittaja on " + vinkki.getTekija() + ". Syötä uusi kirjoittaja tai"
+            String kirjoittaja = io.lueRivi("Vinkin kirjoittaja on " + vinkki.getTekija() + ". Syötä uusi kirjoittaja tai"
                     + " jätä tyhjäksi jos haluat säilyttää saman.");
             if (!kirjoittaja.isEmpty()) {
                 vinkki.setTekija(kirjoittaja);
-                io.print("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
+                io.tulosta("Vinkin kirjoittajaksi on vaihdettu " + kirjoittaja + ".");
             }
 
-            String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
+            String nimi = io.lueRivi("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
                     + "haluat säilyttää vanhan nimen.");
             if (!nimi.isEmpty()) {
                 vinkki.setNimi(nimi);
-                io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
+                io.tulosta("Vinkin nimeksi on vaihdettu " + nimi + ".");
             }
             if (kayttisIO.muokkaaKirjaa(vinkki)) {
-                io.print("Vinkkiä muokattu onnistuneesti!");
+                io.tulosta("Vinkkiä muokattu onnistuneesti!");
             } else {
-                io.print("Vinkin muokkaaminen epäonnistui");
+                io.tulosta("Vinkin muokkaaminen epäonnistui");
             }
         } catch (SQLException e) {
             virhe(e);

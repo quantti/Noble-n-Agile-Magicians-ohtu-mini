@@ -19,17 +19,17 @@ public class LisaaKirja extends Komento{
     @Override
     public void komento() {
         try {
-            String kirjoittaja = io.readLine("Syötä kirjan kirjoittaja: ");
-            String nimi = io.readLine("Syötä kirjan nimi: ");
+            String kirjoittaja = io.lueRivi("Syötä kirjan kirjoittaja: ");
+            String nimi = io.lueRivi("Syötä kirjan nimi: ");
             List<String> tagit = lisaaTagit();
             KirjaVinkki kirjaVinkki = new KirjaVinkki();
             kirjaVinkki.setTekija(kirjoittaja);
             kirjaVinkki.setNimi(nimi);
             kirjaVinkki.setTagit(tagit);
             if (kayttisIO.lisaaKirja(kirjaVinkki) != -1) {
-                io.print("Vinkki lisätty!");
+                io.tulosta("Vinkki lisätty!");
             } else {
-                io.print("Vinkin lisääminen epäonnistui.");
+                io.tulosta("Vinkin lisääminen epäonnistui.");
             }
         } catch (SQLException e) {
             virhe(e);

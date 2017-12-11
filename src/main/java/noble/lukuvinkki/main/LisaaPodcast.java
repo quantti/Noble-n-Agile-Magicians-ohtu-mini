@@ -19,17 +19,17 @@ public class LisaaPodcast extends Komento {
     @Override
     public void komento() {
         try {
-            String nimi = io.readLine("Syötä podcastin nimi: ");
-            String url = io.readLine("Syötä podcastin url: ");
+            String nimi = io.lueRivi("Syötä podcastin nimi: ");
+            String url = io.lueRivi("Syötä podcastin url: ");
             List<String> tagit = lisaaTagit();
             PodcastVinkki podcastVinkki = new PodcastVinkki();
             podcastVinkki.setUrl(url);
             podcastVinkki.setNimi(nimi);
             podcastVinkki.setTagit(tagit);
             if (kayttisIO.lisaaPodcast(podcastVinkki) != -1) {
-                io.print("Vinkki lisätty!");
+                io.lueRivi("Vinkki lisätty!");
             } else {
-                io.print("Vinkin lisääminen epäonnistui.");
+                io.lueRivi("Vinkin lisääminen epäonnistui.");
             }
         } catch (SQLException e) {
             virhe(e);
