@@ -16,11 +16,6 @@ public class ListaaVideotKomento extends Komento {
         super(nimi, komento, teksti, io, kayttisIO);
     }
 
-
-
-
-    
-    
     @Override
     public void komento() {
         try {

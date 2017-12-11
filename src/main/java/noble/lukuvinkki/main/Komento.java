@@ -1,12 +1,13 @@
-
 package noble.lukuvinkki.main;
 
+import java.util.ArrayList;
 import java.util.List;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class Komento {
+
     protected String nimi;
     protected String komento;
     protected String teksti;
@@ -21,15 +22,14 @@ public class Komento {
         this.kayttisIO = kayttisIO;
     }
 
-        
-    public void komento(){
-        
+    public void komento() {
+
     }
 
     protected void virhe(Exception e) {
         io.tulosta("Virhe: " + e.getMessage());
     }
-    
+
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
             io.tulosta("Vinkkejä ei löytynyt\n");
@@ -37,7 +37,20 @@ public class Komento {
         }
         return false;
     }
-    
+
+    protected List<String> lisaaTagit() {
+        List<String> tagit = new ArrayList<>();
+        String tag = "";
+        while (true) {
+            tag = io.readLine("Syötä tagi, tyhjä lopettaa.");
+            if (tag.equalsIgnoreCase("")) {
+                break;
+            }
+            tagit.add(tag);
+        }
+        return tagit;
+    }
+
     @Override
     public String toString() {
         return komento + ") " + teksti;

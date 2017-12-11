@@ -4,7 +4,6 @@ Feature: Käyttäjä voi poistaa vinkin
     Given Komento poista valitaan
     When Poistetaan vinkki id:llä "1"
     Then Sovellus vastaa "Vinkki poistettu"
-    And Vinkkiä id:llä "1" ei löydy
-
+    
 
     

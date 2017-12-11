@@ -18,9 +18,26 @@ public class App {
     private IO io;
     private HashMap<String, Komento> listausKomennot;
     private Tietokanta tietokanta;
+<<<<<<< HEAD
 
     public App(IO io, String tietokantaURL) throws SQLException {
         this(io, new Tietokanta(tietokantaURL));
+=======
+    private HashMap<String, Komento> muokkausKomennot;
+
+
+    public App(IO io, String tietokantaURL) {
+        try {
+            this.tietokanta = new Tietokanta(tietokantaURL);
+            kayttisIO = new KayttoliittymaInterface(tietokanta);
+            this.io = io;
+            KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
+            listausKomennot = komentoFactory.getListauskomennot();
+            muokkausKomennot = komentoFactory.getMuokkauskomennot();
+        } catch (Exception e) {
+            virhe(e);
+        }
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
     }
 
     public App(IO io, Tietokanta tietokanta) {
@@ -30,6 +47,7 @@ public class App {
             this.io = io;
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
             listausKomennot = komentoFactory.getListauskomennot();
+            muokkausKomennot = komentoFactory.getMuokkauskomennot();
         } catch (Exception e) {
             virhe(e);
         }
@@ -75,14 +93,24 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
     private void listaaVinkkejäValikko() {
         for (Komento komento : listausKomennot.values()) {
             io.tulosta(komento.toString());
         }
         io.tulosta("7) Palaa päävalikkoon");
+=======
+    private void alaValikko(HashMap<String, Komento> komennot) {
+        for (Komento komento : komennot.values()) {
+            io.print(komento.toString());
+        }
+        int viimInd = komennot.size();
+        io.print(viimInd + ") Palaa päävalikkoon");
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
     }
 
     private void valitseListattavatVinkit() {
+<<<<<<< HEAD
         listaaVinkkejäValikko();
         String valinta = io.lueRivi("Anna valintasi: ");
         vinkkiValikonValinnat(valinta);
@@ -274,6 +302,21 @@ public class App {
             virhe(e);
         }
     }
+=======
+        alaValikko(listausKomennot);
+        String valinta = io.readLine("Anna valintasi: ");
+        alaValikonValinnat(listausKomennot, valinta);
+    }
+    
+    private void valitseMuokkattavatVinkit() {
+        alaValikko(muokkausKomennot);
+        String valinta = io.readLine("Anna valintasi: ");
+        alaValikonValinnat(muokkausKomennot, valinta);
+    }
+            
+    
+    
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
 
     private void poistaVinkki() {
         io.tulosta("\n1) Poista kirjavinkki");
@@ -282,19 +325,20 @@ public class App {
         String valinta = io.lueRivi("Anna valintasi");
         switch (valinta) {
             case "1":
-                poistaKirjaVinkki();
+                new PoistaKirja("poistaKirja", "1", "Poista kirjavinkki", io, kayttisIO).komento();
                 break;
             case "2":
-                poistaPodcastVinkki();
+                new PoistaPodcast("poistaKirja", "1", "Poista podcastvinkki", io, kayttisIO).komento();
                 break;
             case "3":
-                poistaVideoVinkki();
+                new PoistaVideo("poistaVideo", "3", "Poista videovinkki", io, kayttisIO).komento();
                 break;
             default:
                 break;
         }
     }
 
+<<<<<<< HEAD
     private void poistaKirjaVinkki() {
         try {
             int id = Integer.parseInt(io.lueRivi("Anna poistettavan vinkin id-numero:"));
@@ -353,22 +397,24 @@ public class App {
 
     }
 
+=======
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
     private void paaValikonValinnat(String valinta) {
         switch (valinta) {
             case "a":
                 valitseListattavatVinkit();
                 break;
             case "b":
-                lisaaKirjaVinkki();
+                new LisaaKirja("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "c":
-                lisaaPodcastVinkki();
+                new LisaaPodcast("lisaaKirja", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "d":
-                lisaaVideoVinkki();
+                new LisaaVideo("lisaaVideo", "b", "jotaan", io, kayttisIO).komento();
                 break;
             case "e":
-                muokkaaVinkkia();
+                valitseMuokkattavatVinkit();
                 break;
             case "f":
                 poistaVinkki();
@@ -378,14 +424,20 @@ public class App {
         }
     }
 
+<<<<<<< HEAD
     private void vinkkiValikonValinnat(String valinta) {
         Komento komento = listausKomennot.get(valinta);
+=======
+    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+        Komento komento = komennot.get(valinta);
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
         if (komento == null) {
             io.tulosta("Väärä valinta");
             return;
         }
         komento.komento();
     }
+<<<<<<< HEAD
 
     private void avaaUrl() {
         io.tulosta("1) Avaa video");
@@ -436,4 +488,6 @@ public class App {
         }
     }
 
+=======
+>>>>>>> c87d7e2cff55f6de461dcd3b83afa177930c8822
 }
