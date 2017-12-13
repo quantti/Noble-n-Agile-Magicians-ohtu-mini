@@ -1,13 +1,9 @@
 package noble.lukuvinkki.main;
 
 import noble.lukuvinkki.io.KayttoliittymaInterface;
-import java.util.List;
 import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
-import noble.lukuvinkki.tietokohteet.Vinkki;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
@@ -16,10 +12,7 @@ public class App {
 
     private KayttoliittymaInterface kayttisIO;
     private IO io;
-    private HashMap<String, Komento> listausKomennot;
     private Tietokanta tietokanta;
-    private HashMap<String, Komento> muokkausKomennot;
-    private HashMap<String, Komento> poistoKomennot;
     private HashMap<String, Komento> komennot;
 
     public App(IO io, String tietokantaURL) throws SQLException {
@@ -33,9 +26,6 @@ public class App {
             kayttisIO = new KayttoliittymaInterface(tietokanta);
             this.io = io;
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
-            listausKomennot = komentoFactory.getListauskomennot();
-            muokkausKomennot = komentoFactory.getMuokkauskomennot();
-            poistoKomennot = komentoFactory.getPoistokomennot();
             komennot = komentoFactory.getPaavalikonkomennot();
 
         } catch (Exception e) {

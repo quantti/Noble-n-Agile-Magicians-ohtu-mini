@@ -7,7 +7,7 @@ import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
-public class Komento {
+public abstract class Komento {
 
     protected String nimi;
     protected String komento;
@@ -23,9 +23,7 @@ public class Komento {
         this.kayttisIO = kayttisIO;
     }
 
-    public void komento() {
-
-    }
+    public abstract void komento();
 
     protected void virhe(Exception e) {
         io.tulosta("Virhe: " + e.getMessage());

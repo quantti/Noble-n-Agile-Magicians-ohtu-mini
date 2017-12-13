@@ -134,9 +134,9 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     private void tallennaTagit(KirjaVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
-                PreparedStatement st = yhteys.prepareStatement(sql);
-                st.setString(1, s);
-                st.executeUpdate();
+            PreparedStatement st = yhteys.prepareStatement(sql);
+            st.setString(1, s);
+            st.executeUpdate();
         }
         for (String s : vinkki.getTagit()) {
             String sql = "INSERT INTO kirja_tagit(kirja_id, tagi_id)"
