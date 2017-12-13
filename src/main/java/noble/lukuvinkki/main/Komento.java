@@ -47,15 +47,16 @@ public abstract class Komento {
         return tagit;
     }
 
-    protected void alaValikko(HashMap<String, Komento> komennot) {
+    protected int alaValikko(HashMap<String, Komento> komennot) {
         for (Komento komento : komennot.values()) {
             io.tulosta(komento.toString());
         }
-        int viimInd = komennot.size();
+        int viimInd = komennot.size() + 1;
         io.tulosta(viimInd + ") Palaa päävalikkoon");
+        return viimInd;
     }
 
-    protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
+    protected void valinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");

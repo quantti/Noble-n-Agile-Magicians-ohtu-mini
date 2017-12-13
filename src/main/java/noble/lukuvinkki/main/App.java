@@ -64,12 +64,12 @@ public class App {
                     virhe(ex);
                 }
             }
-            alaValikonValinnat(komennot, vastaus);
+            valinnat(komennot, vastaus);
 
         }
     }
 
-    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+    private void valinnat(HashMap<String, Komento> komennot, String valinta) {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");

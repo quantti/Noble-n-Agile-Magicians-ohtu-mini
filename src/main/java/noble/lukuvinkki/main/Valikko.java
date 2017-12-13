@@ -19,9 +19,12 @@ public class Valikko extends Komento {
 
     @Override
     public void komento() throws SQLException {
-        alaValikko(komennot);
+        int poistu = alaValikko(komennot);
         String valinta = io.lueRivi("Anna valintasi: ");
-        alaValikonValinnat(komennot, valinta);
+        if (Integer.parseInt(valinta) == poistu) {
+            return;
+        }
+        valinnat(komennot, valinta);
     }
 
 }
