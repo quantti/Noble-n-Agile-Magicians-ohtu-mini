@@ -18,29 +18,29 @@ public class MuokkaaVideota extends Komento {
     @Override
     public void komento() throws SQLException {
 
-        int id = Integer.parseInt(io.readLine("Syötä muokattavan vinkin id-numero:"));
+        int id = Integer.parseInt(io.lueRivi("Syötä muokattavan vinkin id-numero:"));
         VideoVinkki vinkki = kayttisIO.haeYksiVideo(id);
         if (vinkki == null) {
-            io.print("Vinkkiä ei löytynyt, tarkista id-numero");
+            io.tulosta("Vinkkiä ei löytynyt, tarkista id-numero");
             return;
         }
-        String nimi = io.readLine("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
+        String nimi = io.lueRivi("Vinkin nimi on " + vinkki.getNimi() + ". Syötä uusi nimi tai jätä tyhjäksi jos "
                 + "haluat säilyttää vanhan nimen.");
         if (!nimi.isEmpty()) {
             vinkki.setNimi(nimi);
-            io.print("Vinkin nimeksi on vaihdettu " + nimi + ".");
+            io.tulosta("Vinkin nimeksi on vaihdettu " + nimi + ".");
         }
-        String url = io.readLine("Vinkin url on " + vinkki.getUrl() + ". Syötä uusi url tai jätä tyhjäksi jos "
+        String url = io.lueRivi("Vinkin url on " + vinkki.getUrl() + ". Syötä uusi url tai jätä tyhjäksi jos "
                 + "haluat säilyttää vanhan");
         if (!url.isEmpty()) {
             vinkki.setUrl(url);
-            io.print("Vinkin urliksi on vaihdettu " + url + ".");
+            io.tulosta("Vinkin urliksi on vaihdettu " + url + ".");
         }
         if (kayttisIO.muokkaaVideota(vinkki)) {
-            io.print("Vinkkiä muokattu onnistuneesti!");
+            io.tulosta("Vinkkiä muokattu onnistuneesti!");
         } else {
-            io.print("Vinkin muokkaaminen epäonnistui");
+            io.tulosta("Vinkin muokkaaminen epäonnistui");
         }
-    }
 
+    }
 }

@@ -12,18 +12,13 @@ public class UrlinAvaaja {
     }
 
     public void avaa() throws Exception {
-//        try {
         if (Desktop.isDesktopSupported()) {
             // Windows
             Desktop.getDesktop().browse(new URI(url));
         } else {
-            // Ubuntu
+            // Linux (ehkä myös *nix)
             Runtime runtime = Runtime.getRuntime();
             runtime.exec("/usr/bin/firefox -new-window " + url);
         }
-//        } catch (Exception e) {
-
-//        }
     }
-
 }

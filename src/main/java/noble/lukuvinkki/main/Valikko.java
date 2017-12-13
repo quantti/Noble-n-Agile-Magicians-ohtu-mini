@@ -20,7 +20,7 @@ public class Valikko extends Komento {
     @Override
     public void komento() throws SQLException {
         alaValikko(komennot);
-        String valinta = io.readLine("Anna valintasi: ");
+        String valinta = io.lueRivi("Anna valintasi: ");
         alaValikonValinnat(komennot, valinta);
     }
 

@@ -23,7 +23,7 @@ public class HaeOtsikollaKomento extends Komento{
     @Override
     public void komento() {
         try {
-            String hakutermi = io.readLine("Anna hakutermi");
+            String hakutermi = io.lueRivi("Anna hakutermi");
             List<Vinkki> vinkit = kayttisIO.haeKaikkiaOtsikolla(hakutermi);
             if (tarkistaOnkoListaTyhjaTaiNull(vinkit)) {
                 return;

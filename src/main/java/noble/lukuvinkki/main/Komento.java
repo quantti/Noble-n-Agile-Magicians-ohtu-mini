@@ -26,10 +26,9 @@ public abstract class Komento {
 
     public abstract void komento() throws SQLException;
 
-
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
-            io.print("Vinkkejä ei löytynyt\n");
+            io.tulosta("Vinkkejä ei löytynyt\n");
             return true;
         }
         return false;
@@ -39,7 +38,7 @@ public abstract class Komento {
         List<String> tagit = new ArrayList<>();
         String tag = "";
         while (true) {
-            tag = io.readLine("Syötä tagi, tyhjä lopettaa.");
+            tag = io.lueRivi("Syötä tagi, tyhjä lopettaa.");
             if (tag.equalsIgnoreCase("")) {
                 break;
             }
@@ -50,22 +49,22 @@ public abstract class Komento {
 
     protected void alaValikko(HashMap<String, Komento> komennot) {
         for (Komento komento : komennot.values()) {
-            io.print(komento.toString());
+            io.tulosta(komento.toString());
         }
         int viimInd = komennot.size();
-        io.print(viimInd + ") Palaa päävalikkoon");
+        io.tulosta(viimInd + ") Palaa päävalikkoon");
     }
-    
+
     protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
-            io.print("Väärä valinta");
+            io.tulosta("Väärä valinta");
             return;
         }
         komento.komento();
-        
+
     }
-    
+
     @Override
     public String toString() {
         return komento + ") " + teksti;

@@ -62,8 +62,8 @@ public class KomentoFactory {
     private void alustaPaavalikonKomennot() {
         paavalikonkomennot.put("a", new Valikko("listaaVinkit", "a", "Listaa vinkit", io, kayttisIO, this.listauskomennot));
         paavalikonkomennot.put("b", new LisaaKirja("lisaaKirja", "b", "Lisää kirjavinkki", io, kayttisIO));
-        paavalikonkomennot.put("c", new LisaaPodcast("lisaaPodcast", "b", "Lisää podcastvinkki", io, kayttisIO));
-        paavalikonkomennot.put("d", new LisaaVideo("lisaaVideo", "b", "Lisää videovinkki", io, kayttisIO));
+        paavalikonkomennot.put("c", new LisaaPodcast("lisaaPodcast", "c", "Lisää podcastvinkki", io, kayttisIO));
+        paavalikonkomennot.put("d", new LisaaVideo("lisaaVideo", "d", "Lisää videovinkki", io, kayttisIO));
         paavalikonkomennot.put("e", new Valikko("muokkaaVinkit", "e", "Muokkaa vinkkejä", io, kayttisIO, this.muokkauskomennot));
         paavalikonkomennot.put("f", new Valikko("poistaVinkit", "f", "Poista vinkkejä", io, kayttisIO, this.poistokomennot));
     }

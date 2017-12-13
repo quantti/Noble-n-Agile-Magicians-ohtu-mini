@@ -6,8 +6,10 @@ package noble.lukuvinkki.main;
  * and open the template in the editor.
  */
 
+import java.sql.SQLException;
+import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.io.StubIO;
+import noble.lukuvinkki.io.TynkaIO;
 import org.junit.Before;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -23,9 +25,9 @@ public class AppTest {
     private final String tietokantaURL = "jdbc:sqlite:tietokanta/testaus.sqlite3";
     
     @Before
-    public void setUp() {
-        IO io = new StubIO();
-        this.app = new App(io, tietokantaURL);
+    public void setUp() throws SQLException {
+        IO io = new TynkaIO();
+        this.app = new App(io, new Tietokanta(tietokantaURL));
     }
     
     @Test

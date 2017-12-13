@@ -17,17 +17,17 @@ public class PoistaVideo extends Komento{
     
     @Override
     public void komento() throws SQLException {
-            int id = Integer.parseInt(io.readLine("Anna poistettavan vinkin id-numero:"));
+            int id = Integer.parseInt(io.lueRivi("Anna poistettavan vinkin id-numero:"));
             Vinkki vinkki = kayttisIO.haeYksiVideo(id);
             if (vinkki == null) {
-                io.print("Vinkkiä ei löytynyt, tarkista id-numero");
+                io.tulosta("Vinkkiä ei löytynyt, tarkista id-numero");
                 return;
             }
-            String vastaus = io.readLine("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
+            String vastaus = io.lueRivi("Haluatko varmasti poistaa vinkin " + vinkki.getNimi() + "? (k/e)");
             if (vastaus.contentEquals("k") && kayttisIO.poistaVideo(id)) {
-                io.print("Vinkki poistettu");
+                io.tulosta("Vinkki poistettu");
             } else {
-                io.print("Vinkkiä ei poistettu");
+                io.tulosta("Vinkkiä ei poistettu");
             }
 
     }

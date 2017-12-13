@@ -25,7 +25,7 @@ public class ListaaKaikkiKomento extends Komento {
                 return;
             }
             for (Vinkki vinkki : kaikkiVinkit) {
-                io.print(vinkki.toString());
+                io.tulosta(vinkki.toString());
             }
 
     }

@@ -12,8 +12,7 @@ import noble.lukuvinkki.dao.Dao;
 import noble.lukuvinkki.dao.KirjaVinkkiDao;
 import noble.lukuvinkki.dao.PodcastVinkkiDao;
 import noble.lukuvinkki.dao.Tietokanta;
-import noble.lukuvinkki.io.IO;
-import noble.lukuvinkki.io.StubIO;
+import noble.lukuvinkki.io.TynkaIO;
 import noble.lukuvinkki.main.App;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
@@ -22,7 +21,7 @@ import static org.junit.Assert.*;
 public class Stepdefs {
 
     App app;
-    StubIO io;
+    TynkaIO io;
     Dao kvDao;
     Dao pcvDao;
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
@@ -60,7 +59,6 @@ public class Stepdefs {
 
     }
 
-
     @Given("^Komento lisää kirja valitaan$")
     public void lisaaValittu() throws Throwable {
 
@@ -81,7 +79,7 @@ public class Stepdefs {
 
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
-        List<String> rivit = io.getPrints();
+        List<String> rivit = io.getTulosteet();
         assertEquals(rivit.get(rivit.size() - 11), arg1);
     }
 
@@ -128,7 +126,7 @@ public class Stepdefs {
     
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getPrints().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
+        assertTrue(io.getTulosteet().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
     }
 
 
@@ -162,7 +160,7 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(29, io.getPrints().size());
+        assertEquals(29, io.getTulosteet().size());
     }
 
     
@@ -175,12 +173,12 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getPrints().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
     }
 
     
     public void kaynnista() {
-        io = new StubIO(inputLines);
+        io = new TynkaIO(inputLines);
         app = new App(io, kanta);
         app.kaynnista();
     }
