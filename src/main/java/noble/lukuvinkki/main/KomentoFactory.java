@@ -54,6 +54,7 @@ public class KomentoFactory {
         poistokomennot.put("1", new PoistaKirja("poistaKirja", "1", "Poista kirjavinkki", io, kayttisIO));
         poistokomennot.put("2", new PoistaPodcast("poistaPodcast", "2", "Poista podcastvinkki", io, kayttisIO));
         poistokomennot.put("3", new PoistaVideo("poistaVideo", "3", "Poista videovinkki", io, kayttisIO));
+        poistokomennot.put("4", new PoistaBlogi("poistaBlogi", "4", "Poista blogivinkki", io, kayttisIO));
     }
 
     public HashMap<String, Komento> getPoistokomennot() {
@@ -65,8 +66,9 @@ public class KomentoFactory {
         paavalikonkomennot.put("b", new LisaaKirja("lisaaKirja", "b", "Lisää kirjavinkki", io, kayttisIO));
         paavalikonkomennot.put("c", new LisaaPodcast("lisaaPodcast", "c", "Lisää podcastvinkki", io, kayttisIO));
         paavalikonkomennot.put("d", new LisaaVideo("lisaaVideo", "d", "Lisää videovinkki", io, kayttisIO));
-        paavalikonkomennot.put("e", new Valikko("muokkaaVinkit", "e", "Muokkaa vinkkejä", io, kayttisIO, this.muokkauskomennot));
-        paavalikonkomennot.put("f", new Valikko("poistaVinkit", "f", "Poista vinkkejä", io, kayttisIO, this.poistokomennot));
+        paavalikonkomennot.put("e", new LisaaBlogi("lisaaBLogi", "e", "Lisää blogivinkki", io, kayttisIO));
+        paavalikonkomennot.put("f", new Valikko("muokkaaVinkit", "f", "Muokkaa vinkkejä", io, kayttisIO, this.muokkauskomennot));
+        paavalikonkomennot.put("g", new Valikko("poistaVinkit", "g", "Poista vinkkejä", io, kayttisIO, this.poistokomennot));
     }
 
     public HashMap<String, Komento> getPaavalikonkomennot() {
