@@ -123,7 +123,11 @@ public class KayttoliittymaInterface {
     public List<Vinkki> haePodcastiaOtsikolla(String hakutermi) throws SQLException {
         return podcastvinkkiDao.haeOtsikolla(hakutermi);
     }
-    
+
+    public List<Vinkki> haePodcastiaTageilla(List<String> tagit) throws SQLException {
+        return podcastvinkkiDao.haeTageilla(tagit);
+    }
+
     public int lisaaBlogi(BlogiVinkki blogiVinkki) throws SQLException {
         return blogivinkkiDao.tallenna(blogiVinkki);
 
@@ -142,17 +146,17 @@ public class KayttoliittymaInterface {
     public boolean poistaBlogi(int id) throws SQLException {
         return blogivinkkiDao.poistaVinkki(id);
     }
-    
+
     public boolean muokkaablogia(BlogiVinkki vinkki) throws SQLException {
         return blogivinkkiDao.muokkaa(vinkki);
     }
-     
+
     public List<Vinkki> haeBlogiaOtsikolla(String hakutermi) throws SQLException {
         return blogivinkkiDao.haeOtsikolla(hakutermi);
     }
-
-    public List<Vinkki> haePodcastiaTageilla(List<String> tagit) throws SQLException {
-        return podcastvinkkiDao.haeTageilla(tagit);
+    
+     public List<Vinkki> haeBlogiaTageilla(List<String> tagit) throws SQLException {
+        return blogivinkkiDao.haeTageilla(tagit);
     }
 
     public List<Vinkki> haeKaikkiVinkit() throws SQLException {
@@ -178,6 +182,7 @@ public class KayttoliittymaInterface {
         vinkit.addAll(haeKirjaaTageilla(tagit));
         vinkit.addAll(haePodcastiaTageilla(tagit));
         vinkit.addAll(haeVideotaTageilla(tagit));
+        vinkit.addAll(haeBlogiaTageilla(tagit));
         return vinkit;
     }
 
@@ -190,7 +195,7 @@ public class KayttoliittymaInterface {
         UrlinAvaaja avaaja = new UrlinAvaaja(vinkki.getUrl());
         avaaja.avaa();
     }
-    
+
     public void avaaBlogi(BlogiVinkki vinkki) throws Exception {
         UrlinAvaaja avaaja = new UrlinAvaaja(vinkki.getUrl());
         avaaja.avaa();

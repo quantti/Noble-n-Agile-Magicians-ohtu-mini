@@ -158,13 +158,13 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
 
     private void tallennaTagit(VideoVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, s);
             st.executeUpdate();
         }
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT OR IGNORE INTO video_tagit(video_id, tagi_id)"
+            String sql = "INSERT INTO video_tagit(video_id, tagi_id)"
                     + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());

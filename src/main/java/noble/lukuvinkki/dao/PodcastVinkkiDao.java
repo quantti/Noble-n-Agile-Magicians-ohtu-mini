@@ -67,10 +67,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            PodcastVinkki vinkki = new PodcastVinkki();
-            vinkki.setId(rs.getInt("id"));
-            vinkki.setNimi(rs.getString("podcastin_nimi"));
-            vinkki.setUrl(rs.getString("podcastin_url"));
+            PodcastVinkki vinkki = keraa(rs);
             podcastVinkit.add(vinkki);
         }
         return podcastVinkit;

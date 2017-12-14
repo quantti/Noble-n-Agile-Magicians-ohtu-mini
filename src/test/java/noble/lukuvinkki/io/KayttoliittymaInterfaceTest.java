@@ -263,10 +263,15 @@ public class KayttoliittymaInterfaceTest {
         podcast.setTagit(tagit);
         kayttisIO.lisaaPodcast(podcast);
 
+        BlogiVinkki blogi = new BlogiVinkki(1, "asd", "asd.com");
+        blogi.setTagit(tagit);
+        kayttisIO.lisaaBlogi(blogi);
+                
         List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
         assertTrue(hakutulokset.contains(kirja));
         assertTrue(hakutulokset.contains(video));
         assertTrue(hakutulokset.contains(podcast));
+        assertTrue(hakutulokset.contains(blogi));
     }
 
     @Test
@@ -294,9 +299,7 @@ public class KayttoliittymaInterfaceTest {
         kayttisIO.lisaaPodcast(podcast);
 
         List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
-        System.out.println(hakutulokset);
         assertEquals(3, hakutulokset.size());
-        
         assertFalse(hakutulokset.contains(kirja));
         assertFalse(hakutulokset.contains(video));
         assertFalse(hakutulokset.contains(podcast));
