@@ -7,19 +7,20 @@ package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
  * @author vankari
  */
 public class BlogiVinkki implements Vinkki {
-    
+
     private int id;
     private String nimi;
     private String url;
     private String tekija;
     private List<String> tagit;
-    
+
     public BlogiVinkki(int id, String nimi, String url) {
         this.id = id;
         this.nimi = nimi;
@@ -71,8 +72,6 @@ public class BlogiVinkki implements Vinkki {
         this.tagit = tagit;
     }
 
-    
-    
     public String getUrl() {
         return url;
     }
@@ -80,5 +79,14 @@ public class BlogiVinkki implements Vinkki {
     public void setUrl(String url) {
         this.url = url;
     }
+
     
+    @Override
+    public String toString() {
+        String tagitS = "";
+        if (getTagit() != null) {
+            tagitS = StringUtils.join(getTagit(), ",");
+        }
+        return "\nId: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
+    }
 }
