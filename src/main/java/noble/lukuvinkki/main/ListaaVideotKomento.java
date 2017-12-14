@@ -17,8 +17,7 @@ public class ListaaVideotKomento extends Komento {
     }
 
     @Override
-    public void komento() {
-        try {
+    public void komento() throws SQLException {
             List<Vinkki> kaikkiVideot = kayttisIO.haeKaikkiVideot();
             if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVideot)) {
                 return;
@@ -26,9 +25,6 @@ public class ListaaVideotKomento extends Komento {
             for (Vinkki vinkki : kaikkiVideot) {
                 io.tulosta(vinkki.toString());
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }

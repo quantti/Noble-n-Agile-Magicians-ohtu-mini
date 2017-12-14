@@ -14,19 +14,15 @@ public class ListaaPodcastitKomento extends Komento {
         super(nimi, komento, teksti, io, kayttisIO);
     }
 
-
     @Override
-    public void komento() {
-        try {
-            List<Vinkki> kaikkiPodcastit = kayttisIO.haeKaikkiPodcastit();
-            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiPodcastit)) {
-                return;
-            }
-            for (Vinkki vinkki : kaikkiPodcastit) {
-                io.tulosta(vinkki.toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+    public void komento() throws SQLException {
+
+        List<Vinkki> kaikkiPodcastit = kayttisIO.haeKaikkiPodcastit();
+        if (tarkistaOnkoListaTyhjaTaiNull(kaikkiPodcastit)) {
+            return;
+        }
+        for (Vinkki vinkki : kaikkiPodcastit) {
+            io.tulosta(vinkki.toString());
         }
     }
 }

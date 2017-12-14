@@ -17,22 +17,19 @@ public class LisaaVideo extends Komento {
     }
 
     @Override
-    public void komento() {
-        try {
-            String nimi = io.lueRivi("Syötä videon nimi: ");
-            String url = io.lueRivi("Syötä videon url: ");
-            List<String> tagit = lisaaTagit();
-            VideoVinkki videoVinkki = new VideoVinkki();
-            videoVinkki.setUrl(url);
-            videoVinkki.setNimi(nimi);
-            videoVinkki.setTagit(tagit);
-            if (kayttisIO.lisaaVideo(videoVinkki) != -1) {
-                io.tulosta("Vinkki lisätty!");
-            } else {
-                io.tulosta("Vinkin lisääminen epäonnistui.");
-            }
-        } catch (SQLException e) {
-            virhe(e);
+    public void komento() throws SQLException {
+
+        String nimi = io.lueRivi("Syötä videon nimi: ");
+        String url = io.lueRivi("Syötä videon url: ");
+        List<String> tagit = lisaaTagit();
+        VideoVinkki videoVinkki = new VideoVinkki();
+        videoVinkki.setUrl(url);
+        videoVinkki.setNimi(nimi);
+        videoVinkki.setTagit(tagit);
+        if (kayttisIO.lisaaVideo(videoVinkki) != -1) {
+            io.tulosta("Vinkki lisätty!");
+        } else {
+            io.tulosta("Vinkin lisääminen epäonnistui.");
         }
     }
 

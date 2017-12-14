@@ -14,10 +14,7 @@ public class App {
 
     private KayttoliittymaInterface kayttisIO;
     private IO io;
-    private HashMap<String, Komento> listausKomennot;
     private Tietokanta tietokanta;
-    private HashMap<String, Komento> muokkausKomennot;
-    private HashMap<String, Komento> poistoKomennot;
     private HashMap<String, Komento> komennot;
 
     public App(IO io, String tietokantaURL) throws SQLException {
@@ -31,9 +28,6 @@ public class App {
             kayttisIO = new KayttoliittymaInterface(tietokanta);
             this.io = io;
             KomentoFactory komentoFactory = new KomentoFactory(io, kayttisIO);
-            listausKomennot = komentoFactory.getListauskomennot();
-            muokkausKomennot = komentoFactory.getMuokkauskomennot();
-            poistoKomennot = komentoFactory.getPoistokomennot();
             komennot = komentoFactory.getPaavalikonkomennot();
 
         } catch (Exception e) {
@@ -72,12 +66,12 @@ public class App {
                     virhe(ex);
                 }
             }
-            alaValikonValinnat(komennot, vastaus);
+            valinnat(komennot, vastaus);
 
         }
     }
 
-    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+    private void valinnat(HashMap<String, Komento> komennot, String valinta) {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");
@@ -85,11 +79,10 @@ public class App {
         }
         try {
             komento.komento();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             virhe(e);
         }
     }
-
 
     private void avaaUrl() {
         io.tulosta("1) Avaa video");
@@ -122,6 +115,7 @@ public class App {
         } catch (Exception ex) {
             virhe(ex);
         }
+
     }
 
     private void avaaVideo() {
