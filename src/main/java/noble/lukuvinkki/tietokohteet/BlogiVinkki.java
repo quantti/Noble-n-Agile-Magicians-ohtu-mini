@@ -7,6 +7,7 @@ package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -88,5 +89,29 @@ public class BlogiVinkki implements Vinkki {
             tagitS = StringUtils.join(getTagit(), ",");
         }
         return "\nBlogivinkki, Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BlogiVinkki other = (BlogiVinkki) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.nimi, other.nimi)) {
+            return false;
+        }
+        if (!Objects.equals(this.url, other.url)) {
+            return false;
+        }
+        return true;
     }
 }

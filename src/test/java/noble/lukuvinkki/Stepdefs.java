@@ -27,6 +27,8 @@ public class Stepdefs {
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
     List<String> inputLines;
     Tietokanta kanta;
+    KirjaVinkki kv;
+    PodcastVinkki pcv;
 
     @Before
     public void alustaTestikanta() throws SQLException {
@@ -35,8 +37,8 @@ public class Stepdefs {
         this.kanta = new Tietokanta(tietokantaURL);
         kvDao = new KirjaVinkkiDao(kanta);
         pcvDao = new PodcastVinkkiDao(kanta);
-        KirjaVinkki kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
-        PodcastVinkki pcv = new PodcastVinkki(1, "Podcast", "Url");
+        kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
+        pcv = new PodcastVinkki(1, "Podcast", "Url");
         kvDao.tallenna(kv);
         pcvDao.tallenna(pcv);
 
@@ -156,7 +158,7 @@ public class Stepdefs {
 
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getTulosteet().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
+        assertTrue(io.getTulosteet().contains(kv.toString()));
     }
 
     @Given("^Komento listaa vinkit valitaan$")
@@ -189,7 +191,7 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(37, io.getTulosteet().size());
+        assertEquals(38, io.getTulosteet().size());
     }
 
     @When("^Valitaan listattavaksi podcastit$")
@@ -202,7 +204,7 @@ public class Stepdefs {
 
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getTulosteet().get(19), "\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(20), pcv.toString());
     }
 
     public void kaynnista() {

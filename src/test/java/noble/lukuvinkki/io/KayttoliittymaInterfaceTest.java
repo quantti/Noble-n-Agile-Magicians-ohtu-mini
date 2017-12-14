@@ -6,6 +6,8 @@
 package noble.lukuvinkki.io;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import noble.lukuvinkki.TietokantaSetup;
 import noble.lukuvinkki.dao.Tietokanta;
@@ -146,7 +148,7 @@ public class KayttoliittymaInterfaceTest {
         assertEquals("Seitsemän veljestä", kirjavinkki3.getNimi());
         assertEquals("Aleksis Kivi", kirjavinkki3.getTekija());
     }
-    
+
     @Test
     public void testaaMuokkaaVideota() throws SQLException {
         VideoVinkki vinkki = new VideoVinkki(0, "joku", "amazon.fi");
@@ -158,7 +160,7 @@ public class KayttoliittymaInterfaceTest {
         assertEquals("jotain", vinkki3.getNimi());
         assertEquals("www.yahoo.com", vinkki3.getUrl());
     }
-    
+
     @Test
     public void testaaMuokkaaPodcastia() throws SQLException {
         PodcastVinkki vinkki = new PodcastVinkki(0, "podi", "www.podi.fi");
@@ -216,7 +218,7 @@ public class KayttoliittymaInterfaceTest {
         vinkit = kayttisIO.haeKaikkiaOtsikolla("bloki");
         assertEquals(1, vinkit.size());
     }
-    
+
     @Test
     public void testaaBlogiVinkinLisaysHakuJaPoistoTietokannasta() throws SQLException {
         BlogiVinkki vinkki = new BlogiVinkki();
@@ -231,7 +233,7 @@ public class KayttoliittymaInterfaceTest {
         assertTrue(poisto);
         assertTrue(kayttisIO.haeYksiBlogi(id) == null);
     }
-    
+
     @Test
     public void testaaMuokkaaBlogia() throws SQLException {
         BlogiVinkki vinkki = new BlogiVinkki();
@@ -244,5 +246,62 @@ public class KayttoliittymaInterfaceTest {
         BlogiVinkki vinkki3 = kayttisIO.haeYksiBlogi(id);
         assertEquals("punaviherkommunismi", vinkki3.getNimi());
         assertEquals("www.persut.fi", vinkki3.getUrl());
+    }
+
+    @Test
+    public void tageillaHakeminenKaikistaPalauttaaTagatutVinkit() throws SQLException {
+        List<String> tagit = Arrays.asList("tagi", "igat");
+        KirjaVinkki kirja = new KirjaVinkki(1, "Sananmuunnossanakirja", "Kunnanhallitus");
+        kirja.setTagit(tagit);
+        kayttisIO.lisaaKirja(kirja);
+
+        VideoVinkki video = new VideoVinkki(1, "trip.swf", "http://lmgtfy.com/?q=trip.swf");
+        video.setTagit(tagit);
+        kayttisIO.lisaaVideo(video);
+
+        PodcastVinkki podcast = new PodcastVinkki(1, "domain squatting", "www.thug.life");
+        podcast.setTagit(tagit);
+        kayttisIO.lisaaPodcast(podcast);
+
+        BlogiVinkki blogi = new BlogiVinkki(1, "asd", "asd.com");
+        blogi.setTagit(tagit);
+        kayttisIO.lisaaBlogi(blogi);
+                
+        List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
+        assertTrue(hakutulokset.contains(kirja));
+        assertTrue(hakutulokset.contains(video));
+        assertTrue(hakutulokset.contains(podcast));
+        assertTrue(hakutulokset.contains(blogi));
+    }
+
+    @Test
+    public void tageillaHakeminenKaikistaEiPalautaMuitaKuinTagatut() throws SQLException {
+        List<String> tagit = Arrays.asList("tagi", "igat");
+        KirjaVinkki kirja = new KirjaVinkki(1, "Sananmuunnossanakirja", "Kunnanhallitus");
+        kirja.setTagit(tagit);
+        kayttisIO.lisaaKirja(kirja);
+        kirja.setNimi("epäkelpo");
+        kirja.setTagit(new ArrayList<>());
+        kayttisIO.lisaaKirja(kirja);
+
+        VideoVinkki video = new VideoVinkki(1, "trip.swf", "http://lmgtfy.com/?q=trip.swf");
+        video.setTagit(tagit);
+        kayttisIO.lisaaVideo(video);
+        video.setNimi("lol");
+        video.setTagit(new ArrayList<>());
+        kayttisIO.lisaaVideo(video);
+
+        PodcastVinkki podcast = new PodcastVinkki(1, "domain squatting", "www.thug.life");
+        podcast.setTagit(tagit);
+        kayttisIO.lisaaPodcast(podcast);
+        podcast.setNimi("nope");
+        podcast.setTagit(new ArrayList<>());
+        kayttisIO.lisaaPodcast(podcast);
+
+        List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
+        assertEquals(3, hakutulokset.size());
+        assertFalse(hakutulokset.contains(kirja));
+        assertFalse(hakutulokset.contains(video));
+        assertFalse(hakutulokset.contains(podcast));
     }
 }

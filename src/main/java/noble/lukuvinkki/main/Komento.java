@@ -26,6 +26,7 @@ public abstract class Komento {
 
     public abstract void komento() throws SQLException, Exception;
 
+
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
             io.tulosta("Vinkkejä ei löytynyt\n");

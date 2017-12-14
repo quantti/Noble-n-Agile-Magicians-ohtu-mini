@@ -2,6 +2,7 @@ package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 public class VideoVinkki implements Vinkki {
@@ -13,7 +14,7 @@ public class VideoVinkki implements Vinkki {
     private List<String> tagit;
 
     public VideoVinkki() {
-
+        this.tagit = new ArrayList<>();
     }
 
     public VideoVinkki(int id, String nimi, String url) {
@@ -86,4 +87,29 @@ public class VideoVinkki implements Vinkki {
     public void setTagit(List<String> tagit) {
         this.tagit = tagit;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VideoVinkki other = (VideoVinkki) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.nimi, other.nimi)) {
+            return false;
+        }
+        if (!Objects.equals(this.url, other.url)) {
+            return false;
+        }
+        return true;
+    }
+    
 }

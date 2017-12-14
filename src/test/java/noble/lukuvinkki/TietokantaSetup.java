@@ -38,10 +38,10 @@ public class TietokantaSetup {
         sql.add("CREATE TABLE podcast_vinkki (id INTEGER PRIMARY KEY, podcastin_nimi TEXT, podcastin_url TEXT)");
         sql.add("create table blogi_vinkki(id integer primary key, blogin_nimi text, blogin_url)");
         sql.add("CREATE TABLE tagi(id INTEGER PRIMARY KEY, tagin_nimi TEXT)");
-        sql.add("CREATE TABLE kirja_tagit(kirja_id INTEGER, tagi_id INTEGER, FOREIGN KEY(kirja_id) REFERENCES kirja_vinkki(id), FOREIGN KEY(tagi_id) REFERENCES tagi(id))");
-        sql.add("CREATE TABLE video_tagit(video_id INTEGER, tagi_id INTEGER, FOREIGN KEY(video_id) REFERENCES video_vinkki(id), FOREIGN KEY(tagi_id) REFERENCES tagi(id))");
-        sql.add("CREATE TABLE podcast_tagit(podcast_id INTEGER, tagi_id INTEGER, FOREIGN KEY(podcast_id) REFERENCES podcast_vinkki(id), FOREIGN KEY(tagi_id) REFERENCES tagi(id))");
-        sql.add("create table blogi_tagit(blogi_id integer, tagi_id integer, foreign key(blogi_id) references blogi_vinkki(id), foreign key(tagi_id) references tagi(id))");
+        sql.add("CREATE TABLE kirja_tagit(kirja_id INTEGER, tagi_id INTEGER, FOREIGN KEY(kirja_id) REFERENCES kirja_vinkki(id) ON DELETE CASCADE, FOREIGN KEY(tagi_id) REFERENCES tagi(id) ON DELETE CASCADE)");
+        sql.add("CREATE TABLE video_tagit(video_id INTEGER, tagi_id INTEGER, FOREIGN KEY(video_id) REFERENCES video_vinkki(id) ON DELETE CASCADE, FOREIGN KEY(tagi_id) REFERENCES tagi(id) ON DELETE CASCADE)");
+        sql.add("CREATE TABLE podcast_tagit(podcast_id INTEGER, tagi_id INTEGER, FOREIGN KEY(podcast_id) REFERENCES podcast_vinkki(id) ON DELETE CASCADE, FOREIGN KEY(tagi_id) REFERENCES tagi(id) ON DELETE CASCADE)");
+        sql.add("create table blogi_tagit(blogi_id integer, tagi_id integer, foreign key(blogi_id) references blogi_vinkki(id) ON DELETE CASCADE, foreign key(tagi_id) references tagi(id) ON DELETE CASCADE)");
         return sql;
     }
 }

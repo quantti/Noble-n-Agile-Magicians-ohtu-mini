@@ -33,6 +33,8 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        vinkki.setId(id);
+        tallennaTagit(vinkki);
         return id;
     }
 
@@ -53,7 +55,9 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         int id = rs.getInt("id");
         String nimi = rs.getString("podcastin_nimi");
         String url = rs.getString("podcastin_url");
-        return new PodcastVinkki(id, nimi, url);
+        PodcastVinkki v = new PodcastVinkki(id, nimi, url);
+        v.setTagit(haeTagit(v));
+        return v;
     }
 
     @Override
@@ -63,10 +67,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         PreparedStatement kysely = yhteys.prepareStatement(query);
         ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            PodcastVinkki vinkki = new PodcastVinkki();
-            vinkki.setId(rs.getInt("id"));
-            vinkki.setNimi(rs.getString("podcastin_nimi"));
-            vinkki.setUrl(rs.getString("podcastin_url"));
+            PodcastVinkki vinkki = keraa(rs);
             podcastVinkit.add(vinkki);
         }
         return podcastVinkit;
@@ -110,6 +111,33 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         return vinkit;
     }
 
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
+                + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
+                + " AND tagi.id = podcast_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
+                    + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
+                    + " AND tagi.id = podcast_tagit.tagi_id"
+                    + " AND tagi.tagin_nimi LIKE ?");
+        }
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i - 1));
+        }
+        ResultSet rs = st.executeQuery();
+        List<Vinkki> vinkit = new ArrayList<>();
+        while (rs.next()) {
+            PodcastVinkki v = keraa(rs);
+            vinkit.add(v);
+        }
+        return vinkit;
+    }
+
     private List<String> haeTagit(PodcastVinkki vinkki) throws SQLException {
         List<String> tagit = new ArrayList<>();
         String sql = "SELECT tagi.*"
@@ -128,7 +156,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     private void tallennaTagit(PodcastVinkki vinkki) throws SQLException {
         for (String tagi : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, tagi);
             st.executeUpdate();
@@ -141,5 +169,13 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
             st.setString(2, tagi);
             st.executeUpdate();
         }
+    }
+
+    private void poistaOrvotTagit() throws SQLException {
+        String sql = "DELETE FROM tagi WHERE tagi.id NOT IN"
+                + " (SELECT kirja_tagit.tagi_id FROM kirja_tagit"
+                + " UNION SELECT podcast_tagit.tagi_id FROM podcast_tagit"
+                + " UNION SELECT video_tagit.tagi_id FROM video_tagit)";
+        yhteys.createStatement().execute(sql);
     }
 }

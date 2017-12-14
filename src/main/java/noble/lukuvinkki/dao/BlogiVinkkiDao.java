@@ -44,6 +44,8 @@ public class BlogiVinkkiDao implements Dao<BlogiVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        vinkki.setId(id);
+        tallennaTagit(vinkki);
         return id;
     }
 
@@ -64,7 +66,9 @@ public class BlogiVinkkiDao implements Dao<BlogiVinkki> {
         int id = rs.getInt("id");
         String nimi = rs.getString("blogin_nimi");
         String url = rs.getString("blogin_url");
-        return new BlogiVinkki(id, nimi, url);
+        BlogiVinkki v = new BlogiVinkki(id, nimi, url);
+        v.setTagit(haeTagit(v));
+        return v;
     }
 
     @Override
@@ -118,10 +122,10 @@ public class BlogiVinkkiDao implements Dao<BlogiVinkki> {
         return vinkit;
     }
 
-    private List<String> haeTagit(VideoVinkki vinkki) throws SQLException {
+    private List<String> haeTagit(BlogiVinkki vinkki) throws SQLException {
         List<String> tagit = new ArrayList<>();
         String sql = "SELECT tagi.*"
-                + " FROM blogi_vinkki, video_tagit, tagi"
+                + " FROM blogi_vinkki, blogi_tagit, tagi"
                 + " WHERE blogi_vinkki.id = ?"
                 + " AND blogi_tagit.blogi_id = blogi_vinkki.id"
                 + " AND blogi_tagit.tagi_id = tagi.id";
@@ -134,9 +138,36 @@ public class BlogiVinkkiDao implements Dao<BlogiVinkki> {
         return tagit;
     }
 
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT blogi_vinkki.* FROM blogi_vinkki,tagi,blogi_tagit"
+                + " WHERE blogi_vinkki.id = blogi_tagit.blogi_id"
+                + " AND tagi.id = blogi_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT blogi_vinkki.* FROM blogi_vinkki,tagi,blogi_tagit"
+                    + " WHERE blogi_vinkki.id = blogi_tagit.blogi_id"
+                    + " AND tagi.id = blogi_tagit.tagi_id"
+                    + " AND tagi.tagin_nimi LIKE ?");
+        }
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i - 1));
+        }
+        ResultSet rs = st.executeQuery();
+        List<Vinkki> vinkit = new ArrayList<>();
+        while (rs.next()) {
+            BlogiVinkki v = keraa(rs);
+            vinkit.add(v);
+        }
+        return vinkit;
+    }
+
     private void tallennaTagit(BlogiVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, s);
             st.executeUpdate();
