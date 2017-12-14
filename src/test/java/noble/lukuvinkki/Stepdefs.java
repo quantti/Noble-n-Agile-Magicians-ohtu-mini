@@ -28,6 +28,7 @@ public class Stepdefs {
     List<String> inputLines;
     Tietokanta kanta;
     KirjaVinkki kv;
+    PodcastVinkki pcv;
 
     @Before
     public void alustaTestikanta() throws SQLException {
@@ -37,7 +38,7 @@ public class Stepdefs {
         kvDao = new KirjaVinkkiDao(kanta);
         pcvDao = new PodcastVinkkiDao(kanta);
         kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
-        PodcastVinkki pcv = new PodcastVinkki(1, "Podcast", "Url");
+        pcv = new PodcastVinkki(1, "Podcast", "Url");
         kvDao.tallenna(kv);
         pcvDao.tallenna(pcv);
 
@@ -151,6 +152,7 @@ public class Stepdefs {
     @When("^Valitaan listattavaksi kaikki$")
     public void valitaan_listattavaksi_kaikki() throws Throwable {
         inputLines.add("1");
+        inputLines.add("4");
         inputLines.add("q");
         kaynnista();
 
@@ -170,13 +172,14 @@ public class Stepdefs {
 
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getTulosteet().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
+        assertTrue(io.getTulosteet().contains(kv.toString()));
     }
 
     @Given("^Komento listaa vinkit valitaan$")
     public void komento_listaa_vinkit_valitaan() throws Throwable {
         inputLines.add("a");
         inputLines.add("1");
+        inputLines.add("4");
         inputLines.add("q");
         kaynnista();
     }
@@ -202,19 +205,20 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(32, io.getTulosteet().size());
+        assertEquals(38, io.getTulosteet().size());
     }
 
     @When("^Valitaan listattavaksi podcastit$")
     public void valitaan_listattavaksi_podcastit() throws Throwable {
         inputLines.add("4");
+        inputLines.add("2");
         inputLines.add("q");
         kaynnista();
     }
 
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getTulosteet().get(19), "\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(20), pcv.toString());
     }
 
     public void kaynnista() {

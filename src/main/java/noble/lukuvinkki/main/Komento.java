@@ -24,7 +24,8 @@ public abstract class Komento {
         this.kayttisIO = kayttisIO;
     }
 
-    public abstract void komento() throws SQLException;
+    public abstract void komento() throws SQLException, Exception;
+
 
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
@@ -56,7 +57,7 @@ public abstract class Komento {
         return viimInd;
     }
 
-    protected void valinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
+    protected void valinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException, Exception {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");

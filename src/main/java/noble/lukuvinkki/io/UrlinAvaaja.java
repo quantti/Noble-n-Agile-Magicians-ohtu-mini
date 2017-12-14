@@ -8,17 +8,19 @@ public class UrlinAvaaja {
     private String url;
 
     public UrlinAvaaja(String url) {
-        this.url = url;
+        this.url = urlinKorjaaja(url);
     }
 
     public void avaa() throws Exception {
-        if (Desktop.isDesktopSupported()) {
-            // Windows
-            Desktop.getDesktop().browse(new URI(url));
-        } else {
-            // Linux (ehkä myös *nix)
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec("/usr/bin/firefox -new-window " + url);
+        Desktop desktop = Desktop.getDesktop();
+        desktop.browse(new URI(this.url));
+    }
+    
+    private String urlinKorjaaja(String url) {
+        if (url.startsWith("http")) {
+            return url;
         }
+        url = "http://" + url;
+        return url;
     }
 }

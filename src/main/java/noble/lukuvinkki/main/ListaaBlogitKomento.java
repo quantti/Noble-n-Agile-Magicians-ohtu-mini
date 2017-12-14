@@ -6,6 +6,7 @@
 package noble.lukuvinkki.main;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,18 +25,18 @@ class ListaaBlogitKomento extends Komento {
     }
 
     @Override
-    public void komento() {
-        try {
-            List<Vinkki> kaikkiBlogit = kayttisIO.haeKaikkiBlokit();
-            if (tarkistaOnkoListaTyhjaTaiNull(kaikkiBlogit)) {
-                return;
-            }
-            for (Vinkki vinkki : kaikkiBlogit) {
-                io.tulosta(vinkki.toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+    public void komento() throws Exception {
+        List<Vinkki> kaikkiBlogit = kayttisIO.haeKaikkiBlokit();
+        if (tarkistaOnkoListaTyhjaTaiNull(kaikkiBlogit)) {
+            return;
         }
+        for (Vinkki vinkki : kaikkiBlogit) {
+            io.tulosta(vinkki.toString());
+        }
+        HashMap<String, Komento> komennot = new HashMap<>();
+        komennot.put("1", new AvaaBlogi("avaablogi", "1", "Avaa blogi", io, kayttisIO));
+        Valikko urlValikko = new Valikko("urlvalikko", "1", "jotain", io, kayttisIO, komennot);
+        urlValikko.komento();
     }
 
 }
