@@ -266,7 +266,7 @@ public class KayttoliittymaInterfaceTest {
         BlogiVinkki blogi = new BlogiVinkki(1, "asd", "asd.com");
         blogi.setTagit(tagit);
         kayttisIO.lisaaBlogi(blogi);
-                
+
         List<Vinkki> hakutulokset = kayttisIO.haeKaikkiaTageilla(tagit);
         assertTrue(hakutulokset.contains(kirja));
         assertTrue(hakutulokset.contains(video));
@@ -303,5 +303,21 @@ public class KayttoliittymaInterfaceTest {
         assertFalse(hakutulokset.contains(kirja));
         assertFalse(hakutulokset.contains(video));
         assertFalse(hakutulokset.contains(podcast));
+    }
+
+    @Test
+    public void testaaHaeKaikkiBlogit() throws SQLException {
+        List<Vinkki> blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(0, blogit.size());
+        BlogiVinkki bloki = new BlogiVinkki();
+        bloki.setNimi("Bloki");
+        bloki.setUrl("www.timosoini.com");
+        int id = kayttisIO.lisaaBlogi(bloki);
+        blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(1, blogit.size());
+        assertEquals("Bloki", blogit.get(0).getNimi());
+        kayttisIO.poistaBlogi(id);
+        blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(0, blogit.size());
     }
 }
