@@ -135,6 +135,7 @@ public class Stepdefs {
     public void komento_listaa_vinkit_valitaan() throws Throwable {
         inputLines.add("a");
         inputLines.add("1");
+        inputLines.add("4");
         inputLines.add("q");
         kaynnista();
     }
@@ -160,13 +161,14 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(30, io.getTulosteet().size());
+        assertEquals(35, io.getTulosteet().size());
     }
 
     
     @When("^Valitaan listattavaksi podcastit$")
     public void valitaan_listattavaksi_podcastit() throws Throwable {
         inputLines.add("4");
+        inputLines.add("2");
         inputLines.add("q");
         kaynnista();
     }
