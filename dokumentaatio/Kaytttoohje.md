@@ -3,8 +3,10 @@
 
 Käynnistä .jar 
 
-Ohjelma näyttää valikon, jossa on lukivinkkien käsittelyyn tarvittavia toimintoja.
+Ohjelma näyttää valikon, jossa on lukuvinkkien käsittelyyn tarvittavia toimintoja.
 
-Voit listata tietokannassa olevat lukuvinkit, sekä lisätä, muokata ja poistaa lukuvinkkejä.
+Voit listata tietokannassa olevat lukuvinkit erilaisilla hakukriteereillä, sekä lisätä, muokata ja poistaa lukuvinkkejä.
 
-Lukuvinkeille voi tallentaa nimen ja kirjailijan.
+Kirjavinkeille voit tallentaa kirjailijan ja kirjan nimet, sekä tageja.
+
+Video-, blogi-, ja podcast-vinkeille voit tallentaa nimen ja urlin sekä tageja.
