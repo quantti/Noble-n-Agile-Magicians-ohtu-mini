@@ -87,6 +87,6 @@ public class BlogiVinkki implements Vinkki {
         if (getTagit() != null) {
             tagitS = StringUtils.join(getTagit(), ",");
         }
-        return "\nId: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
+        return "\nBlogivinkki, Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
     }
 }
