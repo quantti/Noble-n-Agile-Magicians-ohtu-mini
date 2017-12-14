@@ -245,4 +245,20 @@ public class KayttoliittymaInterfaceTest {
         assertEquals("punaviherkommunismi", vinkki3.getNimi());
         assertEquals("www.persut.fi", vinkki3.getUrl());
     }
+    
+    @Test
+    public void testaaHaeKaikkiBlogit() throws SQLException {
+        List<Vinkki> blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(0, blogit.size());
+        BlogiVinkki bloki = new BlogiVinkki();
+        bloki.setNimi("Bloki");
+        bloki.setUrl("www.timosoini.com");
+        int id = kayttisIO.lisaaBlogi(bloki);
+        blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(1, blogit.size());
+        assertEquals("Bloki", blogit.get(0).getNimi());
+        kayttisIO.poistaBlogi(id);
+        blogit = kayttisIO.haeKaikkiBlokit();
+        assertEquals(0, blogit.size());
+    }
 }
