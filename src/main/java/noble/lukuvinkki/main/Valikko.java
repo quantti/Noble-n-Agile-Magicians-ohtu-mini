@@ -18,7 +18,7 @@ public class Valikko extends Komento {
     }
 
     @Override
-    public void komento() throws SQLException {
+    public void komento() throws SQLException, Exception {
         int poistu = alaValikko(komennot);
         String valinta = io.lueRivi("Anna valintasi: ");
         if (Integer.parseInt(valinta) == poistu) {

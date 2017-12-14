@@ -1,6 +1,7 @@
 package noble.lukuvinkki.main;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
@@ -13,7 +14,7 @@ public class ListaaVideotKomento extends Komento {
     }
 
     @Override
-    public void komento() throws SQLException {
+    public void komento() throws SQLException, Exception {
         List<Vinkki> kaikkiVideot = kayttisIO.haeKaikkiVideot();
         if (tarkistaOnkoListaTyhjaTaiNull(kaikkiVideot)) {
             return;
@@ -21,6 +22,10 @@ public class ListaaVideotKomento extends Komento {
         for (Vinkki vinkki : kaikkiVideot) {
             io.tulosta(vinkki.toString());
         }
+        HashMap<String, Komento> komennot = new HashMap<>();
+        komennot.put("1", new AvaaVideo("avavideo", "1", "Avaa video", io, kayttisIO));
+        Valikko urlValikko = new Valikko("urlvalikko", "1", "jotain", io, kayttisIO, komennot);
+        urlValikko.komento();
     }
 
 }
