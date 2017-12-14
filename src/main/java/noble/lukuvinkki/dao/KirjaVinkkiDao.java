@@ -118,14 +118,19 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        StringBuilder build = new StringBuilder("SELECT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
                 + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
                 + " AND tagi.id = kirja_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (");
-        for (int i = 0; i < tagit.size(); i++) {
-            build.append("?, ");
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
+                + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
+                + " AND tagi.id = kirja_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
         }
-        build.replace(build.length() - 2, build.length(), ")");
         PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
             st.setString(i, tagit.get(i - 1));

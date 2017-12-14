@@ -1,6 +1,5 @@
 package noble.lukuvinkki.dao;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +33,7 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        vinkki.setId(id);
         tallennaTagit(vinkki);
         return id;
     }
@@ -55,7 +55,9 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         int id = rs.getInt("id");
         String nimi = rs.getString("podcastin_nimi");
         String url = rs.getString("podcastin_url");
-        return new PodcastVinkki(id, nimi, url);
+        PodcastVinkki v = new PodcastVinkki(id, nimi, url);
+        v.setTagit(haeTagit(v));
+        return v;
     }
 
     @Override
@@ -113,14 +115,19 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        StringBuilder build = new StringBuilder("SELECT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
                 + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
                 + " AND tagi.id = podcast_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (");
-        for (int i = 0; i < tagit.size(); i++) {
-            build.append("?, ");
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
+                    + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
+                    + " AND tagi.id = podcast_tagit.tagi_id"
+                    + " AND tagi.tagin_nimi LIKE ?");
         }
-        build.replace(build.length() - 2, build.length(), ")");
         PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
             st.setString(i, tagit.get(i - 1));

@@ -2,6 +2,7 @@ package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
 public class PodcastVinkki implements Vinkki {
@@ -85,5 +86,30 @@ public class PodcastVinkki implements Vinkki {
     @Override
     public void setTagit(List<String> tagit) {
         this.tagit = tagit;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PodcastVinkki other = (PodcastVinkki) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.nimi, other.nimi)) {
+            return false;
+        }
+        if (!Objects.equals(this.url, other.url)) {
+            return false;
+        }
+        return true;
     }
 }

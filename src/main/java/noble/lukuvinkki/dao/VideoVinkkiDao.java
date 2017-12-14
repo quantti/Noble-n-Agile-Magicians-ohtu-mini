@@ -1,13 +1,11 @@
 package noble.lukuvinkki.dao;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
@@ -37,6 +35,7 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         if (rs.next()) {
             id = rs.getInt("id");
         }
+        vinkki.setId(id);
         tallennaTagit(vinkki);
         return id;
     }
@@ -58,7 +57,9 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
         int id = rs.getInt("id");
         String nimi = rs.getString("videon_nimi");
         String url = rs.getString("videon_url");
-        return new VideoVinkki(id, nimi, url);
+        VideoVinkki v = new VideoVinkki(id, nimi, url);
+        v.setTagit(haeTagit(v));
+        return v;
     }
 
     @Override
@@ -113,14 +114,19 @@ public class VideoVinkkiDao implements Dao<VideoVinkki> {
     }
 
     public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        StringBuilder build = new StringBuilder("SELECT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
                 + " WHERE video_vinkki.id = video_tagit.video_id"
                 + " AND tagi.id = video_tagit.tagi_id"
-                + " AND tagi.tagin_nimi IN (");
-        for (int i = 0; i < tagit.size(); i++) {
-            build.append("?, ");
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT video_vinkki.* FROM video_vinkki,tagi,video_tagit"
+                    + " WHERE video_vinkki.id = video_tagit.video_id"
+                    + " AND tagi.id = video_tagit.tagi_id"
+                    + " AND tagi.tagin_nimi LIKE ?");
         }
-        build.replace(build.length() - 2, build.length(), ")");
         PreparedStatement st = yhteys.prepareStatement(build.toString());
         for (int i = 1; i <= tagit.size(); i++) {
             st.setString(i, tagit.get(i - 1));

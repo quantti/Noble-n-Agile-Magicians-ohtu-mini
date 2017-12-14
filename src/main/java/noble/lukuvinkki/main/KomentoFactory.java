@@ -34,7 +34,7 @@ public class KomentoFactory {
         listauskomennot.put("4", new ListaaPodcastitKomento("listaaPodcastit", "4", "Listaa kaikki podcastit", io, kayttisIO));
         listauskomennot.put("5", new ListaaBlogitKomento("listaaBlogit", "5", "Listaa kaikki blogit", io, kayttisIO));
         listauskomennot.put("6", new HaeOtsikollaKomento("haeOtsikolla", "6", "Hae otsikolla", io, kayttisIO));       
-        listauskomennot.put("5", new HaeTageillaKomento("haeTageilla", "7", "Hae tageilla", io, kayttisIO));
+        listauskomennot.put("7", new HaeTageillaKomento("haeTageilla", "7", "Hae tageilla", io, kayttisIO));
 
     }
 
