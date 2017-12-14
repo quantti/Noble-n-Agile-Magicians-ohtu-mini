@@ -44,7 +44,7 @@ public class Stepdefs {
 
     @Given("^Komento poista valitaan$")
     public void komento_poista_valitaan() throws Throwable {
-        inputLines.add("f");
+        inputLines.add("g");
 
     }
 
@@ -80,12 +80,12 @@ public class Stepdefs {
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
         List<String> rivit = io.getTulosteet();
-        assertEquals(rivit.get(rivit.size() - 11), arg1);
+        assertEquals(rivit.get(rivit.size() - 12), arg1);
     }
 
     @Given("^Komenta muokkaa valitaan$")
     public void komenta_muokkaa_valitaan() throws Throwable {
-        inputLines.add("e");
+        inputLines.add("f");
         inputLines.add("1");
         
     }
@@ -160,7 +160,7 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(30, io.getTulosteet().size());
+        assertEquals(32, io.getTulosteet().size());
     }
 
     
@@ -173,7 +173,7 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getTulosteet().get(18),"\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(19),"\nId: 1\nPodcast: Url\nTagit: ");
     }
 
     
