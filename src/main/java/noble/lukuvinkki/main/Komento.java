@@ -1,5 +1,6 @@
 package noble.lukuvinkki.main;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +24,7 @@ public abstract class Komento {
         this.kayttisIO = kayttisIO;
     }
 
-    public abstract void komento();
-
-    protected void virhe(Exception e) {
-        io.tulosta("Virhe: " + e.getMessage());
-    }
+    public abstract void komento() throws SQLException;
 
     protected boolean tarkistaOnkoListaTyhjaTaiNull(List<Vinkki> lista) {
         if (lista == null || lista.isEmpty()) {
@@ -50,24 +47,25 @@ public abstract class Komento {
         return tagit;
     }
 
-    protected void alaValikko(HashMap<String, Komento> komennot) {
+    protected int alaValikko(HashMap<String, Komento> komennot) {
         for (Komento komento : komennot.values()) {
             io.tulosta(komento.toString());
         }
-        int viimInd = komennot.size();
+        int viimInd = komennot.size() + 1;
         io.tulosta(viimInd + ") Palaa päävalikkoon");
+        return viimInd;
     }
-    
-    protected void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+
+    protected void valinnat(HashMap<String, Komento> komennot, String valinta) throws SQLException {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");
             return;
         }
         komento.komento();
-        
+
     }
-    
+
     @Override
     public String toString() {
         return komento + ") " + teksti;

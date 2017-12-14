@@ -64,20 +64,23 @@ public class App {
                     virhe(ex);
                 }
             }
-            alaValikonValinnat(komennot, vastaus);
+            valinnat(komennot, vastaus);
 
         }
     }
 
-    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+    private void valinnat(HashMap<String, Komento> komennot, String valinta) {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");
             return;
         }
-        komento.komento();
+        try {
+            komento.komento();
+        } catch (Exception e) {
+            virhe(e);
+        }
     }
-
 
     private void avaaUrl() {
         io.tulosta("1) Avaa video");
@@ -110,6 +113,7 @@ public class App {
         } catch (Exception ex) {
             virhe(ex);
         }
+
     }
 
     private void avaaVideo() {

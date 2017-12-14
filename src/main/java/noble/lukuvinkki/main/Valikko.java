@@ -1,5 +1,6 @@
 package noble.lukuvinkki.main;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
@@ -17,10 +18,13 @@ public class Valikko extends Komento {
     }
 
     @Override
-    public void komento() {
-        alaValikko(komennot);
+    public void komento() throws SQLException {
+        int poistu = alaValikko(komennot);
         String valinta = io.lueRivi("Anna valintasi: ");
-        alaValikonValinnat(komennot, valinta);
+        if (Integer.parseInt(valinta) == poistu) {
+            return;
+        }
+        valinnat(komennot, valinta);
     }
 
 }

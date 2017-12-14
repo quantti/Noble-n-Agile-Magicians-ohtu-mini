@@ -15,7 +15,7 @@
         When  Nimi "" ja url "Url" annetaan
         Then Sovellus vastaa "Vinkin lisääminen epäonnistui."
 
-        Scenario: Tyhjää kirjaa ei voi lisätä
+        Scenario: Tyhjää podcastia ei voi lisätä
         Given Komento lisää podcast valitaan
         When  Nimi "" ja url "" annetaan
         Then Sovellus vastaa "Vinkin lisääminen epäonnistui."
