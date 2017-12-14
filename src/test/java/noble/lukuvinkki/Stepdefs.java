@@ -27,6 +27,7 @@ public class Stepdefs {
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
     List<String> inputLines;
     Tietokanta kanta;
+    KirjaVinkki kv;
 
     @Before
     public void alustaTestikanta() throws SQLException {
@@ -35,7 +36,7 @@ public class Stepdefs {
         this.kanta = new Tietokanta(tietokantaURL);
         kvDao = new KirjaVinkkiDao(kanta);
         pcvDao = new PodcastVinkkiDao(kanta);
-        KirjaVinkki kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
+        kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
         PodcastVinkki pcv = new PodcastVinkki(1, "Podcast", "Url");
         kvDao.tallenna(kv);
         pcvDao.tallenna(pcv);
@@ -147,6 +148,19 @@ public class Stepdefs {
         inputLines.add("a");
     }
 
+    @When("^Valitaan listattavaksi kaikki$")
+    public void valitaan_listattavaksi_kaikki() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("q");
+        kaynnista();
+
+    }
+
+    @Then("^Vinkin kohdalla näytetään tagit$")
+    public void vinkin_kohdalla_näytetään_tagit() throws Throwable {
+        assertTrue(io.getTulosteet().contains(kv.toString()));
+    }
+
     @When("^Valitaan listattavaksi kirjat$")
     public void valitaan_listattavaksi_kirjat() throws Throwable {
         inputLines.add("2");
@@ -215,4 +229,6 @@ public class Stepdefs {
 
     }
 
+
+    
 }
