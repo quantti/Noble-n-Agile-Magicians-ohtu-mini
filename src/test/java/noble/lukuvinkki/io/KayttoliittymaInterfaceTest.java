@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import noble.lukuvinkki.TietokantaSetup;
 import noble.lukuvinkki.dao.Tietokanta;
+import noble.lukuvinkki.tietokohteet.BlogiVinkki;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
 import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.PodcastVinkki;
@@ -207,9 +208,41 @@ public class KayttoliittymaInterfaceTest {
         kayttisIO.lisaaKirja(new KirjaVinkki(1, "Tuntematon sotilas", "Väinö Linna"));
         kayttisIO.lisaaPodcast(new PodcastVinkki(1, "Koodisotilas", "www.google.fi"));
         kayttisIO.lisaaVideo(new VideoVinkki(1, "Tuntematon uhka", "www.youtube.com"));
+        kayttisIO.lisaaBlogi(new BlogiVinkki(1, "Tuntematon Bloki", "www.timosoini.fi"));
         List<Vinkki> vinkit = kayttisIO.haeKaikkiaOtsikolla("Tuntematon");
-        assertEquals(2, vinkit.size());
+        assertEquals(3, vinkit.size());
         vinkit = kayttisIO.haeKaikkiaOtsikolla("sotilas");
         assertEquals(2, vinkit.size());
+        vinkit = kayttisIO.haeKaikkiaOtsikolla("bloki");
+        assertEquals(1, vinkit.size());
+    }
+    
+    @Test
+    public void testaaBlogiVinkinLisaysHakuJaPoistoTietokannasta() throws SQLException {
+        BlogiVinkki vinkki = new BlogiVinkki();
+        vinkki.setNimi("Ploki");
+        vinkki.setUrl("www.timosoini.fi");
+        int id = kayttisIO.lisaaBlogi(vinkki);
+        assertTrue(id != -1);
+        Vinkki vinkki2 = kayttisIO.haeYksiBlogi(id);
+        assertEquals(vinkki.getNimi(), vinkki2.getNimi());
+        assertEquals(id, vinkki2.getId());
+        boolean poisto = kayttisIO.poistaBlogi(id);
+        assertTrue(poisto);
+        assertTrue(kayttisIO.haeYksiBlogi(id) == null);
+    }
+    
+    @Test
+    public void testaaMuokkaaBlogia() throws SQLException {
+        BlogiVinkki vinkki = new BlogiVinkki();
+        vinkki.setNimi("Ploki");
+        vinkki.setUrl("www.timosoini.fi");
+        int id = kayttisIO.lisaaBlogi(vinkki);
+        BlogiVinkki vinkki2 = new BlogiVinkki(id, "punaviherkommunismi", "www.persut.fi");
+        boolean muokkaus = kayttisIO.muokkaablogia(vinkki2);
+        assertTrue(muokkaus);
+        BlogiVinkki vinkki3 = kayttisIO.haeYksiBlogi(id);
+        assertEquals("punaviherkommunismi", vinkki3.getNimi());
+        assertEquals("www.persut.fi", vinkki3.getUrl());
     }
 }

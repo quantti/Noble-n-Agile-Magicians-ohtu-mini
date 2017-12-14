@@ -7,7 +7,7 @@
 	<module name="GenericWhitespace"/>
 	<module name="MethodLength">
             <property name="tokens" value="METHOD_DEF"/>
-            <property name="max" value="25"/>
+            <property name="max" value="30"/>
          </module>
 	<module name="LeftCurly">
             <property name="option" value="eol"/>
