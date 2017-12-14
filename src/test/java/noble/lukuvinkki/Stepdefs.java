@@ -160,7 +160,7 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(32, io.getTulosteet().size());
+        assertEquals(33, io.getTulosteet().size());
     }
 
     
@@ -173,7 +173,7 @@ public class Stepdefs {
     
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getTulosteet().get(19),"\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(20),"\nId: 1\nPodcast: Url\nTagit: ");
     }
 
     
