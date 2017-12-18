@@ -12,3 +12,5 @@ Voit listata tietokannassa olevat lukuvinkit erilaisilla hakukriteereillä, sek�
 Kirjavinkeille voit tallentaa kirjailijan ja kirjan nimet, sekä tageja.
 
 Video-, blogi-, ja podcast-vinkeille voit tallentaa nimen ja urlin sekä tageja.
+
+Tageja ei voi muokata vinkin luomisen jälkeen.
