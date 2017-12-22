@@ -27,6 +27,8 @@ public class Stepdefs {
     String tietokantaURL = "jdbc:sqlite:tietokanta/cucumberTestaus.sqlite3";
     List<String> inputLines;
     Tietokanta kanta;
+    KirjaVinkki kv;
+    PodcastVinkki pcv;
 
     @Before
     public void alustaTestikanta() throws SQLException {
@@ -35,8 +37,8 @@ public class Stepdefs {
         this.kanta = new Tietokanta(tietokantaURL);
         kvDao = new KirjaVinkkiDao(kanta);
         pcvDao = new PodcastVinkkiDao(kanta);
-        KirjaVinkki kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
-        PodcastVinkki pcv = new PodcastVinkki(1, "Podcast", "Url");
+        kv = new KirjaVinkki(1, "Kirja", "Kirjailija");
+        pcv = new PodcastVinkki(1, "Podcast", "Url");
         kvDao.tallenna(kv);
         pcvDao.tallenna(pcv);
 
@@ -44,13 +46,13 @@ public class Stepdefs {
 
     @Given("^Komento poista valitaan$")
     public void komento_poista_valitaan() throws Throwable {
-        inputLines.add("f");
+        inputLines.add("g");
 
     }
 
     @When("^Poistetaan vinkki id:llä \"([^\"]*)\"$")
     public void poistetaan_vinkki_id_llä(String arg1) throws Throwable {
-        
+
         inputLines.add("1");
         inputLines.add("1");
         inputLines.add("k");
@@ -63,7 +65,7 @@ public class Stepdefs {
     public void lisaaValittu() throws Throwable {
 
         inputLines.add("b");
-        
+
     }
 
     @When("^Kirjoittaja \"([^\"]*)\" ja kirjan nimi \"([^\"]*)\" annetaan$")
@@ -71,23 +73,53 @@ public class Stepdefs {
         inputLines.add(kirjailija);
         inputLines.add(kirja);
         inputLines.add("");
-        
+
         inputLines.add("q");
         kaynnista();
 
     }
 
+    @When("^Kirjoittaja \"([^\"]*)\", kirjan nimi \"([^\"]*)\" ja seuraavat tagit annetaan:$")
+    public void kirjoittaja_kirjan_nimi_ja_seuraavat_tagit_annetaan(String kirja, String kirjailija, List<String> arg3) throws Throwable {
+        inputLines.add(kirjailija);
+        inputLines.add(kirja);
+        for (String string : arg3) {
+            inputLines.add(string);
+        }
+        inputLines.add("");
+        inputLines.add("q");
+        kaynnista();
+
+    }
+
+    @When("^Nimi \"([^\"]*)\", url \"([^\"]*)\" annetaan ja  seuraavat tagit annetaan:$")
+    public void nimi_url_annetaan_ja_seuraavat_tagit_annetaan(String nimi, String url, List<String> arg3) throws Throwable {
+        inputLines.add(nimi);
+        inputLines.add(url);
+        for (String string : arg3) {
+            inputLines.add(string);
+        }
+        inputLines.add("");
+        inputLines.add("q");
+        kaynnista();
+    }
+
     @Then("^Sovellus vastaa \"([^\"]*)\"$")
     public void sovellus_vastaa(String arg1) throws Throwable {
         List<String> rivit = io.getTulosteet();
-        assertEquals(rivit.get(rivit.size() - 11), arg1);
+        assertEquals(rivit.get(rivit.size() - 12), arg1);
+    }
+
+    @Given("^Komento lisää blogi valitaan$")
+    public void komento_lisää_blogi_valitaan() throws Throwable {
+        inputLines.add("e");
     }
 
     @Given("^Komenta muokkaa valitaan$")
     public void komenta_muokkaa_valitaan() throws Throwable {
-        inputLines.add("e");
+        inputLines.add("f");
         inputLines.add("1");
-        
+
     }
 
     @When("^Muokataan vinkkiä id:llä \"([^\"]*)\"$")
@@ -116,25 +148,38 @@ public class Stepdefs {
     public void komento_listaa_valitaan() throws Throwable {
         inputLines.add("a");
     }
-    
+
+    @When("^Valitaan listattavaksi kaikki$")
+    public void valitaan_listattavaksi_kaikki() throws Throwable {
+        inputLines.add("1");
+        inputLines.add("4");
+        inputLines.add("q");
+        kaynnista();
+
+    }
+
+    @Then("^Vinkin kohdalla näytetään tagit$")
+    public void vinkin_kohdalla_näytetään_tagit() throws Throwable {
+        assertTrue(io.getTulosteet().contains(kv.toString()));
+    }
+
     @When("^Valitaan listattavaksi kirjat$")
     public void valitaan_listattavaksi_kirjat() throws Throwable {
         inputLines.add("2");
         inputLines.add("q");
         kaynnista();
     }
-    
+
     @Then("^Vain kirjat näytetään$")
     public void vain_kirjat_näytetään() throws Throwable {
-        assertTrue(io.getTulosteet().contains("\nId: 1\nKirjailija: Kirja\nTagit: "));
+        assertTrue(io.getTulosteet().contains(kv.toString()));
     }
 
-
-    
     @Given("^Komento listaa vinkit valitaan$")
     public void komento_listaa_vinkit_valitaan() throws Throwable {
         inputLines.add("a");
         inputLines.add("1");
+        inputLines.add("4");
         inputLines.add("q");
         kaynnista();
     }
@@ -152,7 +197,7 @@ public class Stepdefs {
     public void komento_lisää_podcast_valitaan() throws Throwable {
         inputLines.add("c");
     }
-    
+
     @Given("^Komento lisää video valitaan$")
     public void komento_lisää_video_valitaan() throws Throwable {
         inputLines.add("d");
@@ -160,23 +205,22 @@ public class Stepdefs {
 
     @Then("^Ohjelma listaa kaikki vinkit$")
     public void ohjelma_listaa_kaikki_vinkit() throws Throwable {
-        assertEquals(29, io.getTulosteet().size());
+        assertEquals(38, io.getTulosteet().size());
     }
 
-    
     @When("^Valitaan listattavaksi podcastit$")
     public void valitaan_listattavaksi_podcastit() throws Throwable {
         inputLines.add("4");
+        inputLines.add("2");
         inputLines.add("q");
         kaynnista();
     }
-    
+
     @Then("^Vain podcastit näytetään$")
     public void vain_podcastit_näytetään() throws Throwable {
-        assertEquals(io.getTulosteet().get(17),"\nId: 1\nPodcast: Url\nTagit: ");
+        assertEquals(io.getTulosteet().get(20), pcv.toString());
     }
 
-    
     public void kaynnista() {
         io = new TynkaIO(inputLines);
         app = new App(io, kanta);
@@ -189,4 +233,6 @@ public class Stepdefs {
 
     }
 
+
+    
 }

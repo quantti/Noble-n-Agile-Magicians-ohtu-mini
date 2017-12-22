@@ -1,10 +1,16 @@
 
 # Käyttöohje
 
-Käynnistä .jar 
+Käynnistä .jar -tiedosto osoitteesta:
 
-Ohjelma näyttää valikon, jossa on lukivinkkien käsittelyyn tarvittavia toimintoja.
+https://github.com/quantti/Noble-n-Agile-Magicians-ohtu-mini/releases/download/v1.0.0/Noble-n-Agile-Magicians-ohtu-mini-all.jar
 
-Voit listata tietokannassa olevat lukuvinkit, sekä lisätä, muokata ja poistaa lukuvinkkejä.
+Ohjelma näyttää valikon, jossa on lukuvinkkien käsittelyyn tarvittavia toimintoja.
 
-Lukuvinkeille voi tallentaa nimen ja kirjailijan.
+Voit listata tietokannassa olevat lukuvinkit erilaisilla hakukriteereillä, sekä lisätä, muokata ja poistaa lukuvinkkejä.
+
+Kirjavinkeille voit tallentaa kirjailijan ja kirjan nimet, sekä tageja.
+
+Video-, blogi-, ja podcast-vinkeille voit tallentaa nimen ja urlin sekä tageja.
+
+Tageja ei voi muokata vinkin luomisen jälkeen.

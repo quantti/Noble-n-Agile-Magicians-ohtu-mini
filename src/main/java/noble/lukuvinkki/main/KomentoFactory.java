@@ -32,7 +32,10 @@ public class KomentoFactory {
         listauskomennot.put("2", new ListaaKirjatKomento("listaaKirjat", "2", "Listaa kaikki kirjat", io, kayttisIO));
         listauskomennot.put("3", new ListaaVideotKomento("listaaVideot", "3", "Listaa kaikki videot", io, kayttisIO));
         listauskomennot.put("4", new ListaaPodcastitKomento("listaaPodcastit", "4", "Listaa kaikki podcastit", io, kayttisIO));
-        listauskomennot.put("6", new HaeOtsikollaKomento("haeOtsikolla", "6", "Hae otsikolla", io, kayttisIO));
+        listauskomennot.put("5", new ListaaBlogitKomento("listaaBlogit", "5", "Listaa kaikki blogit", io, kayttisIO));
+        listauskomennot.put("6", new HaeOtsikollaKomento("haeOtsikolla", "6", "Hae otsikolla", io, kayttisIO));       
+        listauskomennot.put("7", new HaeTageillaKomento("haeTageilla", "7", "Hae tageilla", io, kayttisIO));
+
     }
 
     public HashMap<String, Komento> getListauskomennot() {
@@ -53,6 +56,7 @@ public class KomentoFactory {
         poistokomennot.put("1", new PoistaKirja("poistaKirja", "1", "Poista kirjavinkki", io, kayttisIO));
         poistokomennot.put("2", new PoistaPodcast("poistaPodcast", "2", "Poista podcastvinkki", io, kayttisIO));
         poistokomennot.put("3", new PoistaVideo("poistaVideo", "3", "Poista videovinkki", io, kayttisIO));
+        poistokomennot.put("4", new PoistaBlogi("poistaBlogi", "4", "Poista blogivinkki", io, kayttisIO));
     }
 
     public HashMap<String, Komento> getPoistokomennot() {
@@ -64,8 +68,9 @@ public class KomentoFactory {
         paavalikonkomennot.put("b", new LisaaKirja("lisaaKirja", "b", "Lisää kirjavinkki", io, kayttisIO));
         paavalikonkomennot.put("c", new LisaaPodcast("lisaaPodcast", "c", "Lisää podcastvinkki", io, kayttisIO));
         paavalikonkomennot.put("d", new LisaaVideo("lisaaVideo", "d", "Lisää videovinkki", io, kayttisIO));
-        paavalikonkomennot.put("e", new Valikko("muokkaaVinkit", "e", "Muokkaa vinkkejä", io, kayttisIO, this.muokkauskomennot));
-        paavalikonkomennot.put("f", new Valikko("poistaVinkit", "f", "Poista vinkkejä", io, kayttisIO, this.poistokomennot));
+        paavalikonkomennot.put("e", new LisaaBlogi("lisaaBLogi", "e", "Lisää blogivinkki", io, kayttisIO));
+        paavalikonkomennot.put("f", new Valikko("muokkaaVinkit", "f", "Muokkaa vinkkejä", io, kayttisIO, this.muokkauskomennot));
+        paavalikonkomennot.put("g", new Valikko("poistaVinkit", "g", "Poista vinkkejä", io, kayttisIO, this.poistokomennot));
     }
 
     public HashMap<String, Komento> getPaavalikonkomennot() {

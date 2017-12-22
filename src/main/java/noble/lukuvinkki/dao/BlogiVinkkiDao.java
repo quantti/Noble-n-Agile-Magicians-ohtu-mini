@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package noble.lukuvinkki.dao;
 
 import java.sql.Connection;
@@ -6,25 +11,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import noble.lukuvinkki.tietokohteet.PodcastVinkki;
+import noble.lukuvinkki.tietokohteet.BlogiVinkki;
+import noble.lukuvinkki.tietokohteet.VideoVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
-public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
+/**
+ *
+ * @author vankari
+ */
+public class BlogiVinkkiDao implements Dao<BlogiVinkki> {
 
     private final Connection yhteys;
 
-    public PodcastVinkkiDao(Tietokanta tietokanta) {
+    public BlogiVinkkiDao(Tietokanta tietokanta) {
         this.yhteys = tietokanta.yhteys();
     }
 
     @Override
-    public int tallenna(PodcastVinkki vinkki) throws SQLException {
+    public int tallenna(BlogiVinkki vinkki) throws SQLException {
         int id = -1;
 
         if (vinkki.getUrl().isEmpty() || vinkki.getNimi().isEmpty()) {
             return -1;
         }
-        String sql = "INSERT INTO podcast_vinkki(podcastin_nimi, podcastin_url) VALUES (?, ?)";
+
+        String sql = "INSERT INTO blogi_vinkki(blogin_nimi, blogin_url) VALUES (?, ?)";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setString(1, vinkki.getNimi());
         kysely.setString(2, vinkki.getUrl());
@@ -39,43 +50,43 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     }
 
     @Override
-    public PodcastVinkki haeYksi(int id) throws SQLException {
-        String query = "SELECT * FROM podcast_vinkki WHERE id = ?";
+    public BlogiVinkki haeYksi(int id) throws SQLException {
+        String query = "SELECT * FROM blogi_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setInt(1, id);
         ResultSet rs = kysely.executeQuery();
         if (rs.next()) {
-            PodcastVinkki podcastVinkki = keraa(rs);
-            return podcastVinkki;
+            BlogiVinkki blogiVinkki = keraa(rs);
+            return blogiVinkki;
         }
         return null;
     }
 
-    private PodcastVinkki keraa(ResultSet rs) throws SQLException {
+    private BlogiVinkki keraa(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        String nimi = rs.getString("podcastin_nimi");
-        String url = rs.getString("podcastin_url");
-        PodcastVinkki v = new PodcastVinkki(id, nimi, url);
+        String nimi = rs.getString("blogin_nimi");
+        String url = rs.getString("blogin_url");
+        BlogiVinkki v = new BlogiVinkki(id, nimi, url);
         v.setTagit(haeTagit(v));
         return v;
     }
 
     @Override
-    public List haeKaikki() throws SQLException {
-        List<Vinkki> podcastVinkit = new ArrayList<>();
-        String query = "SELECT * FROM podcast_vinkki";
+    public List<Vinkki> haeKaikki() throws SQLException {
+        List<Vinkki> blogiVinkit = new ArrayList<>();
+        String query = "SELECT * FROM blogi_vinkki";
         PreparedStatement kysely = yhteys.prepareStatement(query);
         ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            PodcastVinkki vinkki = keraa(rs);
-            podcastVinkit.add(vinkki);
+            BlogiVinkki vinkki = keraa(rs);
+            blogiVinkit.add(vinkki);
         }
-        return podcastVinkit;
+        return blogiVinkit;
     }
 
     @Override
     public boolean poistaVinkki(int id) throws SQLException {
-        String sql = "DELETE FROM podcast_vinkki WHERE id = ?";
+        String sql = "DELETE FROM blogi_vinkki WHERE id = ?";
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         kysely.setInt(1, id);
         int tulos = kysely.executeUpdate();
@@ -84,11 +95,11 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
 
     @Override
     public boolean muokkaa(Vinkki vinkki) throws SQLException {
-        PodcastVinkki podcastVinkki = (PodcastVinkki) vinkki;
-        int id = podcastVinkki.getId();
-        String nimi = podcastVinkki.getNimi();
-        String url = podcastVinkki.getUrl();
-        String sql = "UPDATE podcast_vinkki SET podcastin_nimi = ?, podcastin_url = ? WHERE id = ?";
+        BlogiVinkki blogiVinkki = (BlogiVinkki) vinkki;
+        int id = blogiVinkki.getId();
+        String nimi = blogiVinkki.getNimi();
+        String url = blogiVinkki.getUrl();
+        String sql = "UPDATE blogi_vinkki SET blogin_nimi = ?, blogin_url = ? WHERE id = ?";
         PreparedStatement paivitys = yhteys.prepareStatement(sql);
         paivitys.setString(1, nimi);
         paivitys.setString(2, url);
@@ -100,51 +111,24 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
     @Override
     public List<Vinkki> haeOtsikolla(String hakutermi) throws SQLException {
         List<Vinkki> vinkit = new ArrayList<>();
-        String query = "SELECT * FROM podcast_vinkki WHERE podcastin_nimi LIKE ?";
+        String query = "SELECT * FROM blogi_vinkki WHERE blogin_nimi LIKE ?";
         PreparedStatement kysely = yhteys.prepareStatement(query);
         kysely.setString(1, "%" + hakutermi + "%");
         ResultSet rs = kysely.executeQuery();
         while (rs.next()) {
-            PodcastVinkki podcastVinkki = keraa(rs);
-            vinkit.add(podcastVinkki);
+            BlogiVinkki vinkki = keraa(rs);
+            vinkit.add(vinkki);
         }
         return vinkit;
     }
 
-    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
-        if (tagit.isEmpty()) {
-            return new ArrayList<>();
-        }
-        StringBuilder build = new StringBuilder("SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
-                + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
-                + " AND tagi.id = podcast_tagit.tagi_id"
-                + " AND tagi.tagin_nimi LIKE ?");
-        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
-            build.append(" INTERSECT SELECT DISTINCT podcast_vinkki.* FROM podcast_vinkki,tagi,podcast_tagit"
-                    + " WHERE podcast_vinkki.id = podcast_tagit.podcast_id"
-                    + " AND tagi.id = podcast_tagit.tagi_id"
-                    + " AND tagi.tagin_nimi LIKE ?");
-        }
-        PreparedStatement st = yhteys.prepareStatement(build.toString());
-        for (int i = 1; i <= tagit.size(); i++) {
-            st.setString(i, tagit.get(i - 1));
-        }
-        ResultSet rs = st.executeQuery();
-        List<Vinkki> vinkit = new ArrayList<>();
-        while (rs.next()) {
-            PodcastVinkki v = keraa(rs);
-            vinkit.add(v);
-        }
-        return vinkit;
-    }
-
-    private List<String> haeTagit(PodcastVinkki vinkki) throws SQLException {
+    private List<String> haeTagit(BlogiVinkki vinkki) throws SQLException {
         List<String> tagit = new ArrayList<>();
         String sql = "SELECT tagi.*"
-                + " FROM podcast_vinkki, podcast_tagit, tagi"
-                + " WHERE podcast_vinkki.id = ?"
-                + " AND podcast_tagit.podcast_id = podcast_vinkki.id"
-                + " AND podcast_tagit.tagi_id = tagi.id";
+                + " FROM blogi_vinkki, blogi_tagit, tagi"
+                + " WHERE blogi_vinkki.id = ?"
+                + " AND blogi_tagit.blogi_id = blogi_vinkki.id"
+                + " AND blogi_tagit.tagi_id = tagi.id";
         PreparedStatement st = yhteys.prepareStatement(sql);
         st.setInt(1, vinkki.getId());
         ResultSet rs = st.executeQuery();
@@ -154,28 +138,48 @@ public class PodcastVinkkiDao implements Dao<PodcastVinkki> {
         return tagit;
     }
 
-    private void tallennaTagit(PodcastVinkki vinkki) throws SQLException {
-        for (String tagi : vinkki.getTagit()) {
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT blogi_vinkki.* FROM blogi_vinkki,tagi,blogi_tagit"
+                + " WHERE blogi_vinkki.id = blogi_tagit.blogi_id"
+                + " AND tagi.id = blogi_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT blogi_vinkki.* FROM blogi_vinkki,tagi,blogi_tagit"
+                    + " WHERE blogi_vinkki.id = blogi_tagit.blogi_id"
+                    + " AND tagi.id = blogi_tagit.tagi_id"
+                    + " AND tagi.tagin_nimi LIKE ?");
+        }
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i - 1));
+        }
+        ResultSet rs = st.executeQuery();
+        List<Vinkki> vinkit = new ArrayList<>();
+        while (rs.next()) {
+            BlogiVinkki v = keraa(rs);
+            vinkit.add(v);
+        }
+        return vinkit;
+    }
+
+    private void tallennaTagit(BlogiVinkki vinkki) throws SQLException {
+        for (String s : vinkki.getTagit()) {
             String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
-            st.setString(1, tagi);
+            st.setString(1, s);
             st.executeUpdate();
         }
-        for (String tagi : vinkki.getTagit()) {
-            String sql = "INSERT INTO podcast_tagit(podcast_id, tagi_id)"
+        for (String s : vinkki.getTagit()) {
+            String sql = "INSERT INTO blogi_tagit(blogi_id, tagi_id)"
                     + " SELECT ?, tagi.id FROM tagi WHERE tagi.tagin_nimi LIKE ?";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setInt(1, vinkki.getId());
-            st.setString(2, tagi);
+            st.setString(2, s);
             st.executeUpdate();
         }
     }
 
-    private void poistaOrvotTagit() throws SQLException {
-        String sql = "DELETE FROM tagi WHERE tagi.id NOT IN"
-                + " (SELECT kirja_tagit.tagi_id FROM kirja_tagit"
-                + " UNION SELECT podcast_tagit.tagi_id FROM podcast_tagit"
-                + " UNION SELECT video_tagit.tagi_id FROM video_tagit)";
-        yhteys.createStatement().execute(sql);
-    }
 }

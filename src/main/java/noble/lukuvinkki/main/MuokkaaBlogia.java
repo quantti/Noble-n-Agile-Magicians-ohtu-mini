@@ -3,23 +3,18 @@ package noble.lukuvinkki.main;
 import java.sql.SQLException;
 import noble.lukuvinkki.io.IO;
 import noble.lukuvinkki.io.KayttoliittymaInterface;
-import noble.lukuvinkki.tietokohteet.VideoVinkki;
+import noble.lukuvinkki.tietokohteet.BlogiVinkki;
 
-/**
- *
- * @author emil
- */
-public class MuokkaaVideota extends Komento {
+public class MuokkaaBlogia extends Komento {
 
-    public MuokkaaVideota(String nimi, String komento, String teksti, IO io, KayttoliittymaInterface kayttisIO) {
+    public MuokkaaBlogia(String nimi, String komento, String teksti, IO io, KayttoliittymaInterface kayttisIO) {
         super(nimi, komento, teksti, io, kayttisIO);
     }
 
     @Override
     public void komento() throws SQLException {
-
         int id = Integer.parseInt(io.lueRivi("Syötä muokattavan vinkin id-numero:"));
-        VideoVinkki vinkki = kayttisIO.haeYksiVideo(id);
+        BlogiVinkki vinkki = kayttisIO.haeYksiBlogi(id);
         if (vinkki == null) {
             io.tulosta("Vinkkiä ei löytynyt, tarkista id-numero");
             return;
@@ -36,11 +31,11 @@ public class MuokkaaVideota extends Komento {
             vinkki.setUrl(url);
             io.tulosta("Vinkin urliksi on vaihdettu " + url + ".");
         }
-        if (kayttisIO.muokkaaVideota(vinkki)) {
+        if (kayttisIO.muokkaablogia(vinkki)) {
             io.tulosta("Vinkkiä muokattu onnistuneesti!");
         } else {
             io.tulosta("Vinkin muokkaaminen epäonnistui");
         }
-
     }
+
 }

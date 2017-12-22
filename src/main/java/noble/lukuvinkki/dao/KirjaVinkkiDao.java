@@ -1,5 +1,6 @@
 package noble.lukuvinkki.dao;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import noble.lukuvinkki.tietokohteet.KirjaVinkki;
+import noble.lukuvinkki.tietokohteet.PodcastVinkki;
 import noble.lukuvinkki.tietokohteet.Vinkki;
 
 public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
@@ -115,6 +117,33 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
         return vinkit;
     }
 
+    public List<Vinkki> haeTageilla(List<String> tagit) throws SQLException {
+        if (tagit.isEmpty()) {
+            return new ArrayList<>();
+        }
+        StringBuilder build = new StringBuilder("SELECT DISTINCT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
+                + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
+                + " AND tagi.id = kirja_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
+        for (int i = 1; i < tagit.size(); i++) { //ensimmäinen tagi on jo käytetty
+            build.append(" INTERSECT SELECT DISTINCT kirja_vinkki.* FROM kirja_vinkki,tagi,kirja_tagit"
+                + " WHERE kirja_vinkki.id = kirja_tagit.kirja_id"
+                + " AND tagi.id = kirja_tagit.tagi_id"
+                + " AND tagi.tagin_nimi LIKE ?");
+        }
+        PreparedStatement st = yhteys.prepareStatement(build.toString());
+        for (int i = 1; i <= tagit.size(); i++) {
+            st.setString(i, tagit.get(i - 1));
+        }
+        ResultSet rs = st.executeQuery();
+        List<Vinkki> vinkit = new ArrayList<>();
+        while (rs.next()) {
+            KirjaVinkki v = keraa(rs);
+            vinkit.add(v);
+        }
+        return vinkit;
+    }
+
     private List<String> haeTagit(KirjaVinkki vinkki) throws SQLException {
         List<String> tagit = new ArrayList<>();
         String sql = "SELECT tagi.*"
@@ -133,7 +162,7 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
 
     private void tallennaTagit(KirjaVinkki vinkki) throws SQLException {
         for (String s : vinkki.getTagit()) {
-            String sql = "INSERT INTO tagi(tagin_nimi) VALUES (?)";
+            String sql = "INSERT OR IGNORE INTO tagi(tagin_nimi) VALUES (?)";
             PreparedStatement st = yhteys.prepareStatement(sql);
             st.setString(1, s);
             st.executeUpdate();
@@ -146,5 +175,13 @@ public class KirjaVinkkiDao implements Dao<KirjaVinkki> {
             st.setString(2, s);
             st.executeUpdate();
         }
+    }
+
+    private void poistaOrvotTagit() throws SQLException {
+        String sql = "DELETE FROM tagi WHERE tagi.id NOT IN"
+                + " (SELECT kirja_tagit.tagi_id FROM kirja_tagit"
+                + " UNION SELECT podcast_tagit.tagi_id FROM podcast_tagit"
+                + " UNION SELECT video_tagit.tagi_id FROM video_tagit)";
+        yhteys.createStatement().execute(sql);
     }
 }

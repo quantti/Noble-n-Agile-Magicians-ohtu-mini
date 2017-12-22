@@ -5,8 +5,7 @@ import noble.lukuvinkki.dao.Tietokanta;
 import noble.lukuvinkki.io.IO;
 import java.sql.SQLException;
 import java.util.HashMap;
-import noble.lukuvinkki.tietokohteet.PodcastVinkki;
-import noble.lukuvinkki.tietokohteet.VideoVinkki;
+
 
 public class App {
 
@@ -64,67 +63,21 @@ public class App {
                     virhe(ex);
                 }
             }
-            alaValikonValinnat(komennot, vastaus);
+            valinnat(komennot, vastaus);
 
         }
     }
 
-    private void alaValikonValinnat(HashMap<String, Komento> komennot, String valinta) {
+    private void valinnat(HashMap<String, Komento> komennot, String valinta) {
         Komento komento = komennot.get(valinta);
         if (komento == null) {
             io.tulosta("Väärä valinta");
             return;
         }
-        komento.komento();
-    }
-
-
-    private void avaaUrl() {
-        io.tulosta("1) Avaa video");
-        io.tulosta("2) Avaa podcast");
-        io.tulosta("3) Palaa päävalikkoon");
-        String valinta = io.lueRivi("Anna valintasi");
-        switch (valinta) {
-            case "1":
-                avaaVideo();
-                break;
-            case "2":
-                avaaPodcast();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void avaaPodcast() {
         try {
-            int id = Integer.parseInt(io.lueRivi("Anna id-numero"));
-            PodcastVinkki vinkki = kayttisIO.haeYksiPodcast(id);
-            if (vinkki != null) {
-                kayttisIO.avaaPodcast(vinkki);
-            } else {
-                io.tulosta("Podcastia ei löytynyt, tarkista id-numero");
-            }
-        } catch (SQLException ex) {
-            virhe(ex);
-        } catch (Exception ex) {
-            virhe(ex);
-        }
-    }
-
-    private void avaaVideo() {
-        try {
-            int id = Integer.parseInt(io.lueRivi("Anna id-numero"));
-            VideoVinkki vinkki = kayttisIO.haeYksiVideo(id);
-            if (vinkki != null) {
-                kayttisIO.avaaVideo(vinkki);
-            } else {
-                io.tulosta("Videot ei löytynyt, tarkista id-numero");
-            }
-        } catch (SQLException ex) {
-            virhe(ex);
-        } catch (Exception ex) {
-            virhe(ex);
+            komento.komento();
+        } catch (Exception e) {
+            virhe(e);
         }
     }
 }

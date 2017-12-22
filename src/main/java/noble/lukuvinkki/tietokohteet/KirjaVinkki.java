@@ -71,7 +71,7 @@ public class KirjaVinkki implements Vinkki {
         if (getTagit() != null) {
             tagitS = StringUtils.join(getTagit(), ",");
         }
-        return "\nId: " + this.getId() + "\n" + this.getTekija() + ": " + this.getNimi() + "\nTagit: " + tagitS;
+        return "\nKirjavinkki, Id: " + this.getId() + "\n" + this.getTekija() + ": " + this.getNimi() + "\nTagit: " + tagitS;
     }
 
     @Override

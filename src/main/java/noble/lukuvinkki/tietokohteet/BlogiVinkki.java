@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package noble.lukuvinkki.tietokohteet;
 
 import java.util.ArrayList;
@@ -5,7 +10,11 @@ import java.util.List;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
-public class VideoVinkki implements Vinkki {
+/**
+ *
+ * @author vankari
+ */
+public class BlogiVinkki implements Vinkki {
 
     private int id;
     private String nimi;
@@ -13,24 +22,20 @@ public class VideoVinkki implements Vinkki {
     private String tekija;
     private List<String> tagit;
 
-    public VideoVinkki() {
-        this.tagit = new ArrayList<>();
-    }
-
-    public VideoVinkki(int id, String nimi, String url) {
+    public BlogiVinkki(int id, String nimi, String url) {
         this.id = id;
         this.nimi = nimi;
         this.url = url;
         this.tagit = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
+    public BlogiVinkki() {
+        this(0, "testi", "www.tyhja.com");
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -39,27 +44,23 @@ public class VideoVinkki implements Vinkki {
     }
 
     @Override
-    public void setNimi(String nimi) {
-        this.nimi = nimi;
-    }
-
-    //  @Override
-    public String getUrl() {
-        return url;
-    }
-
-    //  @Override
-    public void setUrl(String url) {
-        this.url = url;
+    public String getTekija() {
+        return tekija;
     }
 
     @Override
-    public String toString() {
-        String tagitS = "";
-        if (getTagit() != null) {
-            tagitS = StringUtils.join(getTagit(), ",");
-        }
-        return "\nVideovinkki, Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
+    public List<String> getTagit() {
+        return tagit;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setNimi(String nimi) {
+        this.nimi = nimi;
     }
 
     @Override
@@ -68,24 +69,26 @@ public class VideoVinkki implements Vinkki {
     }
 
     @Override
-    public String getTekija() {
-        return this.tekija;
-    }
-
-    /**
-     * @return the tagit
-     */
-    @Override
-    public List<String> getTagit() {
-        return tagit;
-    }
-
-    /**
-     * @param tagit the tagit to set
-     */
-    @Override
     public void setTagit(List<String> tagit) {
         this.tagit = tagit;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    
+    @Override
+    public String toString() {
+        String tagitS = "";
+        if (getTagit() != null) {
+            tagitS = StringUtils.join(getTagit(), ",");
+        }
+        return "\nBlogivinkki, Id: " + this.getId() + "\n" + this.getNimi() + ": " + this.getUrl() + "\nTagit: " + tagitS;
     }
 
     @Override
@@ -99,7 +102,7 @@ public class VideoVinkki implements Vinkki {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final VideoVinkki other = (VideoVinkki) obj;
+        final BlogiVinkki other = (BlogiVinkki) obj;
         if (this.id != other.id) {
             return false;
         }
@@ -111,5 +114,4 @@ public class VideoVinkki implements Vinkki {
         }
         return true;
     }
-    
 }
